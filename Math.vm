@@ -1,4 +1,4 @@
-function Main.test 1
+function Main.test  1
     // x = mult(10, 2)
     push constant a
     push constant 2
