@@ -16,6 +16,7 @@ function Main.main 1
     push constant 31
     
     call sqrt 3 1
+    pop local 0
     (whileForever)
     goto whileForever
 
