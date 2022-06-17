@@ -1,0 +1,53 @@
+
+//int mult (int a, int b)
+//{
+//   int result = 0;
+//   int N = b;
+//   while(N != 0)
+//   {
+//      result = result + 1;
+//      N = N - 1;
+//   }
+//   
+//   return result;
+//}
+
+
+function Main 1
+    push constant a
+    push constant 8
+    
+    call mult 2 2
+    (whileForever)
+    goto whileForever
+
+function mult 2 2
+    push constant 0
+    pop local 0
+
+    push argument 1
+    pop local 1
+
+    (while_start_1)
+    push local 1
+    push constant 0
+    nequ
+        
+    if-goto true_while_1
+    goto false_while_1
+    (true_while_1)
+    push local 0
+    push argument 0
+    add
+    pop local 0
+
+    push local 1
+    push constant 1
+    sub
+    pop local 1
+
+    goto while_start_1
+    (false_while_1)
+    
+    push local 0
+    return

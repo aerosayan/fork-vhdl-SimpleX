@@ -1,0 +1,41 @@
+//int abs(int a)
+//{
+//    int result = a;
+//    if (x < 0)
+//    {
+//       result = -x;
+//    }
+//    return result;
+//}
+
+function Main 1
+    push constant FFFFFFFD
+    
+    call abs 1 1
+    (whileForever)
+    goto whileForever
+
+function abs 1 1
+    push argument 0
+    pop local 0
+
+    push argument 0
+    push constant 0
+    lt
+    (Debug)
+    goto Debug
+    if-goto true_if_1
+    goto false_if_1
+    (true_if_1)
+    push argument 0
+    neg
+    pop local 0
+    goto end_if_1
+    (false_if_1)
+    
+    (end_if_1)
+    push local 0
+    return
+
+    
+    

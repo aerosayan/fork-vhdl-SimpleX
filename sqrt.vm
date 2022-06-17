@@ -1,0 +1,62 @@
+//int sqrt(int a)
+//{
+//    int result = 0;
+//    int temp = a; 
+//    int N = 1;
+//    while(temp > N)
+//    {
+//       temp = temp - N; 
+//       result = result + 1;
+//       N = N + 2;
+//    }
+//    return temp
+//}
+
+function Main.main 1
+    push constant 31
+    
+    call sqrt 3 1
+    (whileForever)
+    goto whileForever
+
+function sqrt 3 1
+    push constant 0
+    pop local 0
+
+    push constant 1
+    pop local 1
+    push argument 0
+    pop local 2
+  
+    (while_start_1)
+    push local 2
+    push local 1
+    gte
+        
+    if-goto true_while_1
+    goto false_while_1
+    (true_while_1)
+    
+    push local 2
+    push local 1
+    sub
+    pop local 2
+
+    push local 1
+    push constant 2
+    add
+    pop local 1
+
+    push local 0
+    push constant 1
+    add 
+    pop local 0
+
+    goto while_start_1
+    (false_while_1)
+    
+    push local 0
+    return
+
+    
+    

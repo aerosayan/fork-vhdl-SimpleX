@@ -1,0 +1,238 @@
+m255
+K4
+z2
+!s11f vlog 2020.1 2020.02, Feb 28 2020
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+d/home/baher.nicola/register_file
+valu
+!s105 alu_sv_unit
+DXx4 work 11 alu_sv_unit 0 22 D>]Lz52zGN?EmE[5biUOK0
+Z0 DXx6 sv_std 3 std 0 22 VYECXdT12H8WgbUP_5Y6:3
+Z1 !s110 1655422663
+!i10b 1
+!s100 7dHbGoWlHbaYglFkVhUj33
+Z2 !s11b Dg1SIo80bB@j0V0VzS_@n1
+ITQkJ>Zae;SMO??[9V1hNK1
+Z3 VDg1SIo80bB@j0V0VzS_@n1
+S1
+Z4 d/home/baher.nicola/SimpleX
+Z5 w1654858026
+Z6 8/home/baher.nicola/SimpleX/alu.sv
+Z7 F/home/baher.nicola/SimpleX/alu.sv
+!i122 6369
+L0 3 109
+Z8 OV;L;2020.1;71
+r1
+!s85 0
+31
+Z9 !s108 1655422663.000000
+Z10 !s107 /home/baher.nicola/SimpleX/alu.sv|
+Z11 !s90 -reportprogress|300|-work|work|-sv|-stats=none|/home/baher.nicola/SimpleX/alu.sv|
+!i113 1
+Z12 o-work work -sv
+Z13 tCvgOpt 0
+Xalu_sv_unit
+R0
+R1
+VD>]Lz52zGN?EmE[5biUOK0
+r1
+!s85 0
+!i10b 1
+!s100 h9^<Ai^i[[CX2B;l`dZ>D3
+ID>]Lz52zGN?EmE[5biUOK0
+!i103 1
+S1
+R4
+R5
+R6
+R7
+!i122 6369
+L0 111 0
+R8
+31
+R9
+R10
+R11
+!i113 1
+R12
+R13
+vcomputer
+R0
+R1
+!i10b 1
+!s100 aUF:6<Ih4VGBKZZiCcN^81
+R2
+IYHUeU@N2^_@A6dYWZ04b53
+R3
+S1
+R4
+w1654811405
+8/home/baher.nicola/SimpleX/computer.sv
+F/home/baher.nicola/SimpleX/computer.sv
+!i122 6374
+L0 2 52
+R8
+r1
+!s85 0
+31
+R9
+!s107 /home/baher.nicola/SimpleX/computer.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|/home/baher.nicola/SimpleX/computer.sv|
+!i113 1
+R12
+R13
+vcontrol_unit
+R0
+R1
+!i10b 1
+!s100 GoJT^on@NQUdhkd094R:Z2
+R2
+I>X@Aef^Y8F3GI2GPcK0OJ2
+R3
+S1
+R4
+w1655204197
+8/home/baher.nicola/SimpleX/control_unit.sv
+F/home/baher.nicola/SimpleX/control_unit.sv
+!i122 6372
+L0 1 713
+R8
+r1
+!s85 0
+31
+R9
+!s107 /home/baher.nicola/SimpleX/control_unit.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|/home/baher.nicola/SimpleX/control_unit.sv|
+!i113 1
+R12
+R13
+vcpu
+R0
+R1
+!i10b 1
+!s100 ZS@;9cFzNfl`Dj0W?nQKK0
+R2
+I^CP0:C5mn73JE;0cWc=S30
+R3
+S1
+R4
+w1654766044
+8/home/baher.nicola/SimpleX/cpu.sv
+F/home/baher.nicola/SimpleX/cpu.sv
+!i122 6373
+L0 1 155
+R8
+r1
+!s85 0
+31
+R9
+!s107 /home/baher.nicola/SimpleX/cpu.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|/home/baher.nicola/SimpleX/cpu.sv|
+!i113 1
+R12
+R13
+vpc
+R0
+R1
+!i10b 1
+!s100 K<Z1P>AdO1K<S@h>5FNZ^3
+R2
+IR9U7W2A<o2@:_EM^FlMUj3
+R3
+S1
+R4
+w1654761788
+8/home/baher.nicola/SimpleX/program_counter.sv
+F/home/baher.nicola/SimpleX/program_counter.sv
+!i122 6371
+L0 1 44
+R8
+r1
+!s85 0
+31
+R9
+!s107 /home/baher.nicola/SimpleX/program_counter.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|/home/baher.nicola/SimpleX/program_counter.sv|
+!i113 1
+R12
+R13
+vram
+R0
+R1
+!i10b 1
+!s100 aBUE_jO9=Vf8F17bbD0mG0
+R2
+IkbO4:Sic1klBPL:Z<no3U3
+R3
+S1
+R4
+w1654820363
+8/home/baher.nicola/SimpleX/ram.sv
+F/home/baher.nicola/SimpleX/ram.sv
+!i122 6376
+L0 1 27
+R8
+r1
+!s85 0
+31
+R9
+!s107 /home/baher.nicola/SimpleX/ram.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|/home/baher.nicola/SimpleX/ram.sv|
+!i113 1
+R12
+R13
+vregister_file
+R0
+R1
+!i10b 1
+!s100 gD8Vh_ZTCMSk;XimYRQAJ2
+R2
+I?STiSU0Xo9f84G0ndMCXd3
+R3
+S1
+R4
+w1654813881
+8/home/baher.nicola/SimpleX/register_file.sv
+F/home/baher.nicola/SimpleX/register_file.sv
+!i122 6370
+L0 1 59
+R8
+r1
+!s85 0
+31
+R9
+!s107 /home/baher.nicola/SimpleX/register_file.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|/home/baher.nicola/SimpleX/register_file.sv|
+!i113 1
+R12
+R13
+vrom
+R0
+R1
+!i10b 1
+!s100 4^d<`Qe[I7NJli_A5LG7W3
+R2
+IfQdGDSzCWIXESf[bT2T:62
+R3
+S1
+R4
+w1655211485
+8/home/baher.nicola/SimpleX/rom.sv
+F/home/baher.nicola/SimpleX/rom.sv
+!i122 6375
+L0 1 20
+R8
+r1
+!s85 0
+31
+R9
+!s107 /home/baher.nicola/SimpleX/rom.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|/home/baher.nicola/SimpleX/rom.sv|
+!i113 1
+R12
+R13

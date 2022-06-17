@@ -1,0 +1,57 @@
+//int div(int a, int b)
+//{
+//    int result = 0;
+//    int remainder = b 
+//    while(remainder >= b)
+//    {
+//       a = a-b;     
+//       result = result + 1;
+//       remainder = a;
+//    }
+//    return temp
+//}
+
+function Main 1
+    push constant a
+    push constant 2
+    
+    call div 2 2
+    (whileForever)
+    goto whileForever
+
+function div 2 2
+    push constant 0
+    pop local 0
+
+    push argument 0
+    pop local 1
+    (while_start_1)
+    push local 1
+    push argument 1
+    gte
+        
+    if-goto true_while_1
+    goto false_while_1
+    (true_while_1)
+    
+    push argument 0
+    push argument 1
+    sub
+    
+    pop argument 0
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    
+    push argument 0
+    pop local 1
+
+    goto while_start_1
+    (false_while_1)
+    
+    push local 0
+    return
+
+    
+    

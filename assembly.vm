@@ -1,0 +1,15 @@
+function Main 1 1
+push constant 7
+push constant 4
+nequ
+if-goto Test1
+
+push constant 1
+push constant 2
+push constant 3
+push constant 4
+(Forever)
+goto Forever
+(Test1)
+push constant 4
+push constant 5

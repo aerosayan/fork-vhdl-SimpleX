@@ -1,0 +1,50 @@
+//int Summation(int N)
+//{
+//    int sum = 0;
+//    while(N != 0)
+//    {
+//        sum = sum + N;
+//        N = N - 1;
+//    }
+//    
+//    return sum
+//}
+
+function Main 1
+    push constant 9
+    pop local 0
+    push local 0
+    call Summation 1 1
+    (whileForever)
+    goto whileForever
+
+function Summation 1 1
+    //int sum = 0
+    push constant 0
+    pop local 0
+
+    (while_start_1)
+    // N!=0
+    push argument 0
+    push constant 0
+    nequ    
+    if-goto true_while_1
+    goto false_while_1
+    (true_while_1)
+    push local 0
+    push argument 0
+    add
+    pop local 0
+   
+    // N = N -1
+    push argument 0
+    push constant 1
+    sub
+    pop argument 0
+
+    goto while_start_1
+    (false_while_1)
+    push local 0
+    return
+    
+    
