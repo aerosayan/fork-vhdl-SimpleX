@@ -13,24 +13,24 @@ valu
 !s105 alu_sv_unit
 DXx4 work 11 alu_sv_unit 0 22 D>]Lz52zGN?EmE[5biUOK0
 Z0 DXx6 sv_std 3 std 0 22 VYECXdT12H8WgbUP_5Y6:3
-Z1 !s110 1655422663
+Z1 !s110 1655461737
 !i10b 1
 !s100 7dHbGoWlHbaYglFkVhUj33
 Z2 !s11b Dg1SIo80bB@j0V0VzS_@n1
 ITQkJ>Zae;SMO??[9V1hNK1
 Z3 VDg1SIo80bB@j0V0VzS_@n1
 S1
-Z4 d/home/baher.nicola/SimpleX
+Z4 d/home/baher.nicola/SimpleX_Design/SimpleX
 Z5 w1654858026
 Z6 8/home/baher.nicola/SimpleX/alu.sv
 Z7 F/home/baher.nicola/SimpleX/alu.sv
-!i122 6369
+!i122 6377
 L0 3 109
 Z8 OV;L;2020.1;71
 r1
 !s85 0
 31
-Z9 !s108 1655422663.000000
+Z9 !s108 1655461737.000000
 Z10 !s107 /home/baher.nicola/SimpleX/alu.sv|
 Z11 !s90 -reportprogress|300|-work|work|-sv|-stats=none|/home/baher.nicola/SimpleX/alu.sv|
 !i113 1
@@ -51,7 +51,7 @@ R4
 R5
 R6
 R7
-!i122 6369
+!i122 6377
 L0 111 0
 R8
 31
@@ -74,7 +74,7 @@ R4
 w1654811405
 8/home/baher.nicola/SimpleX/computer.sv
 F/home/baher.nicola/SimpleX/computer.sv
-!i122 6374
+!i122 6382
 L0 2 52
 R8
 r1
@@ -99,7 +99,7 @@ R4
 w1655204197
 8/home/baher.nicola/SimpleX/control_unit.sv
 F/home/baher.nicola/SimpleX/control_unit.sv
-!i122 6372
+!i122 6380
 L0 1 713
 R8
 r1
@@ -124,7 +124,7 @@ R4
 w1654766044
 8/home/baher.nicola/SimpleX/cpu.sv
 F/home/baher.nicola/SimpleX/cpu.sv
-!i122 6373
+!i122 6381
 L0 1 155
 R8
 r1
@@ -149,7 +149,7 @@ R4
 w1654761788
 8/home/baher.nicola/SimpleX/program_counter.sv
 F/home/baher.nicola/SimpleX/program_counter.sv
-!i122 6371
+!i122 6379
 L0 1 44
 R8
 r1
@@ -174,7 +174,7 @@ R4
 w1654820363
 8/home/baher.nicola/SimpleX/ram.sv
 F/home/baher.nicola/SimpleX/ram.sv
-!i122 6376
+!i122 6384
 L0 1 27
 R8
 r1
@@ -199,7 +199,7 @@ R4
 w1654813881
 8/home/baher.nicola/SimpleX/register_file.sv
 F/home/baher.nicola/SimpleX/register_file.sv
-!i122 6370
+!i122 6378
 L0 1 59
 R8
 r1
@@ -224,7 +224,7 @@ R4
 w1655211485
 8/home/baher.nicola/SimpleX/rom.sv
 F/home/baher.nicola/SimpleX/rom.sv
-!i122 6375
+!i122 6383
 L0 1 20
 R8
 r1
