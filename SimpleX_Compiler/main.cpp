@@ -9,12 +9,12 @@ int main(int argc, char* argv[])
 
    Tokenizer *tokenizer = new Tokenizer();
    tokenizer->OpenFile("file.txt"); 
-   std::vector<Tokenizer::Token> tokens = tokenizer->ReadAllTokens();
+   std::vector<Tokenizer::TokenVal> tokens = tokenizer->ReadAllTokens();
    for (int i = 0; i < tokens.size(); i++)
    {
-       int tokenInt = (int)tokens.at(i);
+       int tokenInt = (int)tokens.at(i).token;
        //printf("%d\n", tokenInt);
-       std::cout << tokenizer->tokenAsString[tokenInt] << std::endl;
+       std::cout << tokenizer->tokenAsString[tokenInt] << "(" << tokens.at(i).lineNumber << ")" << std::endl;
    }
    return 0;
 }

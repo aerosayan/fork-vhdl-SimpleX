@@ -1,10 +1,8 @@
+//This is a demobstration of my Tokenizer functionality
+//This is a demobstration of my Tokenizer functionality
+//This is a demobstration of my Tokenizer functionality
 class Square
-{
-    int function MyFunction(int x, int y)  
-    if (x < y)
-    {
-        let h = 0
-        let r= 8
-    }
-
+{ 
+    //Here is another comments
+    let x = x + 1
 }

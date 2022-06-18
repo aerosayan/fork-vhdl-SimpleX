@@ -79,7 +79,8 @@ public :
       closeBraces_,
       function_,
       int_,
-      class_
+      class_,
+      comment_
    }Token;
 
    std::vector<std::string> tokenAsString =  {
@@ -151,14 +152,27 @@ public :
       "closeBraces",
       "function",
       "int",
-      "class"
+      "class",
+      "comment"
    };
+
+   
+   typedef struct 
+   {
+      Token       token;
+      uint32_t    lineNumber;
+      std::string tokenString;
+      double      value;
+   }TokenVal;
+   TokenVal tokenVal_;
+
+   std::vector<Tokenizer::TokenVal> tokens_;
    
    Tokenizer();
 
    ~Tokenizer();
 
-   std::vector<Tokenizer::Token> ReadAllTokens();
+   std::vector<Tokenizer::TokenVal> ReadAllTokens();
 
    Token GetNextToken();
 
@@ -247,7 +261,7 @@ private:
    double value_;
    
    InputFile inputFile_;
+  
 
-   std::vector<Tokenizer::Token> tokens_;
 };
 #endif

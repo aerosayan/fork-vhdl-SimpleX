@@ -173,6 +173,15 @@ start:
          currentToken_ = forwordSlashEqual_;
          c = inputFile_.GetNextCharacter();
       }
+      if (isForwordSlash(c))
+      {
+         //consume all characters till the end of line
+         while(!isEndOfLine(c))
+         {
+            c = inputFile_.GetNextCharacter();
+         }
+         currentToken_ = comment_;
+      }
    }
 
 
@@ -282,6 +291,7 @@ start:
    {
       currentToken_ = endOfLine_;
       c = inputFile_.GetNextCharacter();
+      lineNumber_++;
    }
    else if (isEndOfFile(c))
    {
@@ -293,6 +303,11 @@ start:
    {
       currentToken_ = CheckToken();  
    }
+    
+   tokenVal_.token       = currentToken_;
+   tokenVal_.lineNumber  = lineNumber_;
+   tokenVal_.tokenString = std::string(tokenString_);
+   tokenVal_.value       = value_;
   
    return currentToken_;
 }
@@ -543,7 +558,6 @@ bool Tokenizer::isEndOfLine(char c)
    bool retVal = false;
    if (c == '\n' || c == 10 || c == 13)
    {
-      lineNumber_++;
       retVal = true;
    }
    return retVal;
@@ -610,13 +624,16 @@ void Tokenizer::SetLineNumber(unsigned int lineNumber)
 }
 
 
-std::vector<Tokenizer::Token> Tokenizer::ReadAllTokens()
+std::vector<Tokenizer::TokenVal> Tokenizer::ReadAllTokens()
 {
    currentToken_ = unknownToken_;
    while(currentToken_ != endOfFile_)
    {
       GetNextToken();
-      tokens_.push_back(currentToken_);
+      if (currentToken_ != endOfLine_ && currentToken_ != comment_  && currentToken_ != endOfFile_)
+      {
+         tokens_.push_back(tokenVal_);
+      }
    }
 
    return tokens_;
