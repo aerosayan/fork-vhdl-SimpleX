@@ -328,14 +328,7 @@ Tokenizer::Token Tokenizer::CheckToken()
    {
       thisToken = Tokenizer::else_;
    }
-   if (token == "ENDIF" || token == "endif"  || token == "Endif")
-   {
-      thisToken = Tokenizer::endif_;
-   }
-   else if (token == "THEN" || token == "then"  || token == "Then")
-   {
-      thisToken = Tokenizer::then_;
-   }
+  
    else if (token == "DO" || token == "do"  || token == "Do")
    {
       thisToken = Tokenizer::do_;
@@ -344,30 +337,12 @@ Tokenizer::Token Tokenizer::CheckToken()
    {
       thisToken = Tokenizer::while_;
    }
-   if (token == "WEND" || token == "wend"  || token == "Wend")
-   {
-      thisToken = Tokenizer::wend_;
-   }
-   else if (token == "LOOP" || token == "loop" || token == "Loop")
-   {
-      thisToken = Tokenizer::loop_;
-   }
-    else if (token == "FOR" || token == "for" || token == "For")
-   {
-      thisToken = Tokenizer::for_;
-   }
+ 
    else if (token == "LET" || token == "let"  || token == "Let")
    {
       thisToken = Tokenizer::let_;
    }
-   else if (token == "END" || token == "end"  || token == "End")
-   {
-      thisToken = Tokenizer::end_;
-   }
-   else if (token == "DIM" || token == "dim"  || token == "Dim")
-   {
-      thisToken = Tokenizer::dim_;
-   }
+   
    else if (token == "AND" || token == "and" || token == "And")
    {
       thisToken = Tokenizer::and_;
@@ -380,18 +355,7 @@ Tokenizer::Token Tokenizer::CheckToken()
    {
       thisToken = Tokenizer::or_;
    }
-   else if (token == "AS" || token == "as" || token == "As")
-   {
-      thisToken = Tokenizer::as_;
-   }
-   else if (token == "SUB" || token == "sub"  || token == "Sub")
-   {
-      thisToken = Tokenizer::subroutine_;
-   }
-   else if (token == "INTEGER" || token == "integer" || token == "Integer")
-   {
-      thisToken = Tokenizer::integer_;
-   }
+ 
    else if (token == "STRING" || token == "string" || token == "String")
    {
       thisToken = Tokenizer::string_;
@@ -408,59 +372,71 @@ Tokenizer::Token Tokenizer::CheckToken()
    {
       thisToken = Tokenizer::false_;
    }
-   else if (token == "PROGRAM" || token == "program" || token == "Program")
+
+   else if (token == "NULL" || token == "null" || token == "Null")
    {
-      thisToken = Tokenizer::program_;
+      thisToken = Tokenizer::null_;
    }
-   else if (token == "ENDSUB" || token == "endsub" || token == "EndSub")
+
+   else if (token == "THIS" || token == "this" || token == "This")
    {
-      thisToken = Tokenizer::endSubroutine_;
+      thisToken = Tokenizer::this_;
    }
-   else if (token == "DECLARE" || token == "declare" || token == "Declare")
-   {
-      thisToken = Tokenizer::declare_;
-   }
+  
    else if (token == "CONST" || token == "const" || token == "Const")
    {
       thisToken = Tokenizer::const_;
    }
-   else if (token == "ENUM" || token == "enum" || token == "Enum")
-   {
-      thisToken = Tokenizer::enum_;
-   }
-   else if (token == "ENDENUM" || token == "endenum" || token == "EndEnum")
-   {
-      thisToken = Tokenizer::endEnum_;
-   }
+  
    else if (token == "STRUCTURE" || token == "structure" || token == "Structure")
    {
       thisToken = Tokenizer::struct_;
    }
 
-   else if (token == "WRITE" || token == "write" || token == "Write")
-   {
-      thisToken = Tokenizer::write_;
-   }
-   else if (token == "DELAY" || token == "delay" || token == "Delay")
-   {
-      thisToken = Tokenizer::delay_;
-   }
-
-   if (token == "FUNCTION"|| token == "function"  || token == "Function")
+   else if (token == "FUNCTION"|| token == "function"  || token == "Function")
    {
       thisToken = Tokenizer::function_;
    }
 
-   if (token == "INT"|| token == "int"  || token == "Int")
+   else if (token == "INT"|| token == "int"  || token == "Int")
    {
       thisToken = Tokenizer::int_;
    }
 
-   if (token == "CLASS"|| token == "class"  || token == "Class")
+   else if (token == "CHAR"|| token == "char"  || token == "Char")
+   {
+      thisToken = Tokenizer::char_;
+   }
+
+   else if (token == "CLASS"|| token == "class"  || token == "Class")
    {
       thisToken = Tokenizer::class_;
    }
-   
+
+   else if (token == "RETURN"|| token == "return"  || token == "Return")
+   {
+      thisToken = Tokenizer::return_;
+   }
+
+   else if (token == "CONSTRUCTOR"|| token == "constructor"  || token == "Constructor")
+   {
+      thisToken = Tokenizer::constructor_;
+   }
+
+   else if (token == "METHOD"|| token == "method"  || token == "Method")
+   {
+      thisToken = Tokenizer::method_;
+   }
+
+   else if (token == "FIELD"|| token == "field"  || token == "Field")
+   {
+      thisToken = Tokenizer::field_;
+   }  
+
+   else if (token == "STATIC"|| token == "static"  || token == "Static")
+   {
+      thisToken = Tokenizer::field_;
+   }  
 
    return thisToken;
 }

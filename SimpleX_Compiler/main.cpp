@@ -1,23 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
-#include "Tokenizer.hpp"
-
-int main(int argc, char* argv[])
-{
-
-
-   Tokenizer *tokenizer = new Tokenizer();
-   tokenizer->OpenFile("file.txt"); 
-   std::vector<Tokenizer::TokenVal> tokens = tokenizer->ReadAllTokens();
-   for (int i = 0; i < tokens.size(); i++)
-   {
-       int tokenInt = (int)tokens.at(i).token;
-       //printf("%d\n", tokenInt);
-       std::cout << tokenizer->tokenAsString[tokenInt] << "(" << tokens.at(i).lineNumber << ")" << std::endl;
-   }
-   return 0;
-}
+#include "SimplexParser.hpp"
 
 void UNIT_TEST_INPUTFILE()
 {
@@ -28,3 +12,24 @@ void UNIT_TEST_INPUTFILE()
     c = inputFile->GetNextCharacter();
     printf("%c\n", c);
 }
+
+void UNIT_TEST_TOKENIZER()
+{
+   Tokenizer *tokenizer = new Tokenizer();
+   tokenizer->OpenFile("file.txt"); 
+   std::vector<Tokenizer::TokenVal> tokens = tokenizer->ReadAllTokens();
+   for (int i = 0; i < tokens.size(); i++)
+   {
+       int tokenInt = (int)tokens.at(i).token;
+       std::cout << tokenizer->tokenAsString[tokenInt] << "(" << tokens.at(i).lineNumber << ", " << tokens.at(i).value << ")" << std::endl;
+   }
+}
+
+int main(int argc, char* argv[])
+{
+    SimplexParser simplxParser;
+    simplxParser.Parse("file.txt");
+    //UNIT_TEST_TOKENIZER();
+   return 0;
+}
+

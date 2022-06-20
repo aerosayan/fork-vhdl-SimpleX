@@ -12,22 +12,14 @@ public :
    typedef enum
    {
       unknownToken_,/*0*/
-      program_,/*1*/
-      subroutine_,/*2*/
-      endSubroutine_,/*3*/
       let_,/*4*/
       do_,/*5*/
-      loop_,/*6*/
-      for_,/*7*/
       while_,/*8*/
       if_,/*9*/
-      then_,/*10*/
       elseif_,/*11*/
       endif_,/*12*/
       wend_,/*13*/
       else_,/*14*/
-      sub_,/*15*/
-      end_,/*16*/
       endOfFile_,/*17*/
       endOfLine_,/*18*/
       identifier_,/*19*/
@@ -60,100 +52,100 @@ public :
       forwordSlashEqual_,/*46*/
       star_,/*47*/
       forwordSlash_,/*48*/
-      dim_,/*49*/
-      as_,/*50*/
       integer_,/*51*/
       string_,/*52*/
       boolean_,/*53*/
       true_,/*54*/
       false_,/*55*/
       stringLit_,/*56*/
-      declare_,/*57*/
       const_,/*58*/
       enum_,/*59*/
       endEnum_,/*60*/
       struct_,/*61*/
-      write_,/*62*/
-      delay_,
       openBraces_,
       closeBraces_,
       function_,
       int_,
+      void_,
+      char_,
       class_,
-      comment_
+      comment_,
+      return_,
+      constructor_,
+      method_,
+      field_,
+      static_,
+      null_,
+      this_
    }Token;
 
    std::vector<std::string> tokenAsString =  {
-      "unknownToken",
-      "program",
-      "subroutine",
-      "endSubroutine",
-      "let",
-      "do",
-      "loop",
-      "for",
-      "while",
-      "if",/*9*/
-      "then",/*10*/
-      "elseif",/*11*/
-      "endif",/*12*/
-      "wend",/*13*/
-      "else",/*14*/
-      "sub",/*15*/
-      "end",/*16*/
-      "endOfFile",/*17*/
-      "endOfLine",/*18*/
-      "identifier",/*19*/
-      "number",/*20*/
-      "equal",/*21*/
-      "notEqual",/*22*/
-      "biggerThan",/*23*/
-      "biggerThanEqual",/*24*/
-      "smallerThan",/*25*/
-      "smallerThanEqual",/*26*/
-      "and",/*27*/
-      "or",/*28*/
-      "not",/*29*/
-      "semiColon",/*30*/
-      "dot",/*31*/
-      "openSquareBracket",/*32*/
-      "closeSquareBracket",/*33*/
-      "openBrackets",/*34*/
-      "closeBrackets",/*35*/
-      "operation",/*36*/
-      "comma",/*37*/
-      "colon",/*38*/
-      "plus",/*39*/
-      "plusPlus",/*40*/
-      "minus",/*41*/
-      "minusMinus",/*42*/
-      "plusEqual",/*43*/
-      "minusEqual",/*44*/
-      "starEqual",/*45*/
-      "forwordSlashEqual",/*46*/
-      "star",/*47*/
-      "forwordSlash",/*48*/
-      "dim",/*49*/
-      "as",/*50*/
-      "integer",/*51*/
-      "string",/*52*/
-      "boolean",/*53*/
-      "true",/*54*/
-      "false",/*55*/
-      "stringLit",/*56*/
-      "declare",/*57*/
-      "const",/*58*/
-      "enum",/*59*/
-      "endEnum",/*60*/
-      "struct",/*61*/
-      "write",/*62*/
-      "delay",
-      "openBraces",
-      "closeBraces",
-      "function",
-      "int",
-      "class",
-      "comment"
+      "unknownToken", /*0*/
+      "let", /*4*/
+      "do", /*5*/
+      "while", /*8*/
+      "if", /*9*/
+      "elseif", /*11*/
+      "endif", /*12*/
+      "wend", /*13*/
+      "else", /*14*/
+      "endOfFile", /*17*/
+      "endOfLine", /*18*/
+      "identifier", /*19*/
+      "number", /*20*/
+      "equal", /*21*/
+      "notEqual", /*22*/
+      "biggerThan", /*23*/
+      "biggerThanEqual", /*24*/
+      "smallerThan", /*25*/
+      "smallerThanEqual", /*26*/
+      "and", /*27*/
+      "or", /*28*/
+      "not", /*29*/
+      "semiColon", /*30*/
+      "dot", /*31*/
+      "openSquareBracket", /*32*/
+      "closeSquareBracket", /*33*/
+      "openBrackets", /*34*/
+      "closeBrackets", /*35*/
+      "operation", /*36*/
+      "comma", /*37*/
+      "colon", /*38*/
+      "plus", /*39*/
+      "plusPlus", /*40*/
+      "minus", /*41*/
+      "minusMinus", /*42*/
+      "plusEqual", /*43*/
+      "minusEqual", /*44*/
+      "starEqual", /*45*/
+      "forwordSlashEqual", /*46*/
+      "star", /*47*/
+      "forwordSlash", /*48*/
+      "integer", /*51*/
+      "string", /*52*/
+      "boolean", /*53*/
+      "true", /*54*/
+      "false", /*55*/
+      "stringLit", /*56*/
+      "const", /*58*/
+      "enum", /*59*/
+      "endEnum", /*60*/
+      "struct", /*61*/
+      "openBraces", 
+      "closeBraces", 
+      "function", 
+      "int", 
+      "void",
+      "char",
+      "class", 
+      "comment", 
+      "return", 
+      "constructor", 
+      "method", 
+      "field", 
+      "static", 
+      "null", 
+      "this"
    };
 
    
