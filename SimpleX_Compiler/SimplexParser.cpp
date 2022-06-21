@@ -215,7 +215,7 @@
  {
     int parameterCount = 0;
     bool result = true;
-    printf("<parameterList>\n"); 
+    PrintOpenTag("parameterList");
     if (tokens_.at(token_index_).token == Tokenizer::int_ || tokens_.at(token_index_).token == Tokenizer::boolean_ || tokens_.at(token_index_).token == Tokenizer::char_ || tokens_.at(token_index_).token == Tokenizer::identifier_)
     {
          parameterCount++;
@@ -237,8 +237,7 @@
     {
        result = true;
     }
-      
-    printf("</parameterList>(%d)\n", parameterCount);
+    PrintCloseTag("parameterList");  
 
     return result;
  }
@@ -417,13 +416,13 @@
  {
     bool result = true;
 
-    printf("<subroutineBody>\n");
-
+    PrintOpenTag("subroutineBody");
+    ident_++;
     consumeOpenBracesToken();
     consumeStatements();
     consumeCloseBracesToken();
-   
-    printf("</subroutineBody>\n");
+    ident_--;
+    PrintCloseTag("subroutineBody");
     return result;
  }
 
@@ -467,7 +466,7 @@
        do
        {
          std::string funcMethodConstr = tokens_.at(token_index_).tokenString;
-         printf("<%s>\n", funcMethodConstr.c_str());
+         PrintOpenTag(funcMethodConstr);
 
          parseErr = parseErr && consumeConstFunctionMethod();
          parseErr = parseErr && consumeVoidOrType();
@@ -479,8 +478,8 @@
          consumeCloseBracketsToken();
          
          ConsumeSubroutineBody();
-         printf("</%s>\n", funcMethodConstr.c_str());
-         //PrintCurrentToken();
+         PrintOpenTag(funcMethodConstr);
+         ident_--;
        } while (tokens_.at(token_index_).token == Tokenizer::constructor_ || tokens_.at(token_index_).token == Tokenizer::function_ || tokens_.at(token_index_).token == Tokenizer::method_);
        
     }
@@ -496,6 +495,24 @@
         printf(" ");
      }
      printf("<%s> %s </%s>\n", item.c_str(), value.c_str(), item.c_str());
+  }
+
+  void SimplexParser::PrintOpenTag(std::string item)
+  {
+     for(int i = 0; i < (ident_*3) ; i++)
+     {
+        printf(" ");
+     }
+     printf("<%s>\n", item.c_str());
+  }
+
+  void SimplexParser::PrintCloseTag(std::string item)
+  {
+     for(int i = 0; i < (ident_*3) ; i++)
+     {
+        printf(" ");
+     }
+     printf("</%s>\n", item.c_str());
   }
 
  void SimplexParser::PrintCurrentToken()

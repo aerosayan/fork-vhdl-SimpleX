@@ -1,3 +1,3 @@
 
 all:
-	g++ *.cpp -o SimpleX
+	g++ *.cpp -o SimpleX -g

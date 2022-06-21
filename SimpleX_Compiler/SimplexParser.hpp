@@ -46,6 +46,8 @@ private:
   bool consumeOperation();
 
   void PrintXml(std::string item, std::string value);
+  void PrintOpenTag(std::string item);
+  void PrintCloseTag(std::string item);
 
     private:
     Tokenizer tokenizer_;
