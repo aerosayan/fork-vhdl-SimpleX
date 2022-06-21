@@ -1,6 +1,7 @@
 #ifndef SIMPLEXPARDER_HPP
 #define SIMPLEXPARDER_HPP
 
+#include <map>
 #include "Tokenizer.hpp"
 
 class SimplexParser
@@ -10,6 +11,8 @@ public:
     ~SimplexParser();
 
     void Parse(std::string programName);
+
+    void PrintClassSymbolTable();
 
 private:
   void PrintCurrentToken();
@@ -63,6 +66,28 @@ private:
 
     uint32_t ident_;
 
+   typedef struct 
+   {
+     std::string type;
+     std::string kind;
+     uint32_t    index;
+   }Symbol;
+   
+    typedef std::map<std::string, Symbol> memberVariablesTable;
+    memberVariablesTable classMemberVarTable;
+
+    typedef std::map<std::string, Symbol> localVariablesTable;
+    localVariablesTable localVarTable;
+
+    std::string lastVarName_;
+    std::string lastVarType_;
+
+    uint32_t staticVarIndex_;
+    uint32_t fieldVarIndex_;
+
+    void AddStaticFieldVariables(std::string kind);
+    bool AddToClassSymbolTable(std::string symbolName, std::string type, std::string kind, uint32_t index);
+    
 };
 
 #endif

@@ -2,11 +2,21 @@
 
 class Square { 
     field int x, y;
-    field int size;
+    static int pointCount;
+    field int z,l;
+    static boolean isFantastic;
+    
+
+    constructor void Square(int pointx, int pointy)
+    {
+        let x = pointx;
+        let y = pointy;
+    }
 
     method void incSize() 
     {
-        if( x= y)
+        int x, y;
+        if( x > y)
         {
            let size = size + 2;
            while((x > y) & (z > y))
