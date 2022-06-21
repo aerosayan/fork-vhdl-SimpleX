@@ -2,7 +2,8 @@
 #include <iostream>
 
  SimplexParser::SimplexParser()
- :token_index_(0)
+ :token_index_(0),
+  ident_(0)
  {}
 
  SimplexParser::~SimplexParser()
@@ -13,13 +14,15 @@
     bool result = false;
     if (tokens_.at(token_index_).token == Tokenizer::class_)
     {
-       printf("<keyword>class</keyword>\n");
+       PrintXml("keywod", "class");
+       ident_++;
+       //printf("<keyword>class</keyword>\n");
        token_index_++;
        result = true;
     }
     else
     {
-       std::cout << "Expected class keywork at Line : " << tokens_.at(token_index_).lineNumber << "\n";
+       std::cout << "Expected class keyword at Line : " << tokens_.at(token_index_).lineNumber << "\n";
     }
 
     return result;
@@ -30,7 +33,9 @@
     bool result = false;
     if (tokens_.at(token_index_).token == Tokenizer::identifier_)
     {
-       printf("<identifier> %s </identifier>\n", tokens_.at(token_index_).tokenString.c_str());
+       PrintXml("identifier", tokens_.at(token_index_).tokenString);
+       //ident_++;
+       //printf("<identifier> %s </identifier>\n", tokens_.at(token_index_).tokenString.c_str());
        token_index_++;
        result = true;
     }
@@ -47,7 +52,7 @@
     bool result = false;
     if (tokens_.at(token_index_).token == Tokenizer::openBraces_)
     {
-       printf("<symbol> { </symbol>\n");
+       PrintXml("symbol", "{");
        token_index_++;
        result = true;
     }
@@ -64,7 +69,7 @@
     bool result = false;
     if (tokens_.at(token_index_).token == Tokenizer::closeBraces_)
     {
-       printf("<symbol> } </symbol>\n");
+       PrintXml("symbol", "}");
        token_index_++;
        result = true;
     }
@@ -81,7 +86,7 @@
     bool result = true;
     if (tokens_.at(token_index_).token == Tokenizer::field_ || tokens_.at(token_index_).token == Tokenizer::static_)
     {
-       printf("<keyword> %s </keyword>\n", tokens_.at(token_index_).tokenString.c_str());
+       PrintXml("keyword", tokens_.at(token_index_).tokenString);
        token_index_++;
        result = true;
     }
@@ -94,7 +99,7 @@
     bool result = true;
     if (tokens_.at(token_index_).token == Tokenizer::comma_)
     {
-       printf("<symbol> , </symbol>\n");
+       PrintXml("symbol", ",");
        token_index_++;
        result = true;
     }
@@ -107,7 +112,7 @@
     bool result = false;
     if (tokens_.at(token_index_).token == Tokenizer::semiColon_)
     {
-       printf("<symbol> ; </symbol>\n");
+       PrintXml("symbol", ";");
        token_index_++;
        result = true;
     }
@@ -124,7 +129,7 @@
     bool result = false;
     if (tokens_.at(token_index_).token == Tokenizer::openBrackets_)
     {
-       printf("<symbol> ( </symbol>\n");
+       PrintXml("symbol", "(");
        token_index_++;
        result = true;
     }
@@ -141,7 +146,7 @@
     bool result = false;
     if (tokens_.at(token_index_).token == Tokenizer::closeBrackets_)
     {
-       printf("<symbol> ) </symbol>\n");
+       PrintXml("symbol", ")");
        token_index_++;
        result = true;
     }
@@ -158,7 +163,7 @@
     bool result = false;
     if (tokens_.at(token_index_).token == Tokenizer::int_ || tokens_.at(token_index_).token == Tokenizer::boolean_ || tokens_.at(token_index_).token == Tokenizer::char_ || tokens_.at(token_index_).token == Tokenizer::identifier_)
     {
-       printf("<keyword> %s </keyword>\n", tokens_.at(token_index_).tokenString.c_str());
+       PrintXml("keyword", tokens_.at(token_index_).tokenString);
        token_index_++;
        result = true;
     }
@@ -175,7 +180,7 @@
     bool result = false;
     if (tokens_.at(token_index_).token == Tokenizer::void_ || tokens_.at(token_index_).token == Tokenizer::int_ || tokens_.at(token_index_).token == Tokenizer::boolean_ || tokens_.at(token_index_).token == Tokenizer::char_ || tokens_.at(token_index_).token == Tokenizer::identifier_)
     {
-       printf("<keyword> %s </keyword>\n", tokens_.at(token_index_).tokenString.c_str());
+       PrintXml("keyword", tokens_.at(token_index_).tokenString);
        token_index_++;
        result = true;
     }
@@ -192,7 +197,9 @@
     bool result = false;
     if (tokens_.at(token_index_).token == Tokenizer::constructor_ || tokens_.at(token_index_).token == Tokenizer::function_ || tokens_.at(token_index_).token == Tokenizer::method_)
     {
-       printf("<keyword> %s </keyword>\n", tokens_.at(token_index_).tokenString.c_str());
+       PrintXml("keyword", tokens_.at(token_index_).tokenString);
+       ident_++;
+       //printf("<keyword> %s </keyword>\n", tokens_.at(token_index_).tokenString.c_str());
        token_index_++;
        result = true;
     }
@@ -206,28 +213,32 @@
 
  bool SimplexParser::ConsumeParameterList()
  {
-    bool result = false;
+    int parameterCount = 0;
+    bool result = true;
     printf("<parameterList>\n"); 
     if (tokens_.at(token_index_).token == Tokenizer::int_ || tokens_.at(token_index_).token == Tokenizer::boolean_ || tokens_.at(token_index_).token == Tokenizer::char_ || tokens_.at(token_index_).token == Tokenizer::identifier_)
     {
+         parameterCount++;
          consumeTypeToken();
          consumeIdentifierToken();
          if (tokens_.at(token_index_).token == Tokenizer::comma_)
          {
            do
            {
+               parameterCount++;
                consumeCommaToken();
                consumeTypeToken();
                consumeIdentifierToken();
            } while (tokens_.at(token_index_).token == Tokenizer::comma_);
         }
+   
     }
     else
     {
        result = true;
     }
       
-    printf("</parameterList>\n");
+    printf("</parameterList>(%d)\n", parameterCount);
 
     return result;
  }
@@ -237,7 +248,7 @@
     bool result = false;
     if (tokens_.at(token_index_).token == Tokenizer::let_)
     {
-       printf("<keyword> %s </keyword>\n", tokens_.at(token_index_).tokenString.c_str());
+       PrintXml("keyword", tokens_.at(token_index_).tokenString);
        token_index_++;
        result = true;
     }
@@ -254,7 +265,7 @@
     bool result = false;
     if (tokens_.at(token_index_).token == Tokenizer::equal_)
     {
-       printf("<keyword> = </keyword>\n");
+       PrintXml("keyword", "=");
        token_index_++;
        result = true;
     }
@@ -266,10 +277,60 @@
     return result;
   }
 
+  bool SimplexParser::consumeTerm()
+  {
+     bool result = false;
+     if (tokens_.at(token_index_).token == Tokenizer::identifier_) 
+     {
+         PrintXml("identifier", tokens_.at(token_index_).tokenString);
+         token_index_++;
+         result = true;
+     }
+     else if (tokens_.at(token_index_).token == Tokenizer::number_)
+     {
+         PrintXml("number",  std::to_string(tokens_.at(token_index_).value));
+         token_index_++;
+         result = true;
+     }
+     else if (tokens_.at(token_index_).token == Tokenizer::openBrackets_)
+     {
+        consumeOpenBracketsToken();
+        consumeExpression();
+        result = consumeCloseBracketsToken();
+     }
+     else
+     {
+        std::cout << "Expected an expression at Line : " << tokens_.at(token_index_).lineNumber << "\n";
+     }
+     return result;
+  }
+
+  bool SimplexParser::consumeOperation()
+  {
+     bool result = false;
+     if (tokens_.at(token_index_).token == Tokenizer::plus_ || tokens_.at(token_index_).token == Tokenizer::minus_ ||
+         tokens_.at(token_index_).token == Tokenizer::star_ || tokens_.at(token_index_).token == Tokenizer::forwordSlash_ ||
+         tokens_.at(token_index_).token == Tokenizer::biggerThan_ || tokens_.at(token_index_).token == Tokenizer::smallerThan_)
+         {
+            token_index_++;
+            result = true;
+         }
+
+   return result;
+  }
+
   bool SimplexParser::consumeExpression()
   {
-     consumeIdentifierToken();
-     //if (tokens_.at(token_index_).token == Tokenizer::plus_ || tokens_.at(token_index_).token == Tokenizer::minus_ || )
+     consumeTerm();
+     while (tokens_.at(token_index_).token == Tokenizer::plus_ || tokens_.at(token_index_).token == Tokenizer::minus_ ||
+            tokens_.at(token_index_).token == Tokenizer::star_ || tokens_.at(token_index_).token == Tokenizer::forwordSlash_ ||
+            tokens_.at(token_index_).token == Tokenizer::biggerThan_ || tokens_.at(token_index_).token == Tokenizer::smallerThan_)
+      {
+         int tokenInt = (int)tokens_.at(token_index_).token;
+         PrintXml("operation",  tokenizer_.tokenAsString[tokenInt]);  
+         consumeOperation();
+         consumeTerm();
+      }
 
      return true;
   }
@@ -281,7 +342,8 @@
      parseErr = parseErr && consumeIdentifierToken();
      parseErr = parseErr && consumeEqualToken();
      parseErr = parseErr && consumeExpression();
-
+     parseErr = parseErr && consumeSemicolonToken();
+     
      return parseErr;
  }
 
@@ -319,13 +381,16 @@
  bool SimplexParser::consumeStatements()
  {
     bool parseErr = true;
+    while ((tokens_.at(token_index_).token == Tokenizer::let_ || tokens_.at(token_index_).token == Tokenizer::while_ || tokens_.at(token_index_).token == Tokenizer::if_ || tokens_.at(token_index_).token == Tokenizer::return_))
+    {
+    
     if ((tokens_.at(token_index_).token == Tokenizer::let_ || tokens_.at(token_index_).token == Tokenizer::while_ || tokens_.at(token_index_).token == Tokenizer::if_ || tokens_.at(token_index_).token == Tokenizer::return_))
     {
        do
        {
           if(tokens_.at(token_index_).token == Tokenizer::let_)
           {
-             parseErr = parseErr && consumeLetStatement();
+             consumeLetStatement();
           }
           else if (tokens_.at(token_index_).token == Tokenizer::while_)
           {
@@ -339,7 +404,9 @@
           {
              parseErr = parseErr && consumeReturnStatement();
           }
+
        } while (tokens_.at(token_index_).token == Tokenizer::let_ || tokens_.at(token_index_).token == Tokenizer::while_ || tokens_.at(token_index_).token == Tokenizer::if_|| tokens_.at(token_index_).token == Tokenizer::return_);
+    }
     }
     
     return parseErr;
@@ -348,9 +415,10 @@
 
  bool SimplexParser::ConsumeSubroutineBody()
  {
-    bool result = false;
+    bool result = true;
 
     printf("<subroutineBody>\n");
+
     consumeOpenBracesToken();
     consumeStatements();
     consumeCloseBracesToken();
@@ -373,18 +441,20 @@
     
     if (tokens_.at(token_index_).token == Tokenizer::static_ || tokens_.at(token_index_).token == Tokenizer::field_)
     {
+       int localCount = 0;
        do
        {
         parseErr = parseErr && consumeFieldOrStatic();
         parseErr = parseErr && consumeTypeToken();
         parseErr = parseErr && consumeIdentifierToken();
-        
+        localCount++;
         if (tokens_.at(token_index_).token == Tokenizer::comma_)
         {
            do
            {
                parseErr = parseErr && consumeCommaToken();
                parseErr = parseErr && consumeIdentifierToken();
+               localCount++;
            } while (tokens_.at(token_index_).token == Tokenizer::comma_);
         }
         parseErr = parseErr && consumeSemicolonToken();
@@ -394,25 +464,42 @@
 
     if (tokens_.at(token_index_).token == Tokenizer::constructor_ || tokens_.at(token_index_).token == Tokenizer::function_ || tokens_.at(token_index_).token == Tokenizer::method_)
     {
-       printf("<%s>\n", tokens_.at(token_index_).tokenString.c_str());
        do
        {
+         std::string funcMethodConstr = tokens_.at(token_index_).tokenString;
+         printf("<%s>\n", funcMethodConstr.c_str());
+
          parseErr = parseErr && consumeConstFunctionMethod();
          parseErr = parseErr && consumeVoidOrType();
          parseErr = parseErr && consumeIdentifierToken();
          parseErr = parseErr && consumeOpenBracketsToken();
         
-         parseErr = parseErr && ConsumeParameterList();
+         ConsumeParameterList();
          
-         parseErr = parseErr && consumeCloseBracketsToken();
-         parseErr = parseErr && ConsumeSubroutineBody();
+         consumeCloseBracketsToken();
+         
+         ConsumeSubroutineBody();
+         printf("</%s>\n", funcMethodConstr.c_str());
+         //PrintCurrentToken();
        } while (tokens_.at(token_index_).token == Tokenizer::constructor_ || tokens_.at(token_index_).token == Tokenizer::function_ || tokens_.at(token_index_).token == Tokenizer::method_);
-
+       
     }
 
     parseErr = parseErr && consumeCloseBracesToken();
 
+ }
+
+  void SimplexParser::PrintXml(std::string item, std::string value)
+  {
+     for(int i = 0; i < (ident_*3) ; i++)
+     {
+        printf(" ");
+     }
+     printf("<%s> %s </%s>\n", item.c_str(), value.c_str(), item.c_str());
+  }
+
+ void SimplexParser::PrintCurrentToken()
+ {
     int tokenInt = (int)tokens_.at(token_index_).token;
-    std::cout << tokenizer_.tokenAsString[tokenInt] << "(" << tokens_.at(token_index_).lineNumber << ", " << tokens_.at(token_index_).value << ", " << tokens_.at(token_index_).tokenString << ")" << std::endl;
-  
+    std::cout << "====== " << tokenizer_.tokenAsString[tokenInt] << "=======" << std::endl;
  }

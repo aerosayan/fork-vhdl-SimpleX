@@ -12,6 +12,8 @@ public:
     void Parse(std::string programName);
 
 private:
+  void PrintCurrentToken();
+
   bool consumeCalssToken();
   bool consumeIdentifierToken();
   bool consumeOpenBracesToken();
@@ -40,11 +42,18 @@ private:
   bool consumeReturnToken();
   bool consumeReturnStatement();
 
+  bool consumeTerm();
+  bool consumeOperation();
+
+  void PrintXml(std::string item, std::string value);
+
     private:
     Tokenizer tokenizer_;
     uint32_t token_index_;
 
     std::vector<Tokenizer::TokenVal> tokens_;
+
+    uint32_t ident_;
 
 };
 

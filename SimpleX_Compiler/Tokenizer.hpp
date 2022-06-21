@@ -76,7 +76,8 @@ public :
       field_,
       static_,
       null_,
-      this_
+      this_,
+      stringConstant_
    }Token;
 
    std::vector<std::string> tokenAsString =  {
@@ -145,7 +146,8 @@ public :
       "field", 
       "static", 
       "null", 
-      "this"
+      "this",
+      "stringConstant"
    };
 
    
@@ -197,6 +199,8 @@ private:
    bool isColon(char c);
 
    bool isComma(char c);
+
+   bool isDoubleQuote(char c);
 
    bool isPlus(char c);
    

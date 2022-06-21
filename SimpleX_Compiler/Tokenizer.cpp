@@ -47,10 +47,17 @@ double Tokenizer::GetValue()
 Tokenizer::Token Tokenizer::GetNextToken()
 {
    currentToken_ = Tokenizer::endOfFile_;
+  
    char c;
 start:
    SkipWhiteSpace();
+  
    c = inputFile_.GetCurrentCharacter();
+
+   tokenVal_.token       = unknownToken_;
+   tokenVal_.lineNumber  = -1;
+   tokenVal_.tokenString = " ";
+   tokenVal_.value       = -1;
    
    if(isCharacter(c))
    {
@@ -100,17 +107,35 @@ start:
    }
    else if(isSingleQuote(c))
    {
-      while (!isEndOfLine(c) && !isEndOfFile(c))
+      tokenLength_ = 0;
+      c = inputFile_.GetNextCharacter();
+      while (isSingleQuote(c)  == false)
       {
-         c = inputFile_.GetNextCharacter();
+          tokenString_[tokenLength_++] = c;
+          c = inputFile_.GetNextCharacter();
       }
       c = inputFile_.GetNextCharacter();
-      goto start;
+      tokenString_[tokenLength_] = 0;
+      currentToken_ = stringConstant_;
    }
    else if(isColon(c))
    {
       currentToken_ = colon_;
       c = inputFile_.GetNextCharacter();
+   }
+
+   else if(isDoubleQuote(c))
+   {
+      tokenLength_ = 0;
+      c = inputFile_.GetNextCharacter();
+      while (isDoubleQuote(c)  == false)
+      {
+          tokenString_[tokenLength_++] = c;
+          c = inputFile_.GetNextCharacter();
+      }
+      c = inputFile_.GetNextCharacter();
+      tokenString_[tokenLength_] = 0;
+      currentToken_ = stringConstant_;
    }
 
    else if(isComma(c))
@@ -435,7 +460,7 @@ Tokenizer::Token Tokenizer::CheckToken()
 
    else if (token == "STATIC"|| token == "static"  || token == "Static")
    {
-      thisToken = Tokenizer::field_;
+      thisToken = Tokenizer::static_;
    }  
 
    return thisToken;
@@ -462,6 +487,11 @@ bool Tokenizer::isUnderScore(char c)
 bool Tokenizer::isColon(char c)
 {
    return (c == ':');
+}
+
+bool Tokenizer::isDoubleQuote(char c)
+{
+   return (c == '"');
 }
 
 bool Tokenizer::isComma(char c)

@@ -21,7 +21,7 @@ void UNIT_TEST_TOKENIZER()
    for (int i = 0; i < tokens.size(); i++)
    {
        int tokenInt = (int)tokens.at(i).token;
-       std::cout << tokenizer->tokenAsString[tokenInt] << "(" << tokens.at(i).lineNumber << ", " << tokens.at(i).value << ")" << std::endl;
+       std::cout << tokenizer->tokenAsString[tokenInt] << "(" << tokens.at(i).lineNumber << ", " << tokens.at(i).value << ", " << tokens.at(i).tokenString <<  ")" << std::endl;
    }
 }
 

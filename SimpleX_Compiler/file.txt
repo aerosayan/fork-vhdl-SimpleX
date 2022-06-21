@@ -1,11 +1,19 @@
 //This is a demobstration of my Tokenizer functionality
+
 class Point { 
-    //field int width, length, size;
-    static boolean myVariables;
-    
-    method int getx() 
+    static int xPosition, yPosition;
+    field boolean myVar ;
+
+    constructor int Point(int x, int y)
     {
-        return;
+       let xPosition = x;
+       let yPosition = y;
+    }
+
+    method int getx(int y) 
+    {
+        let xPosition = (x - 1) + (y / 2);
+        let y = (7);
     }
     
 }
