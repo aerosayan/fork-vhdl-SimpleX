@@ -45,6 +45,12 @@ private:
   bool consumeTerm();
   bool consumeOperation();
 
+   bool consumeIfStatement();
+   bool consumeIfToken();
+
+   bool consumeWhileStatement();
+   bool consumewhileToken();
+
   void PrintXml(std::string item, std::string value);
   void PrintOpenTag(std::string item);
   void PrintCloseTag(std::string item);

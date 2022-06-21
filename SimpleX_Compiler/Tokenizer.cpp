@@ -299,6 +299,18 @@ start:
       c = inputFile_.GetNextCharacter();
    }
 
+   else if (isAnd(c))
+   {
+      currentToken_ = and_;
+      c = inputFile_.GetNextCharacter();
+   }
+
+   else if (isOr(c))
+   {
+      currentToken_ = or_;
+      c = inputFile_.GetNextCharacter();
+   }
+
    else if (isOpenBraces(c))
    {
       currentToken_ = openBraces_;
@@ -461,8 +473,8 @@ Tokenizer::Token Tokenizer::CheckToken()
    else if (token == "STATIC"|| token == "static"  || token == "Static")
    {
       thisToken = Tokenizer::static_;
-   }  
-
+   }
+  
    return thisToken;
 }
 
@@ -602,6 +614,16 @@ bool Tokenizer::isCloseBraces(char c)
 bool Tokenizer::isQuotation(char c)
 {
    return (c =='\"');
+}
+
+bool Tokenizer::isAnd(char c)
+{
+   return (c =='&');
+}
+
+bool Tokenizer::isOr(char c)
+{
+   return (c =='|');
 }
 
 void  Tokenizer::SkipWhiteSpace()

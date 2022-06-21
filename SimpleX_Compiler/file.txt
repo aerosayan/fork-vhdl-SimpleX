@@ -4,15 +4,16 @@ class Square {
     field int x, y;
     field int size;
 
-    constructor int Point(int x, int y)
+    method void incSize() 
     {
-       let xPosition = x;
-       let yPosition = y;
-    }
-
-    method int getx(int y) 
-    {
-        let x = x * (x + 1) ;
+        if( x= y)
+        {
+           let size = size + 2;
+           while((x > y) & (z > y))
+           {
+               let x = x + 1 - (y);
+           }
+        }
     }
 
 }

@@ -238,6 +238,10 @@ private:
 
    bool isQuotation(char c);
 
+   bool isAnd(char c);
+
+   bool isOr(char c);
+
    bool isEndOfLine(char c);
 
    bool isEndOfFile(char c);
