@@ -30,6 +30,8 @@ int main(int argc, char* argv[])
     SimplexParser simplxParser;
     simplxParser.Parse("file.txt");
     simplxParser.PrintClassSymbolTable();
+    printf("\n\n");
+    simplxParser.PrintLocalSymbolTable();
     //UNIT_TEST_TOKENIZER();
    return 0;
 }

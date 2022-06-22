@@ -3,27 +3,23 @@
 class Square { 
     field int x, y;
     static int pointCount;
-    field int z,l;
-    static boolean isFantastic;
-    
+    field boolean go;
+      
 
     constructor void Square(int pointx, int pointy)
     {
-        let x = pointx;
+        int r , u;
+        let x = pointx[3] * ty(1, (x+y));
         let y = pointy;
     }
 
-    method void incSize() 
+    method int distance(Point other) 
     {
-        int x, y;
-        if( x > y)
-        {
-           let size = size + 2;
-           while((x > y) & (z > y))
-           {
-               let x = x + 1 - (y);
-           }
-        }
+        int dx, dy, size;
+        let dx = x - 1;
+        let dy = y - 3;
+        return;
     }
 
+    
 }

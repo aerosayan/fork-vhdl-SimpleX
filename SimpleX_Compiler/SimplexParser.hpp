@@ -13,6 +13,7 @@ public:
     void Parse(std::string programName);
 
     void PrintClassSymbolTable();
+    void PrintLocalSymbolTable();
 
 private:
   void PrintCurrentToken();
@@ -34,6 +35,9 @@ private:
   bool consumeOpenBracketsToken();
   bool consumeCloseBracketsToken();
 
+  bool consumeOpenSquareBracketsToken();
+  bool consumeCloseSquareBracketsToken();
+
   bool ConsumeParameterList();
 
   bool consumeStatements();
@@ -54,6 +58,9 @@ private:
    bool consumeWhileStatement();
    bool consumewhileToken();
 
+  bool cosumeSubroutineCall();
+  bool consumeExpressionList();
+  
   void PrintXml(std::string item, std::string value);
   void PrintOpenTag(std::string item);
   void PrintCloseTag(std::string item);
@@ -87,6 +94,7 @@ private:
 
     void AddStaticFieldVariables(std::string kind);
     bool AddToClassSymbolTable(std::string symbolName, std::string type, std::string kind, uint32_t index);
+    bool AddToLocalSymbolTable(std::string symbolName, std::string type, std::string kind, uint32_t index);
     
 };
 

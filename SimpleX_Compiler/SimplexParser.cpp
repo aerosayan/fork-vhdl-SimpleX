@@ -215,12 +215,14 @@
  {
     int parameterCount = 0;
     bool result = true;
+    uint32_t argumentIndex = 0;
     PrintOpenTag("parameterList");
     if (tokens_.at(token_index_).token == Tokenizer::int_ || tokens_.at(token_index_).token == Tokenizer::boolean_ || tokens_.at(token_index_).token == Tokenizer::char_ || tokens_.at(token_index_).token == Tokenizer::identifier_)
     {
          parameterCount++;
          consumeTypeToken();
          consumeIdentifierToken();
+         AddToLocalSymbolTable(lastVarName_, lastVarType_, "argument", argumentIndex++);
          if (tokens_.at(token_index_).token == Tokenizer::comma_)
          {
            do
@@ -229,6 +231,7 @@
                consumeCommaToken();
                consumeTypeToken();
                consumeIdentifierToken();
+               AddToLocalSymbolTable(lastVarName_, lastVarType_, "argument", argumentIndex++);
            } while (tokens_.at(token_index_).token == Tokenizer::comma_);
         }
    
@@ -276,10 +279,88 @@
     return result;
   }
 
+  bool SimplexParser::consumeOpenSquareBracketsToken()
+  {
+     bool result = false;
+    if (tokens_.at(token_index_).token == Tokenizer::openSquareBracket_)
+    {
+       PrintXml("keyword", "[");
+       token_index_++;
+       result = true;
+    }
+    else
+    {
+       std::cout << "Expected a '[''definition token at Line : " << tokens_.at(token_index_).lineNumber << "\n";
+    }
+
+    return result;
+  }
+
+  bool SimplexParser::consumeCloseSquareBracketsToken()
+  {
+     bool result = false;
+    if (tokens_.at(token_index_).token == Tokenizer::closeSquareBracket_)
+    {
+       PrintXml("keyword", "[");
+       token_index_++;
+       result = true;
+    }
+    else
+    {
+       std::cout << "Expected a ']' definition token at Line : " << tokens_.at(token_index_).lineNumber << "\n";
+    }
+
+    return result;
+  }
+
+   bool SimplexParser::consumeExpressionList()
+   {
+      bool result = false;
+      consumeExpression();
+      while(tokens_.at(token_index_).token == Tokenizer::comma_)
+      {
+         consumeCommaToken();
+         consumeExpression();
+      }
+
+      return result;
+   }
+
+  bool SimplexParser::cosumeSubroutineCall()
+  {
+     bool result = false;
+     if (tokens_.at(token_index_).token == Tokenizer::identifier_ && (tokens_.at(token_index_ + 1).token == Tokenizer::openBrackets_))
+     {
+         consumeIdentifierToken();
+         consumeOpenBracketsToken();
+         consumeExpressionList();
+         consumeCloseBracketsToken();
+         result = true;
+     }
+
+     return result;
+  }
+
   bool SimplexParser::consumeTerm()
   {
      bool result = false;
-     if (tokens_.at(token_index_).token == Tokenizer::identifier_) 
+     if (tokens_.at(token_index_).token == Tokenizer::identifier_ && (tokens_.at(token_index_ + 1).token == Tokenizer::openSquareBracket_) )
+     {
+         PrintXml("identifier", tokens_.at(token_index_).tokenString);
+         token_index_++;
+         consumeOpenSquareBracketsToken();
+         consumeExpression();
+         consumeCloseSquareBracketsToken();
+         result = true;
+     }
+     else if (tokens_.at(token_index_).token == Tokenizer::identifier_ && (tokens_.at(token_index_ + 1).token == Tokenizer::openBrackets_) )
+     {
+         PrintXml("identifier", tokens_.at(token_index_).tokenString);
+         
+         cosumeSubroutineCall();
+         result = true;
+     }
+     else if (tokens_.at(token_index_).token == Tokenizer::identifier_) 
      {
          PrintXml("identifier", tokens_.at(token_index_).tokenString);
          token_index_++;
@@ -497,24 +578,29 @@
  bool SimplexParser::ConsumeSubroutineBody()
  {
     bool parseErr = true;
+    uint32_t localIndex = 0;
 
+    localVarTable.clear(); //clear the local scope of the method/function
     PrintOpenTag("subroutineBody");
     ident_++;
     parseErr = parseErr && consumeOpenBracesToken();
-    while(tokens_.at(token_index_).token == Tokenizer::int_ || tokens_.at(token_index_).token == Tokenizer::boolean_ || tokens_.at(token_index_).token == Tokenizer::char_ || tokens_.at(token_index_).token == Tokenizer::identifier_)
+    while((tokens_.at(token_index_).token == Tokenizer::int_ || tokens_.at(token_index_).token == Tokenizer::boolean_ || tokens_.at(token_index_).token == Tokenizer::char_ || tokens_.at(token_index_).token == Tokenizer::identifier_)  && (parseErr == true))
     {
-       consumeTypeToken();
-       consumeIdentifierToken();
-       while (tokens_.at(token_index_).token == Tokenizer::comma_)
+       parseErr = parseErr && consumeTypeToken();
+       parseErr = parseErr && consumeIdentifierToken();
+       AddToLocalSymbolTable(lastVarName_, lastVarType_, "local", localIndex++);
+       while ((tokens_.at(token_index_).token == Tokenizer::comma_) && (parseErr == true))
        {
-           consumeCommaToken();
-           consumeIdentifierToken();
+           parseErr = parseErr && consumeCommaToken();
+           parseErr = parseErr && consumeIdentifierToken();
+           AddToLocalSymbolTable(lastVarName_, lastVarType_, "local", localIndex++);
        }
        consumeSemicolonToken();
     }
     parseErr = parseErr && consumeStatements();
     parseErr = parseErr && consumeCloseBracesToken();
     ident_--;
+    
     PrintCloseTag("subroutineBody");
 
     return parseErr;
@@ -523,8 +609,6 @@
  void SimplexParser::Parse(std::string programName)
  {
     token_index_ = 0;
-    uint32_t fieldIndex = 0;
-    uint32_t staticIndex = 0;
     tokenizer_.OpenFile(programName);
 
     tokens_ = tokenizer_.ReadAllTokens();
@@ -546,7 +630,6 @@
         parseErr = parseErr && consumeFieldOrStatic();
         parseErr = parseErr && consumeTypeToken();
         parseErr = parseErr && consumeIdentifierToken();
-        uint32_t   index = (tokens_.at(token_index_).token == Tokenizer::static_) ? staticIndex: fieldIndex;
 
         AddStaticFieldVariables(kind);
       
@@ -564,26 +647,24 @@
            } while (tokens_.at(token_index_).token == Tokenizer::comma_);
         }
         parseErr = parseErr && consumeSemicolonToken();
-        staticIndex = (kind == "static") ? index : staticIndex;
-        fieldIndex = (kind == "field") ? index : fieldIndex;
        } while ((tokens_.at(token_index_).token == Tokenizer::static_ || tokens_.at(token_index_).token == Tokenizer::field_) && (parseErr == true));
     }
-
-    while(tokens_.at(token_index_).token == Tokenizer::constructor_ || tokens_.at(token_index_).token == Tokenizer::function_ || tokens_.at(token_index_).token == Tokenizer::method_)
+    //printf("I am here parseError = %s\n", (parseErr) ? "true": "false");
+    while((tokens_.at(token_index_).token == Tokenizer::constructor_ || tokens_.at(token_index_).token == Tokenizer::function_ || tokens_.at(token_index_).token == Tokenizer::method_) && (parseErr == true))
     {
         std::string funcMethodConstr = tokens_.at(token_index_).tokenString;
          PrintOpenTag(funcMethodConstr);
-
+ 
          parseErr = parseErr && consumeConstFunctionMethod();
          parseErr = parseErr && consumeVoidOrType();
          parseErr = parseErr && consumeIdentifierToken();
          parseErr = parseErr && consumeOpenBracketsToken();
-        
-         ConsumeParameterList();
+   
+         parseErr = parseErr && ConsumeParameterList();        
+         parseErr = parseErr && consumeCloseBracketsToken();
          
-         consumeCloseBracketsToken();
+         parseErr = parseErr && ConsumeSubroutineBody();
          
-         ConsumeSubroutineBody();
          PrintOpenTag(funcMethodConstr);
          ident_--;
     }
@@ -611,6 +692,24 @@ void SimplexParser::AddStaticFieldVariables(std::string kind)
     {
        Symbol symbol = {.type= type, .kind = kind, .index = index};
        classMemberVarTable[symbolName] = symbol;
+       result = true;
+    }
+    else
+    {
+       printf("Error:: The %s %s already defined in the current scope\n", type.c_str(), symbolName.c_str());
+       exit(0);
+    }
+
+    return result;
+ }
+
+ bool SimplexParser::AddToLocalSymbolTable(std::string symbolName, std::string type, std::string kind, uint32_t index)
+ {
+    bool result = false;
+    if (localVarTable.count(symbolName) == 0)
+    {
+       Symbol symbol = {.type= type, .kind = kind, .index = index};
+       localVarTable[symbolName] = symbol;
        result = true;
     }
     else
@@ -666,6 +765,16 @@ void SimplexParser::AddStaticFieldVariables(std::string kind)
      std::map<std::string, Symbol>::iterator it;
 
      for (it = classMemberVarTable.begin(); it != classMemberVarTable.end(); it++)
+     {
+         std::cout << it->first << "\t\t|" << it->second.type << "\t\t|" << it->second.kind << "\t\t|" << it->second.index << std::endl;       
+     }
+  }
+
+  void SimplexParser::PrintLocalSymbolTable()
+  {
+     std::map<std::string, Symbol>::iterator it;
+
+     for (it = localVarTable.begin(); it != localVarTable.end(); it++)
      {
          std::cout << it->first << "\t\t|" << it->second.type << "\t\t|" << it->second.kind << "\t\t|" << it->second.index << std::endl;       
      }
