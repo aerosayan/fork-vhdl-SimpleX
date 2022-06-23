@@ -26,7 +26,6 @@ public :
 
 private:
 
-   //unsigned char* inputBuffer_;
    std::vector<char> inputBuffer_;
 
    unsigned int currentPosition_;

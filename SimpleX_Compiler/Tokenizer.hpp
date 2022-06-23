@@ -50,7 +50,7 @@ public :
       minusEqual_,/*44*/
       starEqual_,/*45*/
       forwordSlashEqual_,/*46*/
-      star_,/*47*/
+      mul_,/*47*/
       forwordSlash_,/*48*/
       integer_,/*51*/
       string_,/*52*/
@@ -120,7 +120,7 @@ public :
       "minusEqual", /*44*/
       "starEqual", /*45*/
       "forwordSlashEqual", /*46*/
-      "star", /*47*/
+      "mul", /*47*/
       "forwordSlash", /*48*/
       "integer", /*51*/
       "string", /*52*/

@@ -10,10 +10,12 @@ public:
     SimplexParser();
     ~SimplexParser();
 
-    void Parse(std::string programName);
+    bool Parse(std::string programName);
 
     void PrintClassSymbolTable();
     void PrintLocalSymbolTable();
+
+    void PrintGeneratedCode();
 
 private:
   void PrintCurrentToken();
@@ -23,47 +25,54 @@ private:
   bool consumeOpenBracesToken();
   bool consumeCloseBracesToken();
   bool consumeFieldOrStatic();
-  bool consumeCommaToken();
-  bool consumeSemicolonToken();
+  
   bool consumeTypeToken();
   bool consumeVoidOrType();
-
-  bool consumeLetToken();
-  bool consumeEqualToken();
+  bool consumeCommaToken();
+  bool consumeSemicolonToken();
 
   bool consumeConstFunctionMethod();
   bool consumeOpenBracketsToken();
+  bool ConsumeParameterList();
   bool consumeCloseBracketsToken();
+  bool ConsumeSubroutineBody();
 
   bool consumeOpenSquareBracketsToken();
   bool consumeCloseSquareBracketsToken();
 
-  bool ConsumeParameterList();
-
   bool consumeStatements();
-  bool ConsumeSubroutineBody();
-
+ 
   bool consumeLetStatement();
+  bool consumeLetToken();
+  bool consumeEqualToken();
   bool consumeExpression();
 
-  bool consumeReturnToken();
   bool consumeReturnStatement();
-
+  bool consumeReturnToken();
+  
   bool consumeTerm();
   bool consumeOperation();
 
-   bool consumeIfStatement();
-   bool consumeIfToken();
+  bool consumeIfStatement();
+  bool consumeIfToken();
+  bool consumeElseToken();
 
-   bool consumeWhileStatement();
-   bool consumewhileToken();
+  bool consumeWhileStatement();
+  bool consumewhileToken();
+
+  bool consumeDoStatement();
+  bool consumeDoToken();
 
   bool cosumeSubroutineCall();
   bool consumeExpressionList();
+  bool consumeDotToken();
   
   void PrintXml(std::string item, std::string value);
   void PrintOpenTag(std::string item);
   void PrintCloseTag(std::string item);
+
+  void EmitCode(std::string code);
+  void EmitLabel(std::string label, uint32_t index);
 
     private:
     Tokenizer tokenizer_;
@@ -80,21 +89,37 @@ private:
      uint32_t    index;
    }Symbol;
    
-    typedef std::map<std::string, Symbol> memberVariablesTable;
-    memberVariablesTable classMemberVarTable;
+    //typedef std::map<std::string, Symbol> memberVariablesTable;
+    //memberVariablesTable classMemberVarTable;
 
     typedef std::map<std::string, Symbol> localVariablesTable;
     localVariablesTable localVarTable;
 
     std::string lastVarName_;
     std::string lastVarType_;
+    Tokenizer::Token lastOperation_;
 
     uint32_t staticVarIndex_;
     uint32_t fieldVarIndex_;
 
+    uint32_t ifStatementStartIndex_;
+    uint32_t ifStatementTrueIndex_;
+    uint32_t ifStatementFalseIndex_;
+    uint32_t ifStatementEndIndex_;
+
+    uint32_t whileStatementStart_;
+    uint32_t whileStatementTrue_;
+    uint32_t whileStatementFalse_;
+
     void AddStaticFieldVariables(std::string kind);
-    bool AddToClassSymbolTable(std::string symbolName, std::string type, std::string kind, uint32_t index);
+    //bool AddToClassSymbolTable(std::string symbolName, std::string type, std::string kind, uint32_t index);
     bool AddToLocalSymbolTable(std::string symbolName, std::string type, std::string kind, uint32_t index);
+    bool CheckVariableExists(std::string var);
+    void ErrorMsg(std::string err);
+
+    std::vector<std::string> vmCode_;
+
+    bool parseError_;
     
 };
 

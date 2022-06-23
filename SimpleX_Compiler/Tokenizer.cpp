@@ -181,7 +181,7 @@ start:
    }
    else if(isStar(c))
    {
-      currentToken_ = star_;
+      currentToken_ = mul_;
       c = inputFile_.GetNextCharacter();
       if (isEqual(c))
       {

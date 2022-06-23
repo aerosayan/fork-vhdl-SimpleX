@@ -5,21 +5,21 @@ class Square {
     static int pointCount;
     field boolean go;
       
-
-    constructor void Square(int pointx, int pointy)
-    {
-        int r , u;
-        let x = pointx[3] * ty(1, (x+y));
-        let y = pointy;
-    }
-
     method int distance(Point other) 
     {
-        int dx, dy, size;
-        let dx = x - 1;
-        let dy = y - 3;
-        return;
+        int dx, dy;
+        if (dx < dy)
+        {
+            while (dx < 7)
+            {
+                let dx = dx - (dy - 1);
+            }
+        }
+        else
+        {
+            let y = (dx * 9);
+        }
+        
+        return dy;
     }
-
-    
 }
