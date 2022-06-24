@@ -24,7 +24,7 @@
  SimplexParser::~SimplexParser()
  {}
 
- bool SimplexParser::consumeCalssToken()
+ bool SimplexParser::consumeClassToken()
  {
     bool result = false;
     if (tokens_.at(token_index_).token == Tokenizer::class_)
@@ -248,7 +248,6 @@
     bool result = true;
     uint32_t argumentIndex = 0;
     
-    AddToLocalSymbolTable(lastVarName_, lastVarType_, "argument", argumentIndex++);
     PrintOpenTag("parameterList");
     if (tokens_.at(token_index_).token == Tokenizer::int_ || tokens_.at(token_index_).token == Tokenizer::boolean_ || tokens_.at(token_index_).token == Tokenizer::char_ || tokens_.at(token_index_).token == Tokenizer::identifier_)
     {
@@ -298,7 +297,7 @@
    bool SimplexParser::consumeEqualToken()
   {
     bool result = false;
-    if (tokens_.at(token_index_).token == Tokenizer::equal_)
+    if (tokens_.at(token_index_).token == Tokenizer::equ_)
     {
        PrintXml("keyword", "=");
        token_index_++;
@@ -410,7 +409,8 @@
          PrintXml("identifier", tokens_.at(token_index_).tokenString);
          consumeIdentifierToken();
          CheckVariableExists(lastVarName_);
-         Symbol sym = localVarTable[lastVarName_];
+         bool exists;
+         Symbol sym = GetSymbol(lastVarName_, exists);
          EmitCode("push " + sym.kind + " " + std::to_string(sym.index));
          result = true;
      }
@@ -437,10 +437,10 @@
   bool SimplexParser::consumeOperation()
   {
      bool result = false;
-     if (tokens_.at(token_index_).token == Tokenizer::plus_ || tokens_.at(token_index_).token == Tokenizer::minus_ ||
+     if (tokens_.at(token_index_).token == Tokenizer::add_ || tokens_.at(token_index_).token == Tokenizer::sub_ ||
             tokens_.at(token_index_).token == Tokenizer::mul_ || tokens_.at(token_index_).token == Tokenizer::forwordSlash_ ||
             tokens_.at(token_index_).token == Tokenizer::biggerThan_ || tokens_.at(token_index_).token == Tokenizer::smallerThan_|| 
-            tokens_.at(token_index_).token == Tokenizer::and_ || tokens_.at(token_index_).token == Tokenizer::or_ || tokens_.at(token_index_).token == Tokenizer::equal_)
+            tokens_.at(token_index_).token == Tokenizer::and_ || tokens_.at(token_index_).token == Tokenizer::or_ || tokens_.at(token_index_).token == Tokenizer::equ_ || tokens_.at(token_index_).token == Tokenizer::nequ_)
          {
             token_index_++;
             result = true;
@@ -453,10 +453,10 @@
   {
      ident_++;
      consumeTerm();
-     while (tokens_.at(token_index_).token == Tokenizer::plus_ || tokens_.at(token_index_).token == Tokenizer::minus_ ||
+     while (tokens_.at(token_index_).token == Tokenizer::add_ || tokens_.at(token_index_).token == Tokenizer::sub_ ||
             tokens_.at(token_index_).token == Tokenizer::mul_ || tokens_.at(token_index_).token == Tokenizer::forwordSlash_ ||
             tokens_.at(token_index_).token == Tokenizer::biggerThan_ || tokens_.at(token_index_).token == Tokenizer::smallerThan_|| 
-            tokens_.at(token_index_).token == Tokenizer::and_ || tokens_.at(token_index_).token == Tokenizer::or_ || tokens_.at(token_index_).token == Tokenizer::equal_)
+            tokens_.at(token_index_).token == Tokenizer::and_ || tokens_.at(token_index_).token == Tokenizer::or_ || tokens_.at(token_index_).token == Tokenizer::equ_ || tokens_.at(token_index_).token == Tokenizer::nequ_)
       {
          int tokenInt = (int)tokens_.at(token_index_).token;
          PrintXml("operation",  tokenizer_.tokenAsString[tokenInt]);  
@@ -479,7 +479,8 @@
      parseErr = parseErr && consumeLetToken();
      parseErr = parseErr && consumeIdentifierToken();
      CheckVariableExists(lastVarName_);
-     Symbol sym = localVarTable[lastVarName_];
+     bool exists;
+     Symbol sym = GetSymbol(lastVarName_, exists);
      
      parseErr = parseErr && consumeEqualToken();
      parseErr = parseErr && consumeExpression();
@@ -513,7 +514,8 @@
      if (tokens_.at(token_index_).token == Tokenizer::identifier_)
      {
         consumeIdentifierToken();
-        Symbol sym = localVarTable[lastVarName_];
+        bool exists;
+        Symbol sym = GetSymbol(lastVarName_, exists);
         EmitCode("push " + sym.kind + " " + std::to_string(sym.index));
      }
      EmitCode("return");
@@ -756,10 +758,11 @@
     tokens_ = tokenizer_.ReadAllTokens();
 
     bool parseErr = true;
-    parseErr = parseErr && consumeCalssToken();
+    parseErr = parseErr && consumeClassToken();
     parseErr = parseErr && consumeIdentifierToken();
+    currentClass_ = lastVarName_;
     localVarTable.clear();
-    //AddToClassSymbolTable("this", lastVarName_, "argument", 0);
+    AddToClassSymbolTable("this", lastVarName_, "argument", 0);
     AddToLocalSymbolTable("this", lastVarName_, "argument", 0);
     
     parseErr = parseErr && consumeOpenBracesToken();
@@ -796,21 +799,20 @@
    
     while((tokens_.at(token_index_).token == Tokenizer::constructor_ || tokens_.at(token_index_).token == Tokenizer::function_ || tokens_.at(token_index_).token == Tokenizer::method_) && (parseErr == true))
     {
-        std::string funcMethodConstr = tokens_.at(token_index_).tokenString;
+         std::string funcMethodConstr = tokens_.at(token_index_).tokenString;
          PrintOpenTag(funcMethodConstr);
- 
+         localVarTable.clear();
          parseErr = parseErr && consumeConstFunctionMethod();
          parseErr = parseErr && consumeVoidOrType();
          
          parseErr = parseErr && consumeIdentifierToken();
-         EmitCode("function " + lastVarName_);
+         EmitCode("function " + currentClass_ + "." +  lastVarName_);
          parseErr = parseErr && consumeOpenBracketsToken();
    
          parseErr = parseErr && ConsumeParameterList();        
          parseErr = parseErr && consumeCloseBracketsToken();
          
          parseErr = parseErr && ConsumeSubroutineBody();
-         
          PrintOpenTag(funcMethodConstr);
          ident_--;
     }
@@ -824,35 +826,33 @@ void SimplexParser::AddStaticFieldVariables(std::string kind)
 {
    if (kind == "static")
    {
-      //AddToClassSymbolTable(lastVarName_, lastVarType_, kind, staticVarIndex_++);
-      AddToLocalSymbolTable(lastVarName_, lastVarType_, kind, staticVarIndex_++);
+      AddToClassSymbolTable(lastVarName_, lastVarType_, kind, staticVarIndex_++);
      
    }
    else if(kind == "field")
    {
-      // AddToClassSymbolTable(lastVarName_, lastVarType_, kind, fieldVarIndex_++);
-      AddToLocalSymbolTable(lastVarName_, lastVarType_, kind, fieldVarIndex_++);
+      AddToClassSymbolTable(lastVarName_, lastVarType_, kind, fieldVarIndex_++);
 
    }
 }
 
-//  bool SimplexParser::AddToClassSymbolTable(std::string symbolName, std::string type, std::string kind, uint32_t index)
-//  {
-//     bool result = false;
-//     if (classMemberVarTable.count(symbolName) == 0)
-//     {
-//        Symbol symbol = {.type= type, .kind = kind, .index = index};
-//        classMemberVarTable[symbolName] = symbol;
-//        result = true;
-//     }
-//     else
-//     {
-//        printf("Error:: The %s %s already defined in the current scope\n", type.c_str(), symbolName.c_str());
-//        exit(0);
-//     }
+ bool SimplexParser::AddToClassSymbolTable(std::string symbolName, std::string type, std::string kind, uint32_t index)
+ {
+    bool result = false;
+    if (classMemberVarTable.count(symbolName) == 0)
+    {
+       Symbol symbol = {.type= type, .kind = kind, .index = index};
+       classMemberVarTable[symbolName] = symbol;
+       result = true;
+    }
+    else
+    {
+       printf("Error:: The %s %s already defined in the current scope\n", type.c_str(), symbolName.c_str());
+       exit(0);
+    }
 
-//     return result;
-//  }
+    return result;
+ }
 
  bool SimplexParser::AddToLocalSymbolTable(std::string symbolName, std::string type, std::string kind, uint32_t index)
  {
@@ -875,10 +875,10 @@ void SimplexParser::AddStaticFieldVariables(std::string kind)
   {
       bool exists = false;
       exists = (localVarTable.count(var) == 1) ? true : false;
-      // if (!exists)
-      // {
-      //    exists = (classMemberVarTable.count(var) == 1) ? true : false;
-      // }
+      if (!exists)
+      {
+         exists = (classMemberVarTable.count(var) == 1) ? true : false;
+      }
 
       if (!exists)
       {
@@ -887,6 +887,28 @@ void SimplexParser::AddStaticFieldVariables(std::string kind)
       }
       
       return exists;
+  }
+
+  SimplexParser::Symbol SimplexParser::GetSymbol(std::string name, bool& exists)
+  {
+     exists = false;
+     SimplexParser::Symbol sym;
+     if (CheckVariableExists(name) == true)
+     {
+         exists = true;
+         bool localyExists = (localVarTable.count(name) == 1) ? true : false;
+         if (localVarTable.count(name) == 1)
+         {
+            sym = localVarTable[name];
+           
+         }
+         else if (classMemberVarTable.count(name) == 1)
+         {
+             sym = classMemberVarTable[name];
+         }
+     }
+
+     return sym;
   }
 
   void SimplexParser::EmitCode(std::string code)
@@ -942,10 +964,10 @@ void SimplexParser::AddStaticFieldVariables(std::string kind)
   {
      std::map<std::string, Symbol>::iterator it;
 
-   //   for (it = classMemberVarTable.begin(); it != classMemberVarTable.end(); it++)
-   //   {
-   //       std::cout << it->first << "\t\t|" << it->second.type << "\t\t|" << it->second.kind << "\t\t|" << it->second.index << std::endl;       
-   //   }
+      for (it = classMemberVarTable.begin(); it != classMemberVarTable.end(); it++)
+      {
+          std::cout << it->first << "\t\t|" << it->second.type << "\t\t|" << it->second.kind << "\t\t|" << it->second.index << std::endl;       
+      }
   }
 
   void SimplexParser::PrintLocalSymbolTable()

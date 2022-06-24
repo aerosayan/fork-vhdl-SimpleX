@@ -31,12 +31,11 @@ int main(int argc, char* argv[])
     bool err = simplxParser.Parse("file.txt");
     if (err == false)
     {
-        //printf("============\n");
         simplxParser.PrintGeneratedCode();
-        //printf("============\n");
     }
     //simplxParser.PrintClassSymbolTable();
-    //printf("\n\n");
+
+    printf("\n\n");
     //UNIT_TEST_TOKENIZER();
    
    return 0;

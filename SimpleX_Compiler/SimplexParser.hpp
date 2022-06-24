@@ -20,7 +20,7 @@ public:
 private:
   void PrintCurrentToken();
 
-  bool consumeCalssToken();
+  bool consumeClassToken();
   bool consumeIdentifierToken();
   bool consumeOpenBracesToken();
   bool consumeCloseBracesToken();
@@ -89,8 +89,8 @@ private:
      uint32_t    index;
    }Symbol;
    
-    //typedef std::map<std::string, Symbol> memberVariablesTable;
-    //memberVariablesTable classMemberVarTable;
+    typedef std::map<std::string, Symbol> memberVariablesTable;
+    memberVariablesTable classMemberVarTable;
 
     typedef std::map<std::string, Symbol> localVariablesTable;
     localVariablesTable localVarTable;
@@ -112,14 +112,16 @@ private:
     uint32_t whileStatementFalse_;
 
     void AddStaticFieldVariables(std::string kind);
-    //bool AddToClassSymbolTable(std::string symbolName, std::string type, std::string kind, uint32_t index);
+    bool AddToClassSymbolTable(std::string symbolName, std::string type, std::string kind, uint32_t index);
     bool AddToLocalSymbolTable(std::string symbolName, std::string type, std::string kind, uint32_t index);
     bool CheckVariableExists(std::string var);
+    SimplexParser::Symbol GetSymbol(std::string name, bool& exists);
     void ErrorMsg(std::string err);
 
     std::vector<std::string> vmCode_;
 
     bool parseError_;
+    std::string currentClass_;
     
 };
 

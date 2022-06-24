@@ -1,25 +1,37 @@
 //This is a demobstration of my Tokenizer functionality
 
-class Square { 
-    field int x, y;
+class Math { 
+    //field int x, y;
     static int pointCount;
     field boolean go;
       
-    method int distance(Point other) 
+    method int mul(int x, int y) 
     {
-        int dx, dy;
-        if (dx < dy)
+        int result;
+        int counter;
+
+        let result = 0;
+        let counter = y;
+        while (counter != 0)
         {
-            while (dx < 7)
-            {
-                let dx = dx - (dy - 1);
-            }
+            let result = result + x;
+            let counter = counter - 1;
         }
-        else
+              
+        return result;
+    }
+
+    method int max(int x, int y) 
+    {
+        int result;
+       
+        let result = x;
+        if (y > x)
         {
-            let y = (dx * 9);
+            let result = y;
+            let pointCount = pointCount + 2;
         }
-        
-        return dy;
+              
+        return result;
     }
 }

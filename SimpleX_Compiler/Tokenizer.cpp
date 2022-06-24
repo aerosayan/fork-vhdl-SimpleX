@@ -151,7 +151,7 @@ start:
    }
    else if(isPlus(c))
    {
-      currentToken_ = plus_;
+      currentToken_ = add_;
       c = inputFile_.GetNextCharacter();
       if (isPlus(c))
       {
@@ -166,7 +166,7 @@ start:
    }
    else if(isMinus(c))
    {
-      currentToken_ = minus_;
+      currentToken_ = sub_;
       c = inputFile_.GetNextCharacter();
       if (isMinus(c))
       {
@@ -176,6 +176,16 @@ start:
       if (isEqual(c))
       {
          currentToken_ = minusEqual_;
+         c = inputFile_.GetNextCharacter();
+      }
+   }
+   else if(isNot(c))
+   {
+      currentToken_ = not_;
+      c = inputFile_.GetNextCharacter();
+      if (isEqual(c))
+      {
+         currentToken_ = nequ_;
          c = inputFile_.GetNextCharacter();
       }
    }
@@ -218,7 +228,7 @@ start:
 
    else if(isEqual(c))
    {
-      currentToken_ = equal_;
+      currentToken_ = equ_;
       c = inputFile_.GetNextCharacter();
    }
 
@@ -244,7 +254,7 @@ start:
       }
       if (isBiggerThan(c))
       {
-         currentToken_ = notEqual_;
+         currentToken_ = nequ_;
          c = inputFile_.GetNextCharacter();
       }
    }
@@ -524,6 +534,11 @@ bool Tokenizer::isMinus(char c)
 bool Tokenizer::isStar(char c)
 {
    return (c == '*');
+}
+
+bool Tokenizer::isNot(char c)
+{
+   return (c == '!');
 }
 
 bool Tokenizer::isForwordSlash(char c)

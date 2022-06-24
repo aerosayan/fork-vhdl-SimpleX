@@ -24,8 +24,8 @@ public :
       endOfLine_,/*18*/
       identifier_,/*19*/
       number_,/*20*/
-      equal_,/*21*/
-      notEqual_,/*22*/
+      equ_,/*21*/
+      nequ_,/*22*/
       biggerThan_,/*23*/
       biggerThanEqual_,/*24*/
       smallerThan_,/*25*/
@@ -42,9 +42,9 @@ public :
       operation_,/*36*/
       comma_,/*37*/
       colon_,/*38*/
-      plus_,/*39*/
+      add_,/*39*/
       plusPlus_,/*40*/
-      minus_,/*41*/
+      sub_,/*41*/
       minusMinus_,/*42*/
       plusEqual_,/*43*/
       minusEqual_,/*44*/
@@ -94,8 +94,8 @@ public :
       "endOfLine", /*18*/
       "identifier", /*19*/
       "number", /*20*/
-      "equal", /*21*/
-      "notEqual", /*22*/
+      "equ", /*21*/
+      "nequ", /*22*/
       "biggerThan", /*23*/
       "biggerThanEqual", /*24*/
       "smallerThan", /*25*/
@@ -112,9 +112,9 @@ public :
       "operation", /*36*/
       "comma", /*37*/
       "colon", /*38*/
-      "plus", /*39*/
+      "add", /*39*/
       "plusPlus", /*40*/
-      "minus", /*41*/
+      "sub", /*41*/
       "minusMinus", /*42*/
       "plusEqual", /*43*/
       "minusEqual", /*44*/
@@ -207,6 +207,8 @@ private:
    bool isMinus(char c);
 
    bool isStar(char c);
+
+   bool isNot(char c);
    
    bool isForwordSlash(char c);
 
