@@ -1,28 +1,174 @@
+function Math.main 5 0
+push constant 0
+pop local 0
+push constant 0
+pop local 2
+push constant 7
+pop local 1
+push constant 4
+pop local 3
+push local 0
+push local 2
+push local 1
+push local 3
+call Math.distance 2 4
+pop local 4
+push local 4
+return
 
 
-function Main 1 1
+function Math.distance 2 4
+push argument 2
+push argument 0
+sub
+pop local 0
+push argument 3
+push argument 1
+sub
+pop local 1
+push local 0
+push local 0
+call Math.mul 2 2
+push local 1
+push local 1
+call Math.mul 2 2
+add
+call Math.sqrt 3 1
+return
 
-    push constant fffffffd
-    push constant 0
-    lt
 
-    (Debug)
-    goto Debug
-    if-goto TrueCondition
-    goto FalseCondition
+function Math.add1 1 1
+push local 0
+push constant 1
+add
+pop local 0
+push local 0
+return
 
-    (TrueCondition)
-    push constant 1
-    push constant 2
-    push constant 3
-    
-    goto End
-    (FalseCondition)
-    push constant 4
-    push constant 5
-    push constant 6
 
-    (End)
+function Math.mul 2 2
+push constant 0
+pop local 0
+push argument 1
+pop local 1
+(whileStatementStart_3)
+push local 1
+push constant 0
+nequ
+if-goto whileTrueStatement_3
+goto whileEndStatement_3
+(whileTrueStatement_3)
+push local 0
+push argument 0
+add
+pop local 0
+push local 1
+push constant 1
+sub
+pop local 1
+goto whileStatementStart_3
+(whileEndStatement_3)
+push local 0
+return
 
-    (forever)
-    goto forever
+
+function Math.max 1 2
+push argument 0
+pop local 0
+push argument 1
+push argument 0
+gt
+if-goto ifTrueStatement_2
+goto ifFalseStatement_2
+(ifTrueStatement_2)
+push argument 1
+pop local 0
+goto ifEndStatement_2
+(ifFalseStatement_2)
+(ifEndStatement_2)
+push local 0
+return
+
+
+function Math.min 1 2
+push argument 0
+pop local 0
+push argument 1
+push argument 0
+lt
+if-goto ifTrueStatement_3
+goto ifFalseStatement_3
+(ifTrueStatement_3)
+push argument 1
+pop local 0
+goto ifEndStatement_3
+(ifFalseStatement_3)
+(ifEndStatement_3)
+push local 0
+return
+
+
+function Math.sqrt 3 1
+push argument 0
+pop local 1
+push constant 1
+pop local 0
+push constant 0
+pop local 2
+(whileStatementStart_4)
+push local 1
+push local 0
+gte
+if-goto whileTrueStatement_4
+goto whileEndStatement_4
+(whileTrueStatement_4)
+push local 1
+push local 0
+sub
+pop local 1
+push local 0
+push constant 2
+add
+pop local 0
+push local 2
+push constant 1
+add
+pop local 2
+goto whileStatementStart_4
+(whileEndStatement_4)
+push local 2
+return
+
+
+function Math.div 3 2
+push argument 0
+pop local 0
+push constant 0
+pop local 2
+push constant 0
+pop local 1
+(whileStatementStart_5)
+push local 0
+push argument 1
+gte
+if-goto whileTrueStatement_5
+goto whileEndStatement_5
+(whileTrueStatement_5)
+push local 0
+push argument 1
+sub
+pop local 0
+push local 2
+push constant 1
+add
+pop local 2
+push local 1
+push constant 1
+add
+pop local 1
+goto whileStatementStart_5
+(whileEndStatement_5)
+push local 1
+return
+
+

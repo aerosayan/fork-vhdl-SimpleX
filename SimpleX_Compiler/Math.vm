@@ -1,18 +1,39 @@
-function Math.test 2 2
-push constant 15
+function Math.main 5 0
+push constant 0
 pop local 0
-push constant 2
+push constant 0
+pop local 2
+push constant 7
 pop local 1
-push argument 0
+push constant 4
+pop local 3
+push local 0
+push local 2
 push local 1
-call Math.add1 1 1
+push local 3
+call Math.distance 2 4
+pop local 4
+push local 4
+return
+
+
+function Math.distance 2 4
+push argument 2
+push argument 0
+sub
+pop local 0
+push argument 3
+push argument 1
 sub
 pop local 1
 push local 0
+push local 0
+call Math.mul 2 2
 push local 1
-call Math.div 3 2
-pop local 1
 push local 1
+call Math.mul 2 2
+add
+call Math.sqrt 3 1
 return
 
 

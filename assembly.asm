@@ -42,16 +42,65 @@
 //===========================
 
 
-//function Main.test  1
-(Main.test)
-//push constant 9
+//function Math.main 5 0
+(Math.main)
+//push constant 0
      li R1, 0
      load R31, R1
 
-     li R2, 9
+     li R2, 0
      str R2, R31
      Incr R31
      str R31, R1
+//pop local 0
+     li R1, 0
+     load R31, R1
+     Decr R31
+     str R31, R1
+     load R2, R31
+     li R3, 1
+     load R4, R3
+     li R5, 0
+     add R7, R4, R5
+     str R2, R7
+//push constant 0
+     li R1, 0
+     load R31, R1
+
+     li R2, 0
+     str R2, R31
+     Incr R31
+     str R31, R1
+//pop local 2
+     li R1, 0
+     load R31, R1
+     Decr R31
+     str R31, R1
+     load R2, R31
+     li R3, 1
+     load R4, R3
+     li R5, 2
+     add R7, R4, R5
+     str R2, R7
+//push constant 7
+     li R1, 0
+     load R31, R1
+
+     li R2, 7
+     str R2, R31
+     Incr R31
+     str R31, R1
+//pop local 1
+     li R1, 0
+     load R31, R1
+     Decr R31
+     str R31, R1
+     load R2, R31
+     li R3, 1
+     load R4, R3
+     li R5, 1
+     add R7, R4, R5
+     str R2, R7
 //push constant 4
      li R1, 0
      load R31, R1
@@ -60,7 +109,70 @@
      str R2, R31
      Incr R31
      str R31, R1
-//call Math.mul 2 2
+//pop local 3
+     li R1, 0
+     load R31, R1
+     Decr R31
+     str R31, R1
+     load R2, R31
+     li R3, 1
+     load R4, R3
+     li R5, 3
+     add R7, R4, R5
+     str R2, R7
+//push local 0
+     li R1, 0
+     load R31, R1
+     li R1, 1
+     load R3, R1
+
+     li R2, 0
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//push local 2
+     li R1, 0
+     load R31, R1
+     li R1, 1
+     load R3, R1
+
+     li R2, 2
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//push local 1
+     li R1, 0
+     load R31, R1
+     li R1, 1
+     load R3, R1
+
+     li R2, 1
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//push local 3
+     li R1, 0
+     load R31, R1
+     li R1, 1
+     load R3, R1
+
+     li R2, 3
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//call Math.distance 2 4
      // push return address given as a number
      li R1, 0
      load R31, R1
@@ -114,7 +226,7 @@
      // R3 = SP - 5- nArgs
      sub R3, R31, R4
      //R6 = nArgs
-     li R6, 2
+     li R6, 4
      sub R7, R3, R6
      // new Arg = SP - 5 - nArgs
      str R7, R2
@@ -137,8 +249,135 @@
      li R4, 0
      cmp R2, R4
      jneq repeat_0
-     jmp Math.mul
+     jmp Math.distance
 (_returnAddress0)
+//pop local 4
+     li R1, 0
+     load R31, R1
+     Decr R31
+     str R31, R1
+     load R2, R31
+     li R3, 1
+     load R4, R3
+     li R5, 4
+     add R7, R4, R5
+     str R2, R7
+//push local 4
+     li R1, 0
+     load R31, R1
+     li R1, 1
+     load R3, R1
+
+     li R2, 4
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//return
+    li R2, 2
+    load R30, R2
+    load R29, R2
+    Incr R29
+    li R1, 0
+    load R31, R1
+    Decr R31
+    str R31, R1
+    load R20, R31
+    str R20, R30
+    //SP = local0
+    li R1, 0
+    load R31, R1
+    li R2, 1
+    load R31, R2
+    str R31, R1
+    //pop that(SP -1) 'that' pointer
+    li R1, 0
+    load R31, R1
+    li R2, 1
+    sub R3, R31, R2
+    load R4, R3
+    li R5, 4
+    str R4, R5
+    //pop that(SP -2) 'this' pointer
+    li R1, 0
+    load R31, R1
+    li R2, 2
+    sub R3, R31, R2
+    load R4, R3
+    li R5, 3
+    str R4, R5
+    //pop that(SP -3) 'argument' pointer
+    li R1, 0
+    load R31, R1
+    li R2, 3
+    sub R3, R31, R2
+    load R4, R3
+    li R5, 2
+    str R4, R5
+    //pop that(SP -4) 'local' pointer
+    li R1, 0
+    load R31, R1
+    li R2, 4
+    sub R3, R31, R2
+    load R4, R3
+    li R5, 1
+    str R4, R5
+    //pop that(SP -5) 'return address'
+    li R1, 0
+    load R31, R1
+    li R2, 5
+    sub R3, R31, R2
+    load R26, R3
+    mov R31, R29
+    str R31, R1
+    return
+//function Math.distance 2 4
+(Math.distance)
+//push argument 2
+     li R1, 0
+     load R31, R1
+     li R1, 2
+     load R3, R1
+
+     li R2, 2
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//push argument 0
+     li R1, 0
+     load R31, R1
+     li R1, 2
+     load R3, R1
+
+     li R2, 0
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//sub
+     li R1, 0
+     load R31, R1
+     Decr R31
+     load R12, R31
+     str R31, R1
+     li R1, 0
+     load R31, R1
+     Decr R31
+     load R13, R31
+     str R31, R1
+     sub R14, R13, R12
+     li R1, 0
+     load R31, R1
+     str R14, R31
+     Incr R31
+     str R31, R1
 //pop local 0
      li R1, 0
      load R31, R1
@@ -150,23 +389,87 @@
      li R5, 0
      add R7, R4, R5
      str R2, R7
-//push constant 9
+//push argument 3
      li R1, 0
      load R31, R1
+     li R1, 2
+     load R3, R1
 
-     li R2, 9
-     str R2, R31
+     li R2, 3
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
      Incr R31
+     li R1, 0
      str R31, R1
-//push constant 4
+//push argument 1
      li R1, 0
      load R31, R1
+     li R1, 2
+     load R3, R1
 
-     li R2, 4
-     str R2, R31
+     li R2, 1
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//sub
+     li R1, 0
+     load R31, R1
+     Decr R31
+     load R12, R31
+     str R31, R1
+     li R1, 0
+     load R31, R1
+     Decr R31
+     load R13, R31
+     str R31, R1
+     sub R14, R13, R12
+     li R1, 0
+     load R31, R1
+     str R14, R31
      Incr R31
      str R31, R1
-//call Math.max 1 2
+//pop local 1
+     li R1, 0
+     load R31, R1
+     Decr R31
+     str R31, R1
+     load R2, R31
+     li R3, 1
+     load R4, R3
+     li R5, 1
+     add R7, R4, R5
+     str R2, R7
+//push local 0
+     li R1, 0
+     load R31, R1
+     li R1, 1
+     load R3, R1
+
+     li R2, 0
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//push local 0
+     li R1, 0
+     load R31, R1
+     li R1, 1
+     load R3, R1
+
+     li R2, 0
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//call Math.mul 2 2
      // push return address given as a number
      li R1, 0
      load R31, R1
@@ -231,7 +534,7 @@
      str R3, R2
      //push number of local variables
      // R2 = num_of_local_Variables
-     li R2, 1
+     li R2, 2
      li R3, 0
      li R1, 0
      load R31, R1
@@ -243,36 +546,35 @@
      li R4, 0
      cmp R2, R4
      jneq repeat_1
-     jmp Math.max
+     jmp Math.mul
 (_returnAddress1)
-//pop local 1
+//push local 1
      li R1, 0
      load R31, R1
-     Decr R31
-     str R31, R1
-     load R2, R31
-     li R3, 1
-     load R4, R3
-     li R5, 1
-     add R7, R4, R5
-     str R2, R7
-//push constant 4
-     li R1, 0
-     load R31, R1
+     li R1, 1
+     load R3, R1
 
-     li R2, 4
-     str R2, R31
+     li R2, 1
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
      Incr R31
+     li R1, 0
      str R31, R1
-//push constant 7
+//push local 1
      li R1, 0
      load R31, R1
+     li R1, 1
+     load R3, R1
 
-     li R2, 7
-     str R2, R31
+     li R2, 1
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
      Incr R31
+     li R1, 0
      str R31, R1
-//call Math.min 1 2
+//call Math.mul 2 2
      // push return address given as a number
      li R1, 0
      load R31, R1
@@ -337,7 +639,7 @@
      str R3, R2
      //push number of local variables
      // R2 = num_of_local_Variables
-     li R2, 1
+     li R2, 2
      li R3, 0
      li R1, 0
      load R31, R1
@@ -349,25 +651,23 @@
      li R4, 0
      cmp R2, R4
      jneq repeat_2
-     jmp Math.min
+     jmp Math.mul
 (_returnAddress2)
-//pop local 2
+//add
      li R1, 0
      load R31, R1
      Decr R31
+     load R12, R31
      str R31, R1
-     load R2, R31
-     li R3, 1
-     load R4, R3
-     li R5, 2
-     add R7, R4, R5
-     str R2, R7
-//push constant 19
      li R1, 0
      load R31, R1
-
-     li R2, 19
-     str R2, R31
+     Decr R31
+     load R13, R31
+     str R31, R1
+     add R14, R12, R13
+     li R1, 0
+     load R31, R1
+     str R14, R31
      Incr R31
      str R31, R1
 //call Math.sqrt 3 1
@@ -449,113 +749,105 @@
      jneq repeat_3
      jmp Math.sqrt
 (_returnAddress3)
-//pop local 3
+//return
+    li R2, 2
+    load R30, R2
+    load R29, R2
+    Incr R29
+    li R1, 0
+    load R31, R1
+    Decr R31
+    str R31, R1
+    load R20, R31
+    str R20, R30
+    //SP = local0
+    li R1, 0
+    load R31, R1
+    li R2, 1
+    load R31, R2
+    str R31, R1
+    //pop that(SP -1) 'that' pointer
+    li R1, 0
+    load R31, R1
+    li R2, 1
+    sub R3, R31, R2
+    load R4, R3
+    li R5, 4
+    str R4, R5
+    //pop that(SP -2) 'this' pointer
+    li R1, 0
+    load R31, R1
+    li R2, 2
+    sub R3, R31, R2
+    load R4, R3
+    li R5, 3
+    str R4, R5
+    //pop that(SP -3) 'argument' pointer
+    li R1, 0
+    load R31, R1
+    li R2, 3
+    sub R3, R31, R2
+    load R4, R3
+    li R5, 2
+    str R4, R5
+    //pop that(SP -4) 'local' pointer
+    li R1, 0
+    load R31, R1
+    li R2, 4
+    sub R3, R31, R2
+    load R4, R3
+    li R5, 1
+    str R4, R5
+    //pop that(SP -5) 'return address'
+    li R1, 0
+    load R31, R1
+    li R2, 5
+    sub R3, R31, R2
+    load R26, R3
+    mov R31, R29
+    str R31, R1
+    return
+//function Math.add1 1 1
+(Math.add1)
+//push local 0
      li R1, 0
      load R31, R1
-     Decr R31
-     str R31, R1
-     load R2, R31
-     li R3, 1
-     load R4, R3
-     li R5, 3
-     add R7, R4, R5
-     str R2, R7
-//push constant a
-     li R1, 0
-     load R31, R1
-
-     li R2, a
-     str R2, R31
-     Incr R31
-     str R31, R1
-//push constant 5
-     li R1, 0
-     load R31, R1
-
-     li R2, 5
-     str R2, R31
-     Incr R31
-     str R31, R1
-//call Math.div 3 2
-     // push return address given as a number
-     li R1, 0
-     load R31, R1
-     //replace the following li R2, return_address_
-     li R2, _returnAddress4
-     str R2, R31
-     Incr R31
-     str R31, R1
-
-     // push local
-     li R10, 1
-     load R11, R10
-     li R1, 0
-     load R31, R1
-     str R11, R31
-     Incr R31
-     str R31, R1
-     
-     // push argument
-     li R10, 2
-     load R11, R10
-     li R1, 0
-     load R31, R1
-     str R11, R31
-     Incr R31
-     str R31, R1
-     
-     // push this
-     li R10, 3
-     load R11, R10
-     li R1, 0
-     load R31, R1
-     str R11, R31
-     Incr R31
-     str R31, R1
-     
-     // push that
-     li R10, 4
-     load R11, R10
-     li R1, 0
-     load R31, R1
-     str R11, R31
-     Incr R31
-     str R31, R1
-     
-     //New Arg = SP - 5 - nArgs -1
-     li R2, 2
-     li R1, 0
-     load R31, R1
-     li R4, 5
-     // R3 = SP - 5- nArgs
-     sub R3, R31, R4
-     //R6 = nArgs
-     li R6, 2
-     sub R7, R3, R6
-     // new Arg = SP - 5 - nArgs
-     str R7, R2
-     
-     li R2, 1
-     li R1, 0
+     li R1, 1
      load R3, R1
-     str R3, R2
-     //push number of local variables
-     // R2 = num_of_local_Variables
-     li R2, 3
-     li R3, 0
+
+     li R2, 0
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//push constant 1
      li R1, 0
      load R31, R1
-     (repeat_4)
-     str R3, R31
+
+     li R2, 1
+     str R2, R31
      Incr R31
      str R31, R1
-     Decr R2
-     li R4, 0
-     cmp R2, R4
-     jneq repeat_4
-     jmp Math.div
-(_returnAddress4)
-//pop local 4
+//add
+     li R1, 0
+     load R31, R1
+     Decr R31
+     load R12, R31
+     str R31, R1
+     li R1, 0
+     load R31, R1
+     Decr R31
+     load R13, R31
+     str R31, R1
+     add R14, R12, R13
+     li R1, 0
+     load R31, R1
+     str R14, R31
+     Incr R31
+     str R31, R1
+//pop local 0
      li R1, 0
      load R31, R1
      Decr R31
@@ -563,12 +855,80 @@
      load R2, R31
      li R3, 1
      load R4, R3
-     li R5, 4
+     li R5, 0
      add R7, R4, R5
      str R2, R7
-(whileForever)
-//goto whileForever
-     jmp whileForever
+//push local 0
+     li R1, 0
+     load R31, R1
+     li R1, 1
+     load R3, R1
+
+     li R2, 0
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//return
+    li R2, 2
+    load R30, R2
+    load R29, R2
+    Incr R29
+    li R1, 0
+    load R31, R1
+    Decr R31
+    str R31, R1
+    load R20, R31
+    str R20, R30
+    //SP = local0
+    li R1, 0
+    load R31, R1
+    li R2, 1
+    load R31, R2
+    str R31, R1
+    //pop that(SP -1) 'that' pointer
+    li R1, 0
+    load R31, R1
+    li R2, 1
+    sub R3, R31, R2
+    load R4, R3
+    li R5, 4
+    str R4, R5
+    //pop that(SP -2) 'this' pointer
+    li R1, 0
+    load R31, R1
+    li R2, 2
+    sub R3, R31, R2
+    load R4, R3
+    li R5, 3
+    str R4, R5
+    //pop that(SP -3) 'argument' pointer
+    li R1, 0
+    load R31, R1
+    li R2, 3
+    sub R3, R31, R2
+    load R4, R3
+    li R5, 2
+    str R4, R5
+    //pop that(SP -4) 'local' pointer
+    li R1, 0
+    load R31, R1
+    li R2, 4
+    sub R3, R31, R2
+    load R4, R3
+    li R5, 1
+    str R4, R5
+    //pop that(SP -5) 'return address'
+    li R1, 0
+    load R31, R1
+    li R2, 5
+    sub R3, R31, R2
+    load R26, R3
+    mov R31, R29
+    str R31, R1
+    return
 //function Math.mul 2 2
 (Math.mul)
 //push constant 0
@@ -614,7 +974,7 @@
      li R5, 1
      add R7, R4, R5
      str R2, R7
-(whileStatementStart_1)
+(whileStatementStart_3)
 //push local 1
      li R1, 0
      load R31, R1
@@ -660,7 +1020,7 @@
      str R15, R31
      Incr R31
      str R31, R1
-//if-goto whileTrueStatement_1
+//if-goto whileTrueStatement_3
      li R1, 0
      load R31, R1
      Decr R31
@@ -668,10 +1028,10 @@
      str R31, R1
      li R1, 1
      cmp R12, R1
-     jeq whileTrueStatement_1
-//goto whileEndStatement_1
-     jmp whileEndStatement_1
-(whileTrueStatement_1)
+     jeq whileTrueStatement_3
+//goto whileEndStatement_3
+     jmp whileEndStatement_3
+(whileTrueStatement_3)
 //push local 0
      li R1, 0
      load R31, R1
@@ -775,9 +1135,9 @@
      li R5, 1
      add R7, R4, R5
      str R2, R7
-//goto whileStatementStart_1
-     jmp whileStatementStart_1
-(whileEndStatement_1)
+//goto whileStatementStart_3
+     jmp whileStatementStart_3
+(whileEndStatement_3)
 //push local 0
      li R1, 0
      load R31, R1
@@ -1293,7 +1653,7 @@
      li R5, 2
      add R7, R4, R5
      str R2, R7
-(whileStatementStart_3)
+(whileStatementStart_4)
 //push local 1
      li R1, 0
      load R31, R1
@@ -1347,7 +1707,7 @@
      str R15, R31
      Incr R31
      str R31, R1
-//if-goto whileTrueStatement_3
+//if-goto whileTrueStatement_4
      li R1, 0
      load R31, R1
      Decr R31
@@ -1355,10 +1715,10 @@
      str R31, R1
      li R1, 1
      cmp R12, R1
-     jeq whileTrueStatement_3
-//goto whileEndStatement_3
-     jmp whileEndStatement_3
-(whileTrueStatement_3)
+     jeq whileTrueStatement_4
+//goto whileEndStatement_4
+     jmp whileEndStatement_4
+(whileTrueStatement_4)
 //push local 1
      li R1, 0
      load R31, R1
@@ -1511,9 +1871,9 @@
      li R5, 2
      add R7, R4, R5
      str R2, R7
-//goto whileStatementStart_3
-     jmp whileStatementStart_3
-(whileEndStatement_3)
+//goto whileStatementStart_4
+     jmp whileStatementStart_4
+(whileEndStatement_4)
 //push local 2
      li R1, 0
      load R31, R1

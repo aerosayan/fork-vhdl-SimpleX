@@ -522,12 +522,13 @@
  {
      bool parseErr = true;
      parseErr = parseErr && consumeReturnToken();
-     if (tokens_.at(token_index_).token == Tokenizer::identifier_)
+     if (tokens_.at(token_index_).token != Tokenizer::semiColon_)
      {
-        consumeIdentifierToken();
-        bool exists;
-        Symbol sym = GetSymbol(lastVarName_, exists);
-        EmitCode("push " + sym.kind + " " + std::to_string(sym.index));
+        consumeExpression();
+      //   consumeIdentifierToken();
+      //   bool exists;
+      //   Symbol sym = GetSymbol(lastVarName_, exists);
+      //   EmitCode("push " + sym.kind + " " + std::to_string(sym.index));
      }
      EmitCode("return");
 

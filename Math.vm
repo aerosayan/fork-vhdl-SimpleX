@@ -27,20 +27,25 @@ function Main.test  1
     (whileForever)
     goto whileForever
 
-function Math.test 2 2
-push constant 15
-pop local 0
-push constant 2
-pop local 1
-push local 1
-call add1
-pop local 1
-push local 0
-push local 1
-call div
-pop local 1
-push local 1
-return
+
+function Math.test 6 2
+    push local 4
+    push local 2
+    sub
+    pop local 0
+    push local 5
+    push local 3
+    sub
+    pop local 1
+    push local 0
+    push local 0
+    call Math.mul 2 2
+    push local 1
+    push local 1
+    call Math.mul 2 2
+    add
+    call Math.sqrt 3 1
+    return
 
 
 function Math.add1 1 1
@@ -176,3 +181,5 @@ goto whileStatementStart_5
 (whileEndStatement_5)
 push local 1
 return
+
+
