@@ -1,43 +1,16 @@
-function Main.test  1
-    // x = mult(10, 2)
-    push constant 9
-    push constant 4
-    call Math.mul 2 2
-    pop local 0
-
-    push constant 9
-    push constant 4
-    call Math.max 1 2
-    pop local 1
-
-    push constant 4
-    push constant 7
-    call Math.min 1 2
-    pop local 2
-
-    push constant 19
-    call Math.sqrt 3 1
-    pop local 3
-
-    push constant 14
-    push constant 5
-    call Math.div 3 2
-    pop local 4
-
-    (whileForever)
-    goto whileForever
-
 function Math.test 2 2
 push constant 15
 pop local 0
 push constant 2
 pop local 1
+push argument 0
 push local 1
-call add1
+call Math.add1 1 1
+sub
 pop local 1
 push local 0
 push local 1
-call div
+call Math.div 3 2
 pop local 1
 push local 1
 return
@@ -176,3 +149,5 @@ goto whileStatementStart_5
 (whileEndStatement_5)
 push local 1
 return
+
+

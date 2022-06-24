@@ -13,7 +13,7 @@ class Math {
         let result = 15;
         let counter = 2;
 
-        let counter = add1(counter);
+        let counter = x - add1(counter);
         let counter = div(result, counter);
        
         return counter;

@@ -377,7 +377,7 @@
          std::string callFunction = currentClass_ + "." + lastVarName_;
          consumeOpenBracketsToken();
          consumeExpressionList();
-         EmitCode("call " + callFunction + " " + std::to_string(localArgumenNumbers_[callFunction].numOfLocals) + " " + std::to_string(localArgumenNumbers_[callFunction].numOfArguments) + "\n");
+         EmitCode("call " + callFunction + " " + std::to_string(localArgumenNumbers_[callFunction].numOfLocals) + " " + std::to_string(localArgumenNumbers_[callFunction].numOfArguments));
          consumeCloseBracketsToken();
          result = true;
      }
