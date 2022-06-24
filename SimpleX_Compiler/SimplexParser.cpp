@@ -374,8 +374,10 @@
      if (tokens_.at(token_index_).token == Tokenizer::identifier_ && (tokens_.at(token_index_ + 1).token == Tokenizer::openBrackets_))
      {
          consumeIdentifierToken();
+         std::string callFunction = currentClass_ + "." + lastVarName_;
          consumeOpenBracketsToken();
          consumeExpressionList();
+         EmitCode("call " + callFunction + " " + std::to_string(localArgumenNumbers_[callFunction].numOfLocals) + " " + std::to_string(localArgumenNumbers_[callFunction].numOfArguments) + "\n");
          consumeCloseBracketsToken();
          result = true;
      }

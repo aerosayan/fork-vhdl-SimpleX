@@ -4,6 +4,29 @@ class Math {
     field int x, y;
     static int pointCount;
     field boolean go;
+
+    method int test(int x, int y) 
+    {
+        int result;
+        int counter;
+
+        let result = 15;
+        let counter = 2;
+
+        let counter = add1(counter);
+        let counter = div(result, counter);
+       
+        return counter;
+    }
+
+    method int add1(int x)
+    {
+        int res;
+
+        let res = res + 1;
+
+        return res;
+    }
       
     method int mul(int x, int y) 
     {
