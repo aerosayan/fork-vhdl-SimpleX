@@ -234,22 +234,22 @@ start:
 
    else if (isBiggerThan(c))
    {
-      currentToken_ = biggerThan_;
+      currentToken_ = gt_;
       c = inputFile_.GetNextCharacter();
       if (isEqual(c))
       {
-         currentToken_ = biggerThanEqual_;
+         currentToken_ = gte_;
          c = inputFile_.GetNextCharacter();
       }
    }
 
    else if (isSmallerThan(c))
    {
-      currentToken_ = smallerThan_;
+      currentToken_ = lt_;
       c = inputFile_.GetNextCharacter();
       if (isEqual(c))
       {
-         currentToken_ = smallerThanEqual_;
+         currentToken_ = lte_;
          c = inputFile_.GetNextCharacter();
       }
       if (isBiggerThan(c))

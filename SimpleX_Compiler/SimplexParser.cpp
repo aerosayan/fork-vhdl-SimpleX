@@ -1,5 +1,6 @@
 #include "SimplexParser.hpp"
 #include <iostream>
+#include <fstream>
 //#define XML_DEBUG
 
  SimplexParser::SimplexParser()
@@ -445,7 +446,8 @@
      bool result = false;
      if (tokens_.at(token_index_).token == Tokenizer::add_ || tokens_.at(token_index_).token == Tokenizer::sub_ ||
             tokens_.at(token_index_).token == Tokenizer::mul_ || tokens_.at(token_index_).token == Tokenizer::forwordSlash_ ||
-            tokens_.at(token_index_).token == Tokenizer::biggerThan_ || tokens_.at(token_index_).token == Tokenizer::smallerThan_|| 
+            tokens_.at(token_index_).token == Tokenizer::gt_ || tokens_.at(token_index_).token == Tokenizer::lt_|| 
+            tokens_.at(token_index_).token == Tokenizer::gte_ || tokens_.at(token_index_).token == Tokenizer::lte_|| 
             tokens_.at(token_index_).token == Tokenizer::and_ || tokens_.at(token_index_).token == Tokenizer::or_ || tokens_.at(token_index_).token == Tokenizer::equ_ || tokens_.at(token_index_).token == Tokenizer::nequ_)
          {
             token_index_++;
@@ -461,7 +463,8 @@
      consumeTerm();
      while (tokens_.at(token_index_).token == Tokenizer::add_ || tokens_.at(token_index_).token == Tokenizer::sub_ ||
             tokens_.at(token_index_).token == Tokenizer::mul_ || tokens_.at(token_index_).token == Tokenizer::forwordSlash_ ||
-            tokens_.at(token_index_).token == Tokenizer::biggerThan_ || tokens_.at(token_index_).token == Tokenizer::smallerThan_|| 
+            tokens_.at(token_index_).token == Tokenizer::gt_ || tokens_.at(token_index_).token == Tokenizer::lt_|| 
+            tokens_.at(token_index_).token == Tokenizer::gte_ || tokens_.at(token_index_).token == Tokenizer::lte_||
             tokens_.at(token_index_).token == Tokenizer::and_ || tokens_.at(token_index_).token == Tokenizer::or_ || tokens_.at(token_index_).token == Tokenizer::equ_ || tokens_.at(token_index_).token == Tokenizer::nequ_)
       {
          int tokenInt = (int)tokens_.at(token_index_).token;
@@ -950,6 +953,16 @@ void SimplexParser::AddStaticFieldVariables(std::string kind)
      }
   }
   
+  void SimplexParser::GenerateVMCode(std::string outputFile)
+  {
+    std::ofstream fileOut;
+    remove(outputFile.c_str());
+    fileOut.open(outputFile.c_str(), std::ios_base::app);
+    for (int i = 0; i < vmCode_.size(); i++)
+    {
+       fileOut << vmCode_.at(i);
+    }
+  }
 
   void SimplexParser::PrintXml(std::string item, std::string value)
   {

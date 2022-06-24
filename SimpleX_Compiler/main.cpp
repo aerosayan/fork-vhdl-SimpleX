@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <iostream>
 #include "SimplexParser.hpp"
+#include "VMTranslator.hpp"
 
 void UNIT_TEST_INPUTFILE()
 {
@@ -36,12 +37,12 @@ int main(int argc, char* argv[])
         if (err == false)
         {
             simplxParser.PrintGeneratedCode();
+            simplxParser.GenerateVMCode("Math.vm");
         }
     }
-    //simplxParser.PrintClassSymbolTable();
-    //simplxParser.PrintLocalArgumentNumbers();
-    printf("\n\n");
-    //UNIT_TEST_TOKENIZER();
+    //VmTranslator vmTrans;
+    //vmTrans.TokenizeFile("Math.vm");
+    //vmTrans.PrintAllTokens();
    
    return 0;
 }

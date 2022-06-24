@@ -17,6 +17,7 @@ public:
     void PrintLocalArgumentNumbers();
 
     void PrintGeneratedCode();
+    void GenerateVMCode(std::string outputFile);
 
 private:
   void PrintCurrentToken();
@@ -75,6 +76,8 @@ private:
   void EmitCode(std::string code);
   void EmitLabel(std::string label, uint32_t index);
   void EmitFunctionLocalAndArgumentNum(std::string methodName);
+
+
 
     private:
     Tokenizer tokenizer_;

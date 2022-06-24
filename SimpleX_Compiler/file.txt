@@ -1,7 +1,7 @@
 //This is a demobstration of my Tokenizer functionality
 
 class Math { 
-    //field int x, y;
+    field int x, y;
     static int pointCount;
     field boolean go;
       
@@ -34,7 +34,7 @@ class Math {
         return result;
     }
 
-     method int min(int x, int y) 
+    method int min(int x, int y) 
     {
         int result;
        
@@ -42,6 +42,45 @@ class Math {
         if (y < x)
         {
             let result = y;
+        }
+              
+        return result;
+    }
+
+
+    method int sqrt(int x) 
+    {
+        int N;
+        int remainder;
+        int result;
+       
+        let remainder = x;
+        let N = 1;
+        let result = 0;
+        while (remainder >= N)
+        {
+            let remainder = remainder - N;
+            let N = N + 2;
+            let result = result + 1; 
+        }
+              
+        return result;
+    }
+
+    method int div(int x, int y) 
+    {
+        int remainder;
+        int result;
+        int N;
+
+        let remainder = x;
+        let N = 0;
+        let result = 0;
+        while (remainder >= y)
+        {
+            let remainder = remainder - y;
+            let N = N + 1;
+            let result = result + 1;
         }
               
         return result;

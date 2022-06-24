@@ -5,9 +5,6 @@
 
 class Tokenizer
 {
-
-  
-
 public :
    typedef enum
    {
@@ -26,10 +23,10 @@ public :
       number_,/*20*/
       equ_,/*21*/
       nequ_,/*22*/
-      biggerThan_,/*23*/
-      biggerThanEqual_,/*24*/
-      smallerThan_,/*25*/
-      smallerThanEqual_,/*26*/
+      gt_,/*23*/
+      gte_,/*24*/
+      lt_,/*25*/
+      lte_,/*26*/
       and_,/*27*/
       or_,/*28*/
       not_,/*29*/
@@ -96,10 +93,10 @@ public :
       "number", /*20*/
       "equ", /*21*/
       "nequ", /*22*/
-      "biggerThan", /*23*/
-      "biggerThanEqual", /*24*/
-      "smallerThan", /*25*/
-      "smallerThanEqual", /*26*/
+      "gt", /*23*/
+      "gte", /*24*/
+      "lt", /*25*/
+      "lte", /*26*/
       "and", /*27*/
       "or", /*28*/
       "not", /*29*/
