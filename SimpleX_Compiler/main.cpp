@@ -28,13 +28,18 @@ void UNIT_TEST_TOKENIZER()
 int main(int argc, char* argv[])
 {
     SimplexParser simplxParser;
-    bool err = simplxParser.Parse("file.txt");
+    bool err = simplxParser.Parse("file.txt", 1);
+    
     if (err == false)
     {
-        simplxParser.PrintGeneratedCode();
+        err = simplxParser.Parse("file.txt", 2);
+        if (err == false)
+        {
+            simplxParser.PrintGeneratedCode();
+        }
     }
     //simplxParser.PrintClassSymbolTable();
-
+    //simplxParser.PrintLocalArgumentNumbers();
     printf("\n\n");
     //UNIT_TEST_TOKENIZER();
    

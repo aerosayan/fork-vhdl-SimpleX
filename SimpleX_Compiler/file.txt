@@ -29,7 +29,19 @@ class Math {
         if (y > x)
         {
             let result = y;
-            let pointCount = pointCount + 2;
+        }
+              
+        return result;
+    }
+
+     method int min(int x, int y) 
+    {
+        int result;
+       
+        let result = x;
+        if (y < x)
+        {
+            let result = y;
         }
               
         return result;

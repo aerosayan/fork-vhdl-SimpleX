@@ -10,10 +10,11 @@ public:
     SimplexParser();
     ~SimplexParser();
 
-    bool Parse(std::string programName);
+    bool Parse(std::string programName, uint32_t passNum);
 
     void PrintClassSymbolTable();
     void PrintLocalSymbolTable();
+    void PrintLocalArgumentNumbers();
 
     void PrintGeneratedCode();
 
@@ -73,6 +74,7 @@ private:
 
   void EmitCode(std::string code);
   void EmitLabel(std::string label, uint32_t index);
+  void EmitFunctionLocalAndArgumentNum(std::string methodName);
 
     private:
     Tokenizer tokenizer_;
@@ -88,12 +90,25 @@ private:
      std::string kind;
      uint32_t    index;
    }Symbol;
+
+   typedef struct 
+   {
+     uint32_t numOfLocals;
+     uint32_t numOfArguments;
+   }localArgumentNumbers;
+   
    
     typedef std::map<std::string, Symbol> memberVariablesTable;
     memberVariablesTable classMemberVarTable;
 
     typedef std::map<std::string, Symbol> localVariablesTable;
     localVariablesTable localVarTable;
+
+    typedef std::map<std::string, localArgumentNumbers> LocalArgumenNumbers;
+    LocalArgumenNumbers localArgumenNumbers_;
+
+    uint32_t currentMethodNumArguments_;
+    uint32_t currentMethodNumLocals_;
 
     std::string lastVarName_;
     std::string lastVarType_;
@@ -122,6 +137,8 @@ private:
 
     bool parseError_;
     std::string currentClass_;
+
+    uint32_t passNumber_;
     
 };
 

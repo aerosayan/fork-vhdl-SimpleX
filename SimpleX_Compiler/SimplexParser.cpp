@@ -18,7 +18,9 @@
 
   whileStatementStart_(0),
   whileStatementTrue_(0),
-  whileStatementFalse_(0)
+  whileStatementFalse_(0),
+
+  passNumber_(1)
  {}
 
  SimplexParser::~SimplexParser()
@@ -254,7 +256,10 @@
          parameterCount++;
          consumeTypeToken();
          consumeIdentifierToken();
+
+         localArgumentNumbers args = {.numOfLocals = 0, .numOfArguments = 0};
          AddToLocalSymbolTable(lastVarName_, lastVarType_, "argument", argumentIndex++);
+         currentMethodNumArguments_++;
          if (tokens_.at(token_index_).token == Tokenizer::comma_)
          {
            do
@@ -264,6 +269,7 @@
                consumeTypeToken();
                consumeIdentifierToken();
                AddToLocalSymbolTable(lastVarName_, lastVarType_, "argument", argumentIndex++);
+               currentMethodNumArguments_++;
            } while (tokens_.at(token_index_).token == Tokenizer::comma_);
         }
    
@@ -733,26 +739,31 @@
        parseErr = parseErr && consumeTypeToken();
        parseErr = parseErr && consumeIdentifierToken();
        AddToLocalSymbolTable(lastVarName_, lastVarType_, "local", localIndex++);
+       currentMethodNumLocals_++;
        while ((tokens_.at(token_index_).token == Tokenizer::comma_) && (parseErr == true))
        {
            parseErr = parseErr && consumeCommaToken();
            parseErr = parseErr && consumeIdentifierToken();
            AddToLocalSymbolTable(lastVarName_, lastVarType_, "local", localIndex++);
+           currentMethodNumLocals_++;
        }
        consumeSemicolonToken();
     }
     parseErr = parseErr && consumeStatements();
     parseErr = parseErr && consumeCloseBracesToken();
     ident_--;
-    
+    EmitCode("\n");
     PrintCloseTag("subroutineBody");
 
     return parseErr;
  }
 
- bool SimplexParser::Parse(std::string programName)
+ bool SimplexParser::Parse(std::string programName, uint32_t passNum)
  {
     token_index_ = 0;
+    passNumber_ = passNum;
+    classMemberVarTable.clear();
+    localVarTable.clear();
     tokenizer_.OpenFile(programName);
 
     tokens_ = tokenizer_.ReadAllTokens();
@@ -802,23 +813,27 @@
          std::string funcMethodConstr = tokens_.at(token_index_).tokenString;
          PrintOpenTag(funcMethodConstr);
          localVarTable.clear();
+         currentMethodNumLocals_ = 0;
+         currentMethodNumArguments_ = 0;
          parseErr = parseErr && consumeConstFunctionMethod();
          parseErr = parseErr && consumeVoidOrType();
          
          parseErr = parseErr && consumeIdentifierToken();
-         EmitCode("function " + currentClass_ + "." +  lastVarName_);
+         std::string methodName = currentClass_ + "." +  lastVarName_; 
+         EmitFunctionLocalAndArgumentNum(methodName);
          parseErr = parseErr && consumeOpenBracketsToken();
    
          parseErr = parseErr && ConsumeParameterList();        
          parseErr = parseErr && consumeCloseBracketsToken();
          
          parseErr = parseErr && ConsumeSubroutineBody();
+         localArgumenNumbers_[methodName] = {.numOfLocals =currentMethodNumLocals_, .numOfArguments = currentMethodNumArguments_};
          PrintOpenTag(funcMethodConstr);
          ident_--;
     }
 
     parseErr = parseErr && consumeCloseBracesToken();
-
+   
    return parseError_;
  }
 
@@ -913,13 +928,28 @@ void SimplexParser::AddStaticFieldVariables(std::string kind)
 
   void SimplexParser::EmitCode(std::string code)
   {
-     vmCode_.push_back(code + "\n");
+     if (passNumber_ == 2)
+     {
+        vmCode_.push_back(code + "\n");
+     }
   }
 
   void SimplexParser::EmitLabel(std::string label, uint32_t index)
   {
-     vmCode_.push_back("(" + label + std::to_string(index) + ")\n");
+     if (passNumber_ == 2)
+     {
+        vmCode_.push_back("(" + label + std::to_string(index) + ")\n");
+     }
   }
+
+  void SimplexParser::EmitFunctionLocalAndArgumentNum(std::string methodName)
+  {
+     if (passNumber_ == 2)
+     {
+        vmCode_.push_back("function " + methodName + " " + std::to_string(localArgumenNumbers_[methodName].numOfLocals) + " " + std::to_string(localArgumenNumbers_[methodName].numOfArguments) + "\n");
+     }
+  }
+  
 
   void SimplexParser::PrintXml(std::string item, std::string value)
   {
@@ -978,6 +1008,17 @@ void SimplexParser::AddStaticFieldVariables(std::string kind)
      {
          std::cout << it->first << "\t\t|" << it->second.type << "\t\t|" << it->second.kind << "\t\t|" << it->second.index << std::endl;       
      }
+  }
+
+  void SimplexParser::PrintLocalArgumentNumbers()
+  {
+     std::map<std::string, localArgumentNumbers>::iterator it;
+
+     for (it = localArgumenNumbers_.begin(); it != localArgumenNumbers_.end(); it++)
+     {
+         std::cout << it->first << "\t\t|" << it->second.numOfLocals << "\t\t|" << it->second.numOfArguments << std::endl;       
+     }
+     
   }
 
 
