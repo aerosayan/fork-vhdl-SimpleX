@@ -323,6 +323,44 @@ def VMTranslate(assemblyFile):
                             f.write("     li R5, " + components[2] + "\n")
                             f.write("     add R7, R4, R5\n")
                             f.write("     str R2, R7\n")
+                        elif(components[1] == "this"):
+                            f.write("//" + line + "\n")
+                            f.write("     li R1, " + SP + "\n")
+                            f.write("     load R31, R1\n")
+                            f.write("     Decr R31\n")
+                            f.write("     str R31, R1\n")
+                            f.write("     load R2, R31\n") #R2 contains the popped value
+                            f.write("     li R3, " + this + "\n") # 5 here is the address of the argument segment
+                            f.write("     load R4, R3\n")
+                            f.write("     li R5, " + components[2] + "\n")
+                            f.write("     add R7, R4, R5\n")
+                            f.write("     str R2, R7\n")
+                        elif(components[1] == "that"):
+                            f.write("//" + line + "\n")
+                            f.write("     li R1, " + SP + "\n")
+                            f.write("     load R31, R1\n")
+                            f.write("     Decr R31\n")
+                            f.write("     str R31, R1\n")
+                            f.write("     load R2, R31\n") #R2 contains the popped value
+                            f.write("     li R3, " + that + "\n") # 5 here is the address of the argument segment
+                            f.write("     load R4, R3\n")
+                            f.write("     li R5, " + components[2] + "\n")
+                            f.write("     add R7, R4, R5\n")
+                            f.write("     str R2, R7\n")
+                        elif(components[1] == "pointer"):
+                            f.write("//" + line + "\n")
+                            f.write("     li R1, " + SP + "\n")
+                            f.write("     load R31, R1\n")
+                            f.write("     Decr R31\n")
+                            f.write("     str R31, R1\n")
+                            f.write("     load R2, R31\n") #R2 contains the popped value
+                            thisTaht = this
+                            if (components[2] == "0"):
+                                thisTaht = this
+                            else:
+                                thisTaht = that
+                            f.write("     li R3, " + thisTaht + "\n")
+                            f.write("     str R2, R3\n")
 
 
             elif (components[0] == "add"):

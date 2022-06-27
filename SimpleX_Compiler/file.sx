@@ -3,7 +3,6 @@
 class Math { 
     field int x, y;
     static int pointCount;
-    field boolean go;
 
     method void main()
     {
@@ -11,7 +10,7 @@ class Math {
         int dist;
         let px1 = 0;
         let py1 = 0;
-        let px2 = 7;
+        let px2 = 3;
         let py2 = 4;
 
         let dist = distance(px1, py1, px2, py2);
@@ -104,15 +103,12 @@ class Math {
     {
         int remainder;
         int result;
-        int N;
 
         let remainder = x;
-        let N = 0;
         let result = 0;
         while (remainder >= y)
         {
             let remainder = remainder - y;
-            let N = N + 1;
             let result = result + 1;
         }
               

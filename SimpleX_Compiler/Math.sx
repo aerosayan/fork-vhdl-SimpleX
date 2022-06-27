@@ -1,0 +1,105 @@
+     
+     
+ class Math
+ {  
+    method void main()
+    {
+       int x,y,z,l;
+       int res1, res2, res3, res4;
+
+       let x = 2;
+       let y = 3;
+       let z = 4;
+       let l = 5;
+
+       let res1 = mul(x, y);
+       let res2 = max(x, l);
+       let res3 = min (x, l);
+       let res4 = Math.mul((x + y) , ( z + l));
+
+       while(1)
+       {}
+
+    }
+
+    method int mul(int x, int y) 
+    {
+        int result;
+        int counter;
+
+        let result = 0;
+        let counter = y;
+        while (counter != 0)
+        {
+            let result = result + x;
+            let counter = counter - 1;
+        }
+              
+        return result;
+    }
+
+    method int max(int x, int y) 
+    {
+        int result;
+       
+        let result = x;
+        if (y > x)
+        {
+            let result = y;
+        }
+              
+        return result;
+    }
+
+    method int min(int x, int y) 
+    {
+        int result;
+       
+        let result = x;
+        if (y < x)
+        {
+            let result = y;
+        }
+              
+        return result;
+    }
+
+
+    method int sqrt(int x) 
+    {
+        int N;
+        int remainder;
+        int result;
+       
+        let remainder = x;
+        let N = 1;
+        let result = 0;
+        while (remainder >= N)
+        {
+            let remainder = remainder - N;
+            let N = N + 2;
+            let result = result + 1; 
+        }
+              
+        return result;
+    }
+
+    method int div(int x, int y) 
+    {
+        int remainder;
+        int result;
+        int N;
+
+        let remainder = x;
+        let N = 0;
+        let result = 0;
+        while (remainder >= y)
+        {
+            let remainder = remainder - y;
+            let N = N + 1;
+            let result = result + 1;
+        }
+              
+        return result;
+    }
+}

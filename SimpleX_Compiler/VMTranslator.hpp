@@ -6,96 +6,19 @@
 #include <map>
 #include <string.h>
 #include <vector>
+#include <fstream>
 
 class VmTranslator
 {
-    public:
-
-   typedef enum
-   {
-      unknownToken_,
-      function_,
-      dot_,
-      identifier_,
-      number_,
-      push_,
-      pop_,
-      constantT_,
-      argumentT_,
-      localT_,
-      staticT_,
-      fieldT_,
-      thisT_,
-      thatT_,
-      endOfLine_,
-      endOfFile_,
-      equ_,
-      nequ_,
-      gt_,
-      lt_,
-      and_,
-      or_,
-      not_,
-      comma_,
-      add_,
-      sub_,
-      mult_,
-      div_,
-      openBrackets_,
-      closeBrackets_,
-      comment_,
-      return_,
-      ifGoto_,
-      goto_
-   }Token;
-
-   std::vector<std::string> tokenAsString =  {
-      "unknownToken",
-      "function",
-      "dot",
-      "identifier",
-      "number",
-      "push",
-      "pop",
-      "constant",
-      "argument",
-      "local",
-      "static",
-      "field",
-      "this",
-      "that",
-      "endOfLine",
-      "endOfFile",
-      "equ",
-      "nequ",
-      "gt",
-      "lt",
-      "and",
-      "or",
-      "not",
-      "comma",
-      "add",
-      "sub",
-      "mult",
-      "div",
-      "openBrackets",
-      "closeBrackets",
-      "comment",
-      "return",
-      "ifGoto",
-      "goto"
-   };
-
+   public:
     VmTranslator();
    ~VmTranslator();
 
     bool OpenVmFile(std::string vmfileIn);
-    std::vector<VmTranslator::Token>  TokenizeFile(std::string vmfileIn);
-    void PrintAllTokens();
-   
-    void InisialiseSegments(std::string outputAssemblyFile);
-    bool Translate(std::string vmfileIn, std::string vmFileOut);
-    VmTranslator::Token GetNextToken();
+  
+    void Translate(std::string vmFile);
+    void Interpret (std::vector<std::string> components, std::string line);
+    void InisialiseSegments();
 
     private:
     uint32_t SP_;//0),
@@ -118,30 +41,12 @@ class VmTranslator
 
     std::map<std::string, std::string> opcode_;
     std::map<std::string, std::string> registers_;
+   
+    std::ofstream asm_;
 
-    std::vector<char> inputBuffer_;
-
-
-    
-    void  SkipWhiteSpace();
-    bool isCharacter(char c);
-    bool isNumber(char c);
-    bool isUnderScore(char c);
-    bool isDash(char c);
-    bool isOpenBrackets(char c);
-    bool isCloseBrackets(char c);
-    bool isEndOfFile(char c);
-    bool isEndOfLine(char c);
-    bool isDot(char c);
-    bool isForwordSlash(char c);
-
-    VmTranslator::Token CheckToken();
-
-    VmTranslator::Token currentToken_;
-    std::vector<Token> tokens_;
-    uint32_t currentIndex_;
-    char  tokenString_[255];
-    uint32_t lineNumber_;
+    uint32_t label_;
+    uint32_t retAddress_;
+    uint32_t repeat_;
 
 };
 

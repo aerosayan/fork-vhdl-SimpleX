@@ -1,15 +1,23 @@
-function Math.main 3 0
+function Math.main 4 0
 push constant 9
 pop local 0
-push constant 5
+push constant 6
 pop local 1
 push local 0
-push constant 1
-add
+push local 1
+call Math.min 1 2
 pop local 2
-(here)
-goto here
-
+push local 0
+push local 1
+call Math.max 1 2
+pop local 3
+(whileStatementStart_1)
+push constant 1
+if-goto whileTrueStatement_1
+goto whileEndStatement_1
+(whileTrueStatement_1)
+goto whileStatementStart_1
+(whileEndStatement_1)
 
 
 function Math.max 1 2

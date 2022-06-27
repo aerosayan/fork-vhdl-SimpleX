@@ -1,6 +1,7 @@
 #include "VMTranslator.hpp"
 #include <iostream>
 #include <fstream>
+#include <iostream>
 
 VmTranslator::VmTranslator()
 : SP_(0),
@@ -10,16 +11,17 @@ VmTranslator::VmTranslator()
   that_(4),
   temp_(5),
   static_(6),
-  SP_pointer_(10),
-  local_pointer_(40),
-  argument_pointer_(80),
+  SP_pointer_(100),
+  local_pointer_(200),
+  argument_pointer_(300),
   this_pointer_(400),
   that_pointer_(500),
   temp_pointer_(600),
   static_pointer_(700),
   pointer_pointer_(800),
-
-  currentIndex_(0)
+  label_(0),
+  retAddress_(0),
+  repeat_(0)
 {
     opcode_["nop"]= "000000";
     opcode_["lui"] = "000001";
@@ -83,372 +85,771 @@ VmTranslator::VmTranslator()
 VmTranslator::~VmTranslator()
 {}
 
-void VmTranslator::InisialiseSegments(std::string outputAssemblyFile)
+void VmTranslator::InisialiseSegments()
 {
-    std::ofstream fileOut;
-    remove(outputAssemblyFile.c_str());
-    fileOut.open(outputAssemblyFile.c_str(), std::ios_base::app);
-    
-    fileOut << "//Initialise Segments\n" << std::endl;
-    fileOut << "//===================\n" << std::endl;
-    fileOut << "//(Initialise_SP)" << std::endl;
-    fileOut << "    li R1,  " << SP_pointer_ <<  std::endl;
-    fileOut << "    li R2, " + SP_ << std::endl;
-    fileOut << "    str R1, R2" << std::endl;
-    fileOut << "    " << std::endl;
-    fileOut << "//(Initialise_local)" << std::endl;
-    fileOut << "    li R3, " + local_pointer_  << std::endl;
-    fileOut << "    li R4, " + local_ << std::endl;
-    fileOut << "    str R3, R4" << std::endl;
-    fileOut << "" << std::endl;
-    fileOut << "//(Initialise_this)" << std::endl;
-    fileOut << "    li R5, " + this_pointer_  << std::endl;
-    fileOut << "    li R6, " + this_  << std::endl;
-    fileOut << "    str R5, R6" << std::endl;
-    fileOut << "" << std::endl;
-    fileOut << "//(Initialise_that)" << std::endl;
-    fileOut << "    li R7, " + that_pointer_  << std::endl;
-    fileOut << "    li R8, " + that_  << std::endl;
-    fileOut << "    str R7, R8" << std::endl;
-    fileOut << "" << std::endl;
-    fileOut << "//(Initialise_temp)" << std::endl;
-    fileOut << "    li R9, " + temp_pointer_  << std::endl;
-    fileOut << "    li R10, " + temp_  << std::endl;
-    fileOut << "    str R9, R10" << std::endl;
-    fileOut << "" << std::endl;
-    fileOut << "//(Initialise_argument)" << std::endl;
-    fileOut << "    li R11, " + argument_pointer_  << std::endl;
-    fileOut << "    li R12, " + argument_  << std::endl;
-    fileOut << "    str R11, R12" << std::endl;
-    fileOut << "       " << std::endl;
-    fileOut << "//(Initialise_static" << std::endl;
-    fileOut << "    li R13, " + static_pointer_  << std::endl;
-    fileOut << "    li R14, " + static_  << std::endl;
-    fileOut << "    str R13, R14" << std::endl;
-    fileOut << "       " << std::endl;
-    fileOut << "//(Initialise_pointer" << std::endl;
-    fileOut << "    li R13, " + pointer_pointer_  << std::endl;
-    fileOut << "    li R14, 7" << std::endl;
-    fileOut << "    str R13, R14" << std::endl;
-    fileOut << std::endl;
+    asm_ << "//Initialise Segments\n" << std::endl;
+    asm_ << "//===================\n" << std::endl;
+    asm_ << "//(Initialise_SP)" << std::endl;
+    asm_ << "    li R1,  " << SP_pointer_ <<  std::endl;
+    asm_ << "    li R2, " << SP_ << std::endl;
+    asm_ << "    str R1, R2" << std::endl;
+    asm_ << "    " << std::endl;
+    asm_ << "//(Initialise_local)" << std::endl;
+    asm_ << "    li R3, " <<  local_pointer_  << std::endl;
+    asm_ << "    li R4, " <<  local_ << std::endl;
+    asm_ << "    str R3, R4" << std::endl;
+    asm_ << "" << std::endl;
+    asm_ << "//(Initialise_this)" << std::endl;
+    asm_ << "    li R5, " <<  this_pointer_  << std::endl;
+    asm_ << "    li R6, " <<  this_  << std::endl;
+    asm_ << "    str R5, R6" << std::endl;
+    asm_ << "" << std::endl;
+    asm_ << "//(Initialise_that)" << std::endl;
+    asm_ << "    li R7, " <<  that_pointer_  << std::endl;
+    asm_ << "    li R8, " <<  that_  << std::endl;
+    asm_ << "    str R7, R8" << std::endl;
+    asm_ << "" << std::endl;
+    asm_ << "//(Initialise_temp)" << std::endl;
+    asm_ << "    li R9, " <<  temp_pointer_  << std::endl;
+    asm_ << "    li R10, " <<  temp_  << std::endl;
+    asm_ << "    str R9, R10" << std::endl;
+    asm_ << "" << std::endl;
+    asm_ << "//(Initialise_argument)" << std::endl;
+    asm_ << "    li R11, " <<  argument_pointer_  << std::endl;
+    asm_ << "    li R12, " <<  argument_  << std::endl;
+    asm_ << "    str R11, R12" << std::endl;
+    asm_ << "       " << std::endl;
+    asm_ << "//(Initialise_static" << std::endl;
+    asm_ << "    li R13, " <<  static_pointer_  << std::endl;
+    asm_ << "    li R14, " <<  static_  << std::endl;
+    asm_ << "    str R13, R14" << std::endl;
+    asm_ << "       " << std::endl;
+    asm_ << "//(Initialise_pointer" << std::endl;
+    asm_ << "    li R13, " <<  pointer_pointer_  << std::endl;
+    asm_ << "    li R14, 7" << std::endl;
+    asm_ << "    str R13, R14" << std::endl;
+    asm_ << std::endl;
 }
 
-bool VmTranslator::OpenVmFile(std::string vmfileIn)
+
+std::vector<std::string> splitString(std::string text)
 {
-    FILE* fp = fopen(vmfileIn.c_str(), "rb");
-   if (!fp)
-   {
-      printf("Error:%s file not found\n\n", vmfileIn.c_str());
-      exit(1);
-   }
+   std::vector<std::string> words{};
+    size_t pos = 0;
+    std::string space_delimiter = " ";
+    while ((pos = text.find(space_delimiter)) != std::string::npos)
+    {
+        words.push_back(text.substr(0, pos));
+        text.erase(0, pos + space_delimiter.length());
+    }
+    words.push_back(text);
 
-   fseek(fp, 0L, SEEK_END);
-   uint32_t lSize = ftell( fp );
-   rewind( fp );
-
-   unsigned char* buffer = new unsigned char[lSize];
-   fread( buffer , lSize, 1 , fp);
-
-   for (int i = 0; i < lSize; i++)
-   {
-      inputBuffer_.push_back(buffer[i]);
-   }
-   inputBuffer_.push_back(0xEF); // push an end of file at the end
-   fclose(fp);
-   
-   return true;
+    return words;
 }
 
-bool VmTranslator::Translate(std::string vmfileIn, std::string vmFileOut)
+void VmTranslator::Translate(std::string vmFile)
 {
-   OpenVmFile(vmfileIn);
-   TokenizeFile(vmfileIn);
-
-   return true;
-}
-
-std::vector<VmTranslator::Token> VmTranslator::TokenizeFile(std::string vmfileIn)
-{
-   OpenVmFile(vmfileIn);
-   currentToken_ = unknownToken_;
-   while(currentToken_ != VmTranslator::endOfFile_)
-   {
-      GetNextToken();
-      if (currentToken_ != endOfLine_ && currentToken_ != comment_  && currentToken_ != endOfFile_)
-      {
-         tokens_.push_back(currentToken_);
-      }
-   }
-
-   return tokens_;
-}
-
-VmTranslator::Token VmTranslator::GetNextToken()
-{
-   currentToken_ = VmTranslator::endOfFile_;
+   std::ifstream infile(vmFile);
+   std::string line;
+   asm_ = std::ofstream();
+   asm_.open("assembly.asm");
   
-   char c;
-start:
-   SkipWhiteSpace();
-  
-   c = inputBuffer_[currentIndex_];
-   
-   if(isCharacter(c))
+   InisialiseSegments();
+   while(std::getline(infile, line))
    {
-      int tokenLength = 0;
-      while (isCharacter(c) || isNumber(c) || isUnderScore(c) || isDash(c))
+      std::cout << line << std::endl;
+      std::vector<std::string> tokens = splitString(line);
+      Interpret(tokens, line);
+   }
+
+   asm_.close();
+
+}
+
+void VmTranslator::Interpret (std::vector<std::string> components, std::string line)
+{
+   if (line.rfind("(", 0) == 0)
+   {
+      asm_ << components[0] <<  "\n";
+   }
+   else if (components[0] == "push")
+   {
+      if (components[1] == "constant") 
       {
-         tokenString_[tokenLength++] = c;
-         c = inputBuffer_[++currentIndex_];
+         asm_ << "//" <<  line <<  "\n";
+         asm_ << "     li R1, " <<  SP_ <<  "\n"; // 0 here is  the SP_ pointer which is RAM{0]
+         asm_ << "     load R31, R1\n";
+         asm_ << "\n";
+         asm_ << "     li R2, " <<  components[2] <<  "\n";
+         asm_ << "     str R2, R31\n";
+         asm_ << "     Incr R31\n";
+         asm_ << "     str R31, R1\n";
       }
-      tokenString_[tokenLength] = 0;
-      currentToken_ = identifier_;
-   }
-
-   else if(isNumber(c))
-   {
-      float value = 0;
-      unsigned int decimal = 0;
-      while (isNumber(c))
+      else if (components[1] == "local")
       {
-         value = (value * 10) + (c - '0');
-         c = inputBuffer_[++currentIndex_];
+         asm_ << "//" <<  line <<  "\n";
+         asm_ << "     li R1, " <<  SP_ <<  "\n";
+         asm_ << "     load R31, R1\n";
+         asm_ << "     li R1, " <<  local_ <<  "\n"; //1 here is the local pointer which is RAM{1]
+         asm_ << "     load R3, R1\n";
+         asm_ << "\n";
+         asm_ << "     li R2, " <<  components[2] <<  "\n";
+         asm_ << "     add R4, R3, R2\n";
+         asm_ << "     load R30, R4\n";
+         asm_ << "     str R30, R31\n";
+         asm_ << "     Incr R31\n";
+         asm_ << "     li R1, " <<  SP_ <<  "\n";
+         asm_ << "     str R31, R1\n";
       }
-      currentToken_ = number_;
-   }
-
-   else if(isOpenBrackets(c))
-   {
-      currentToken_ = openBrackets_;
-      c = inputBuffer_[++currentIndex_];
-   }
-
-   else if(isCloseBrackets(c))
-   {
-      currentToken_ = closeBrackets_;
-      c = inputBuffer_[++currentIndex_];
-   }
-
-   else if(isDot(c))
-   {
-      currentToken_ = dot_;
-      c = inputBuffer_[++currentIndex_];
-   }
-
-   else if(isEndOfLine(c))
-   {
-      currentToken_ = endOfLine_;
-      c = inputBuffer_[++currentIndex_];
-      lineNumber_++;
-   }
-   else if (isEndOfFile(c))
-   {
-      currentToken_ = endOfFile_;
-      c = inputBuffer_[++currentIndex_];
-   }
-
-   else if(isForwordSlash(c))
-   {
-      c = inputBuffer_[++currentIndex_];
-     
-      if (isForwordSlash(c))
+      else if (components[1] == "argument")
       {
-         //consume all characters till the end of line
-         while(!isEndOfLine(c))
+         asm_ << "//" <<  line <<  "\n";
+         asm_ << "     li R1, " <<  SP_ <<  "\n";
+         asm_ << "     load R31, R1\n";
+         asm_ << "     li R1, " <<  argument_ <<  "\n";//  1 here is the argument pointer which is RAM{5]
+         asm_ << "     load R3, R1\n";
+         asm_ << "\n";
+         asm_ << "     li R2, " <<  components[2] <<  "\n";
+         asm_ << "     add R4, R3, R2\n";
+         asm_ << "     load R30, R4\n";
+         asm_ << "     str R30, R31\n";
+         asm_ << "     Incr R31\n";
+         asm_ << "     li R1, " <<  SP_ <<  "\n";
+         asm_ << "     str R31, R1\n";
+      }
+   }
+   else if (components[0] == "pop")
+   {
+      if (components.size() == 1)
+      {
+         asm_ << "//" <<  line <<  "\n";
+         asm_ << "// (pop_constant;\n";
+         asm_ << "     li R1, " <<  SP_ <<  "\n";
+         asm_ << "     load R31, R1\n";
+         asm_ << "     Decr R31\n";
+         asm_ << "     load R12, R31\n";
+         asm_ << "     str R31, " <<  SP_ <<  "\n";
+      }
+      else
+      {
+         if(components.size()  == 3)
          {
-            c = inputBuffer_[++currentIndex_];
-         }
-         currentToken_ = comment_;
+            if (components[1] == "local")
+            {
+               asm_ << "//" <<  line <<  "\n";
+               asm_ << "     li R1, " <<  SP_ <<  "\n";
+               asm_ << "     load R31, R1\n";
+               asm_ << "     Decr R31\n";
+               asm_ << "     str R31, R1\n";
+               asm_ << "     load R2, R31\n";
+               asm_ << "     li R3, " <<  local_ <<  "\n";
+               asm_ << "     load R4, R3\n";
+               asm_ << "     li R5, " <<  components[2] <<  "\n";
+               asm_ << "     add R7, R4, R5\n";
+               asm_ << "     str R2, R7\n" ;
+            }
+            else if(components[1] == "argument")
+            {
+               asm_ << "//" <<  line <<  "\n";
+               asm_ << "     li R1, " <<  SP_ <<  "\n";
+               asm_ << "     load R31, R1\n";
+               asm_ << "     Decr R31\n";
+               asm_ << "     str R31, R1\n";
+               asm_ << "     load R2, R31\n"; // R2 contains the popped value
+               asm_ << "     li R3, " <<  argument_ <<  "\n"; //  5 here is the address of the argument segment
+               asm_ << "     load R4, R3\n";
+               asm_ << "     li R5, " <<  components[2] <<  "\n";
+               asm_ << "     add R7, R4, R5\n";
+               asm_ << "     str R2, R7\n";
+            }
+            else if(components[1] == "this")
+            {
+               asm_ << "//" <<  line <<  "\n";
+               asm_ << "     li R1, " <<  SP_ <<  "\n";
+               asm_ << "     load R31, R1\n";
+               asm_ << "     Decr R31\n";
+               asm_ << "     str R31, R1\n";
+               asm_ << "     load R2, R31\n"; // R2 contains the popped value
+               asm_ << "     li R3, " <<  this <<  "\n"; //  5 here is the address of the argument segment
+               asm_ << "     load R4, R3\n";
+               asm_ << "     li R5, " <<  components[2] <<  "\n";
+               asm_ << "     add R7, R4, R5\n";
+               asm_ << "     str R2, R7\n";
+            }
+            else if(components[1] == "that")
+            {
+                  asm_ << "//" <<  line <<  "\n";
+                  asm_ << "     li R1, " <<  SP_ <<  "\n";
+                  asm_ << "     load R31, R1\n";
+                  asm_ << "     Decr R31\n";
+                  asm_ << "     str R31, R1\n";
+                  asm_ << "     load R2, R31\n"; // R2 contains the popped value
+                  asm_ << "     li R3, " <<  that_ <<  "\n"; //  5 here is the address of the argument segment
+                  asm_ << "     load R4, R3\n";
+                  asm_ << "     li R5, " <<  components[2] <<  "\n";
+                  asm_ << "     add R7, R4, R5\n";
+                  asm_ << "     str R2, R7\n";
+            }
+            else if(components[1] == "pointer")
+            {
+                  asm_ << "//" <<  line <<  "\n";
+                  asm_ << "     li R1, " <<  SP_ <<  "\n";
+                  asm_ << "     load R31, R1\n";
+                  asm_ << "     Decr R31\n";
+                  asm_ << "     str R31, R1\n";
+                  asm_ << "     load R2, R31\n"; // R2 contains the popped value\n";
+                  uint32_t mthisTaht = this_;
+                  if (components[2] == "0")
+                     mthisTaht = this_;
+                  else
+                     mthisTaht = that_;
+                  asm_ << "     li R3, " <<  mthisTaht <<  "\n";
+                  asm_ << "     str R2, R3\n";
+            }
+        }
       }
    }
+   else if  (components[0] == "add") 
+   { 
+      // pop second item
+      asm_ << "//" << line << "\n";
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     Decr R31\n";
+      asm_ << "     load R12, R31\n";
+      asm_ << "     str R31, R1\n";
+      // pop first item
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     Decr R31\n";
+      asm_ << "     load R13, R31\n";
+      asm_ << "     str R31, R1\n";
+      // perform operation
+      asm_ << "     add R14, R12, R13\n";
+      // push the result
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     str R14, R31\n";
+      asm_ << "     Incr R31\n";
+      asm_ << "     str R31, R1\n";
+   }
+   else if  (components[0] == "sub") 
+   { 
+      // pop second item
+      asm_ << "//" << line << "\n";
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     Decr R31\n";
+      asm_ << "     load R12, R31\n";
+      asm_ << "     str R31, R1\n";
+      // pop first item
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     Decr R31\n";
+      asm_ << "     load R13, R31\n";
+      asm_ << "     str R31, R1\n";
+      // perform operation
+      asm_ << "     sub R14, R13, R12\n";
+      // push the result
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     str R14, R31\n";
+      asm_ << "     Incr R31\n";
+      asm_ << "     str R31, R1\n";
+   }
+   else if  (components[0] == "and") 
+   { 
+      // pop second item
+      asm_ << "//" << line << "\n";
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     Decr R31\n";
+      asm_ << "     load R12, R31\n";
+      asm_ << "     str R31, R1\n";
+      // pop first item
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     Decr R31\n";
+      asm_ << "     load R13, R31\n";
+      asm_ << "     str R31, R1\n";
+      // perform operation
+      asm_ << "     and R14, R13, R12\n";
+      // push the result
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     str R14, R31\n";
+      asm_ << "     Incr R31\n";
+      asm_ << "     str R31, R1\n";
+   }
+   else if  (components[0] == "or") 
+   { 
+      // pop second item
+      asm_ << "//" << line << "\n";
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     Decr R31\n";
+      asm_ << "     load R12, R31\n";
+      asm_ << "     str R31, R1\n";
+      // pop first item
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     Decr R31\n";
+      asm_ << "     load R13, R31\n";
+      asm_ << "     str R31, R1\n";
+      // perform operation
+      asm_ << "     or R14, R13, R12\n";
+      // push the result
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     str R14, R31\n";
+      asm_ << "     Incr R31\n";
+      asm_ << "     str R31, R1\n";
+   }
+    else if  (components[0] == "incr") 
+    { 
+      // pop second item
+      asm_ << "//" << line << "\n";
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     Decr R31\n";
+      asm_ << "     load R12, R31\n";
+      asm_ << "     str R31, R1\n";
+      // perform operation
+      asm_ << "     Incr R12\n";
+      // push the result
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     str R12, R31\n";
+      asm_ << "     Incr R31\n";
+      asm_ << "     str R31, R1\n";
+    }
+    else if  (components[0] == "equ") 
+    { 
+      // pop second item
+      asm_ << "//" << line << "\n";
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     Decr R31\n";
+      asm_ << "     load R12, R31\n";
+      asm_ << "     str R31, R1\n";
+      // pop first item
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     Decr R31\n";
+      asm_ << "     load R13, R31\n";
+      asm_ << "     str R31, R1\n";
+      // perform operation
+      asm_ << "     li R15, 0\n";
+      asm_ << "     cmp R12, R13\n";
+      asm_ << "     jeq label" << label_ << "\n";
+      asm_ << "     cmp R12, R13\n";
+      asm_ << "     jneq label" << (label_ + 1) << "\n";
+      asm_ << "  (label" << label_ <<")\n";
+      asm_ << "     li R15, 1\n";
+      asm_ << "  (label" << (label_+1)<<")\n";
+      label_ += 2;
+      // push the result
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     str R15, R31\n";
+      asm_ << "     Incr R31\n";
+      asm_ << "     str R31, R1\n";
+    }
+    else if  (components[0] == "nequ") 
+    { 
+      // pop second item
+      asm_ << "//" << line << "\n";
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     Decr R31\n";
+      asm_ << "     load R12, R31\n";
+      asm_ << "     str R31, R1\n";
+      // pop first item
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     Decr R31\n";
+      asm_ << "     load R13, R31\n";
+      asm_ << "     str R31, R1\n";
+      // perform operation
+      asm_ << "     li R15, 0\n";
+      asm_ << "     cmp R12, R13\n";
+      asm_ << "     jneq label" << label_ << "\n";
+      asm_ << "     cmp R12, R13\n";
+      asm_ << "     jeq label" << (label_ + 1) << "\n";
+      asm_ << "  (label" << label_ <<")\n";
+      asm_ << "     li R15, 1\n";
+      asm_ << "  (label" << (label_ + 1)<<")\n";
+      label_ += 2;
+      // push the result
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     str R15, R31\n";
+      asm_ << "     Incr R31\n";
+      asm_ << "     str R31, R1\n";
+    }
+    else if  (components[0] == "gt") 
+    { 
+      // pop second item
+      asm_ << "//" << line << "\n";
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     Decr R31\n";
+      asm_ << "     load R12, R31\n";
+      asm_ << "     str R31, R1\n";
+      // pop first item
+      // // asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     Decr R31\n";
+      asm_ << "     load R13, R31\n";
+      asm_ << "     str R31, R1\n";
+      // perform operation
+      asm_ << "     li R15, 0\n";
+      asm_ << "     cmp R13, R12\n";
+      asm_ << "     jg label" << label_ << "\n";
+      asm_ << "     cmp R13, R12\n";
+      asm_ << "     jle label" << (label_ + 1) << "\n";
+      asm_ << "  (label" << label_ <<")\n";
+      asm_ << "     li R15, 1\n";
+      asm_ << "  (label" << (label_ + 1)<<")\n";
+      label_ += 2;
+      // push the result
+      // // asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     str R15, R31\n";
+      asm_ << "     Incr R31\n";
+      asm_ << "     str R31, R1\n";
+      label_ += 2;
+      // push the result
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     str R15, R31\n";
+      asm_ << "     Incr R31\n";
+      asm_ << "     str R31, R1\n";
+    }
+    else if  (components[0] == "gte") 
+    { 
+      // pop second item
+      asm_ << "//" << line << "\n";
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     Decr R31\n";
+      asm_ << "     load R12, R31\n";
+      asm_ << "     str R31, R1\n";
+      // pop first item
+      // // asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     Decr R31\n";
+      asm_ << "     load R13, R31\n";
+      asm_ << "     str R31, R1\n";
+      // perform operation
+      asm_ << "     li R15, 0\n";
+      asm_ << "     cmp R13, R12\n";
+      asm_ << "     jge label" << label_ << "\n";
+      asm_ << "     cmp R13, R12\n";
+      asm_ << "     jl label" << (label_ + 1) << "\n";
+      asm_ << "  (label" << label_ <<")\n";
+      asm_ << "     li R15, 1\n";
+      asm_ << "  (label" << (label_ + 1)<<")\n";
+      label_ += 2;
+      // push the result
+      // // asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     str R15, R31\n";
+      asm_ << "     Incr R31\n";
+      asm_ << "     str R31, R1\n";
+      label_ += 2;
+      // push the result
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     str R15, R31\n";
+      asm_ << "     Incr R31\n";
+      asm_ << "     str R31, R1\n";
+    }
+    else if  (components[0] == "lt") 
+    { 
+      // pop second item
+      asm_ << "//" << line << "\n";
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     Decr R31\n";
+      asm_ << "     load R12, R31\n";
+      asm_ << "     str R31, R1\n";
+      // pop first item
+      asm_ << "     load R31, R1\n";
+      asm_ << "     Decr R31\n";
+      asm_ << "     load R13, R31\n";
+      asm_ << "     str R31, R1\n";
+      // perform operation
+      asm_ << "     li R15, 0\n";
+      asm_ << "     cmp R13, R12\n";
+      asm_ << "     jl label" << label_ << "\n";
+      asm_ << "     cmp R13, R12\n";
+      asm_ << "     jge label" << (label_ + 1) << "\n";
+      asm_ << "  (label" << label_ <<")\n";
+      asm_ << "     li R15, 1\n";
+      asm_ << "  (label" << (label_ + 1)<<")\n";
+      label_ += 2;
+      // push the result
+      asm_ << "     load R31, R1\n";
+      asm_ << "     str R15, R31\n";
+      asm_ << "     Incr R31\n";
+      asm_ << "     str R31, R1\n";
+      label_ += 2;
+      // push the result
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     str R15, R31\n";
+      asm_ << "     Incr R31\n";
+      asm_ << "     str R31, R1\n";
+    }
+    else if  (components[0] == "lte") 
+    { 
+      // pop second item
+      asm_ << "//" << line << "\n";
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     Decr R31\n";
+      asm_ << "     load R12, R31\n";
+      asm_ << "     str R31, R1\n";
+      // pop first item
+      asm_ << "     load R31, R1\n";
+      asm_ << "     Decr R31\n";
+      asm_ << "     load R13, R31\n";
+      asm_ << "     str R31, R1\n";
+      // perform operation
+      asm_ << "     li R15, 0\n";
+      asm_ << "     cmp R13, R12\n";
+      asm_ << "     jle label" << label_ << "\n";
+      asm_ << "     cmp R13, R12\n";
+      asm_ << "     jg label" << (label_ + 1) << "\n";
+      asm_ << "  (label" << label_ <<")\n";
+      asm_ << "     li R15, 1\n";
+      asm_ << "  (label" << (label_ + 1)<<")\n";
+      label_ += 2;
+      // push the result
+      asm_ << "     load R31, R1\n";
+      asm_ << "     str R15, R31\n";
+      asm_ << "     Incr R31\n";
+      asm_ << "     str R31, R1\n";
+      label_ += 2;
+      // push the result
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     str R15, R31\n";
+      asm_ << "     Incr R31\n";
+      asm_ << "     str R31, R1\n";
+    }
+    else if  (components[0] == "not") 
+    { 
+      // pop second item
+      asm_ << "//" << line << "\n";
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     Decr R31\n";
+      asm_ << "     load R12, R31\n";
+      asm_ << "     str R31, R1\n";
+      // perform operation
+      asm_ << "     not R12, R12\n";
+      // push the result
+      asm_ << "     load R31, R1\n";
+      asm_ << "     str R12, R31\n";
+      asm_ << "     Incr R31\n";
+      asm_ << "     str R31, R1\n";
+    }
+    else if  (components[0] == "neg") 
+    { 
+      // pop second item
+      asm_ << "//" << line << "\n";
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     Decr R31\n";
+      asm_ << "     load R12, R31\n";
+      asm_ << "     str R31, R1\n";
+      // perform operation
+      asm_ << "     li  R2, 0\n";
+      asm_ << "     sub R12, R2, R12\n";
+      // push the result
+      // // asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     str R12, R31\n";
+      asm_ << "     Incr R31\n";
+      asm_ << "     str R31, R1\n";
+    }
+    else if  (components[0] == "if-goto") 
+    { 
+      asm_ << "//" << line << "\n";
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     Decr R31\n";
+      asm_ << "     load R12, R31\n"; // pop the last value on stack
+      asm_ << "     str R31, R1\n"; // save the stack pointer 
+      // asm_ << "     li R1, 1\n";
+      asm_ << "     li R1, 1\n";
+      asm_ << "     cmp R12, R1\n";
+      asm_ << "     jeq " << components[1] << "\n";
+    }
+    else if  (components[0] == "function") 
+    { 
+      asm_ << "//" << line << "\n";
+      asm_ << "(" << components[1] << ")\n";
+    }
+   else if  (components[0] == "goto") 
+   { 
+      asm_ << "//" << line << "\n";
+      asm_ << "     jmp " << components[1] << "\n";
+   }
+   else if  (components[0] == "call")
+   { 
+      // // !!!!!!!!!!!!! We need to push a bunch of things on the stack here !!!!!!!!!!!
+      uint32_t numberOfLocalVariables = atoi(components[2].c_str());
+      uint32_t numberOfArgs = atoi(components[3].c_str());
+      asm_ << "//" << line << "\n";
+      asm_ << "     // push return address given as a number\n";
+      asm_ << "     li R1, 0\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     //replace the following li R2, return_address_\n";
+      asm_ << "     li R2, _returnAddress" << retAddress_ <<"\n";
+      asm_ << "     str R2, R31\n";
+      asm_ << "     Incr R31\n";
+      asm_ << "     str R31, R1\n\n";
+      asm_ << "     // push local\n";
+      asm_ << "     li R10, " << local_ << "\n";
+      asm_ << "     load R11, R10\n";
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     str R11, R31\n";
+      asm_ << "     Incr R31\n";
+      asm_ << "     str R31, R1\n";
+      asm_ << "     \n";
+      asm_ << "     // push argument\n";
+      asm_ << "     li R10, " << argument_ << "\n";
+      asm_ << "     load R11, R10\n";
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     str R11, R31\n";
+      asm_ << "     Incr R31\n";
+      asm_ << "     str R31, R1\n";
+      asm_ << "     \n";
+      asm_ << "     // push this\n";
+      asm_ << "     li R10, " << this_ << "\n";
+      asm_ << "     load R11, R10\n";
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     str R11, R31\n";
+      asm_ << "     Incr R31\n";
+      asm_ << "     str R31, R1\n";
+      asm_ << "     \n";
+      asm_ << "     // push that\n";
+      asm_ << "     li R10, " << that_ << "\n";
+      asm_ << "     load R11, R10\n";
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     str R11, R31\n";
+      asm_ << "     Incr R31\n";
+      asm_ << "     str R31, R1\n";
+      asm_ << "     \n";
+      asm_ << "     //New Arg = SP - 5 - nArgs -1\n"; 
+      asm_ << "     li R2, " << argument_ << "\n";
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     li R4, 5\n";
+      asm_ << "     // R3 = SP - 5- nArgs\n";
+      asm_ << "     sub R3, R31, R4\n";
+      asm_ << "     //R6 = nArgs\n";
+      asm_ << "     li R6, " << components[3] << "\n";
+      asm_ << "     sub R7, R3, R6\n";
+      asm_ << "     // new Arg = SP - 5 - nArgs\n";
+      asm_ << "     str R7, R2\n";
+      asm_ << "     \n";
+      asm_ << "     li R2, " << local_ << "\n";
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R3, R1\n";
+      asm_ << "     str R3, R2\n";
 
-   if (currentToken_ == VmTranslator::identifier_)
-   {
-      currentToken_ = CheckToken();  
+      asm_ << "     //push number of local variables\n";
+      asm_ << "     // R2 = num_of_local_Variables\n";
+      asm_ << "     li R2, " << numberOfLocalVariables << "\n";
+      asm_ << "     li R3, 0\n";
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     (repeat_" << repeat_ <<")\n";
+      asm_ << "     str R3, R31\n";
+      asm_ << "     Incr R31\n";
+      asm_ << "     str R31, R1\n";
+      asm_ << "     Decr R2\n";
+      asm_ << "     li R4, 0\n";
+      asm_ << "     cmp R2, R4\n";
+      asm_ << "     jneq repeat_" << repeat_ <<"\n";
+      repeat_ += 1;
+      asm_ << "     jmp " << components[1] << "\n";
+      asm_ << "(_returnAddress" << retAddress_ << ")\n";
+      retAddress_ += 1;
    }
-    
-   return currentToken_;
-}
+   else if  (components[0] == "return") 
+   { 
+      asm_ << "//" << line << "\n";
+      asm_ << "    li R2, " << argument_ << "\n";
+      asm_ << "    load R30, R2\n";
+      asm_ << "    load R29, R2\n";
+      asm_ << "    Incr R29\n"; // //  this is the SP_ value just before return (argumen0 + 1)
+      asm_ << "    li R1, " << SP_ << "\n";
+      asm_ << "    load R31, R1\n";
+      asm_ << "    Decr R31\n";
+      asm_ << "    str R31, R1\n";
+      asm_ << "    load R20, R31\n";
+      asm_ << "    str R20, R30\n";
+      asm_ << "    //SP = local0\n";
+      asm_ << "    li R1, " << SP_ << "\n";
+      asm_ << "    load R31, R1\n";
+      asm_ << "    li R2, " << local_ << "\n";
+      asm_ << "    load R31, R2\n";
+      asm_ << "    str R31, R1\n";
 
-VmTranslator::Token VmTranslator::CheckToken()
-{
-   std::string token = tokenString_;
-   VmTranslator::Token thisToken = VmTranslator::identifier_;
+      asm_ << "    //pop that(SP -1) 'that' pointer\n";
+      asm_ << "    li R1, " << SP_ << "\n";
+      asm_ << "    load R31, R1\n";
+      asm_ << "    li R2, 1\n";
+      asm_ << "    sub R3, R31, R2\n";
+      asm_ << "    load R4, R3\n";
+      asm_ << "    li R5, " << that_ << "\n";
+      asm_ << "    str R4, R5\n";
 
-   if (token == "function")
-   {
-      thisToken = VmTranslator::function_;
-   }
-   else if (token == "push" )
-   {
-      thisToken = VmTranslator::push_;
-   }
-   else if (token == "pop" )
-   {
-      thisToken = VmTranslator::pop_;
-   }
-   else if (token == "constant")
-   {
-      thisToken = VmTranslator::constantT_;
-   }
-   else if (token == "argument")
-   {
-      thisToken = VmTranslator::argumentT_;
-   }
-   else if (token == "local")
-   {
-      thisToken = VmTranslator::localT_;
-   }
-    else if (token == "static")
-   {
-      thisToken = VmTranslator::staticT_;
-   }
-   else if (token == "field")
-   {
-      thisToken = VmTranslator::fieldT_;
-   }
-   else if (token == "this")
-   {
-      thisToken = VmTranslator::thisT_;
-   }
-   else if (token == "that")
-   {
-      thisToken = VmTranslator::thatT_;
-   }
-   else if (token == "equ")
-   {
-      thisToken = VmTranslator::equ_;
-   }
-   else if (token == "nequ")
-   {
-      thisToken = VmTranslator::nequ_;
-   }
-   else if (token == "gt")
-   {
-      thisToken = VmTranslator::gt_;
-   }
-   else if (token == "lt")
-   {
-      thisToken = VmTranslator::lt_;
-   }
-   else if (token == "and")
-   {
-      thisToken = VmTranslator::and_;
-   }
-   else if (token == "or")
-   {
-      thisToken = VmTranslator::or_;
-   }
-   else if (token == "not")
-   {
-      thisToken = VmTranslator::not_;
-   }
-   else if (token == "add")
-   {
-      thisToken = VmTranslator::add_;
-   }
-   else if (token == "sub")
-   {
-      thisToken = VmTranslator::sub_;
-   }
-   else if (token == "mult")
-   {
-      thisToken = VmTranslator::mult_;
-   }
-   else if (token == "div")
-   {
-      thisToken = VmTranslator::div_;
-   }
-   else if (token == "return")
-   {
-      thisToken = VmTranslator::return_;
-   }
-   else if (token == "if-goto")
-   {
-      thisToken = VmTranslator::ifGoto_;
-   }
-   else if (token == "goto")
-   {
-      thisToken = VmTranslator::goto_;
-   }
+      asm_ << "    //pop that(SP -2) 'this' pointer\n";
+      asm_ << "    li R1, " << SP_ << "\n";
+      asm_ << "    load R31, R1\n";
+      asm_ << "    li R2, 2\n";
+      asm_ << "    sub R3, R31, R2\n";
+      asm_ << "    load R4, R3\n";
+      asm_ << "    li R5, " << this_ << "\n";
+      asm_ << "    str R4, R5\n";
 
-   return thisToken;
-}
+      asm_ << "    //pop that(SP -3) 'argument' pointer\n";
+      asm_ << "    li R1, " << SP_ << "\n";
+      asm_ << "    load R31, R1\n";
+      asm_ << "    li R2, 3\n";
+      asm_ << "    sub R3, R31, R2\n";
+      asm_ << "    load R4, R3\n";
+      asm_ << "    li R5, " << argument_ << "\n";
+      asm_ << "    str R4, R5\n";
 
+      asm_ << "    //pop that(SP -4) 'local' pointer\n";
+      asm_ << "    li R1, " << SP_ << "\n";
+      asm_ << "    load R31, R1\n";
+      asm_ << "    li R2, 4\n";
+      asm_ << "    sub R3, R31, R2\n";
+      asm_ << "    load R4, R3\n";
+      asm_ << "    li R5, " << local_ << "\n";
+      asm_ << "    str R4, R5\n";
 
-bool VmTranslator::isCharacter(char c)
-{
-   return ((c >= 'a' && c <='z') || (c >= 'A' && c <='Z'));
-}
-
-bool VmTranslator::isNumber(char c)
-{
-   return (c >= '0' && c <='9');
-}
-
-bool VmTranslator::isUnderScore(char c)
-{
-   return (c == '_');
-}
-
-bool VmTranslator::isDash(char c)
-{
-   return (c == '-');
-}
-
-bool VmTranslator::isOpenBrackets(char c)
-{
-   return (c == '(');
-}
-
-bool VmTranslator::isCloseBrackets(char c)
-{
-   return (c == ')');
-}
-
-bool VmTranslator::isDot(char c)
-{
-   return (c == '.');
-}
-
-
-bool VmTranslator::isEndOfLine(char c)
-{
-   bool retVal = false;
-   if (c == '\n' || c == 10 || c == 13)
-   {
-      retVal = true;
-   }
-   return retVal;
-}
-
-bool VmTranslator::isForwordSlash(char c)
-{
-   return (c == '/');
-}
-
-
-bool VmTranslator::isEndOfFile(char c)
-{
-   return (c == 0xEF);
-}
-
-void  VmTranslator::SkipWhiteSpace()
-{
-   char c;
-   c = inputBuffer_.at(currentIndex_);
-   while ((c == ' ') || /*(c == 10) || (c == '\n') ||*/ (c =='\t') /*|| (c == 13)||(c == -51)*/)
-   {
-       c = inputBuffer_.at(++currentIndex_);
-   }
-}
-
-
-void VmTranslator::PrintAllTokens()
-{
-   for (int i = 0; i < tokens_.size(); i++)
-   {
-       std::cout << tokenAsString[tokens_.at(i)] << std::endl;
+      asm_ << "    //pop that(SP -5) 'return address'\n";
+      asm_ << "    li R1, " << SP_ << "\n";
+      asm_ << "    load R31, R1\n";
+      asm_ << "    li R2, 5\n";
+      asm_ << "    sub R3, R31, R2\n";
+      asm_ << "    load R26, R3\n";
+      asm_ << "    mov R31, R29\n";
+      asm_ << "    str R31, R1\n";
+      asm_ << "    return\n";
    }
 }
 

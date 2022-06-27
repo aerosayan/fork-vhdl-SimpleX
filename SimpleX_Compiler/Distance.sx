@@ -1,0 +1,46 @@
+//My test class
+
+class Math { 
+    field int x, y;
+    static int pointCount;
+
+    method void main()
+    {
+        int x, y, min, max;
+        let x = 9;
+        let y = 6;
+       
+        let min = min(x, y);
+        let max = max(x, y);        
+        while(1)
+        {
+        }
+    }   
+
+    method int max(int x, int y) 
+    {
+        int result;
+       
+        let result = x;
+        if (y > x)
+        {
+            let result = y;
+        }
+              
+        return result;
+    }
+
+    method int min(int x, int y) 
+    {
+        int result;
+       
+        let result = x;
+        if (y < x)
+        {
+            let result = y;
+        }
+              
+        return result;
+    }
+}
+

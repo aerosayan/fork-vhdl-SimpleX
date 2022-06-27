@@ -779,8 +779,7 @@
     parseErr = parseErr && consumeIdentifierToken();
     currentClass_ = lastVarName_;
     localVarTable.clear();
-    AddToClassSymbolTable("this", lastVarName_, "argument", 0);
-    AddToLocalSymbolTable("this", lastVarName_, "argument", 0);
+    AddToClassSymbolTable("this", currentClass_, "argument", 0);
     
     parseErr = parseErr && consumeOpenBracesToken();
    

@@ -1,39 +1,49 @@
-function Math.main 8 0
-push constant 2
+function Math.main 5 0
+push constant 0
 pop local 0
-push constant 3
+push constant 0
+pop local 2
+push constant 7
 pop local 1
 push constant 4
-pop local 2
-push constant 5
 pop local 3
 push local 0
-push local 1
-call Math.mul 2 2
-pop local 4
-push local 0
-push local 3
-call Math.max 1 2
-pop local 5
-push local 0
-push local 3
-call Math.min 1 2
-pop local 6
-push local 0
-push local 1
-add
 push local 2
+push local 1
 push local 3
-add
+call Math.distance 2 4
+pop local 4
+push local 4
+return
+
+
+function Math.distance 2 4
+push argument 2
+push argument 0
+sub
+pop local 0
+push argument 3
+push argument 1
+sub
+pop local 1
+push local 0
+push local 0
 call Math.mul 2 2
-pop local 7
-(whileStatementStart_4)
+push local 1
+push local 1
+call Math.mul 2 2
+add
+call Math.sqrt 3 1
+return
+
+
+function Math.add1 1 1
+push local 0
 push constant 1
-if-goto whileTrueStatement_4
-goto whileEndStatement_4
-(whileTrueStatement_4)
-goto whileStatementStart_4
-(whileEndStatement_4)
+add
+pop local 0
+push local 0
+return
 
 
 function Math.mul 2 2
@@ -41,13 +51,13 @@ push constant 0
 pop local 0
 push argument 1
 pop local 1
-(whileStatementStart_5)
+(whileStatementStart_3)
 push local 1
 push constant 0
 nequ
-if-goto whileTrueStatement_5
-goto whileEndStatement_5
-(whileTrueStatement_5)
+if-goto whileTrueStatement_3
+goto whileEndStatement_3
+(whileTrueStatement_3)
 push local 0
 push argument 0
 add
@@ -56,8 +66,8 @@ push local 1
 push constant 1
 sub
 pop local 1
-goto whileStatementStart_5
-(whileEndStatement_5)
+goto whileStatementStart_3
+(whileEndStatement_3)
 push local 0
 return
 
@@ -105,13 +115,13 @@ push constant 1
 pop local 0
 push constant 0
 pop local 2
-(whileStatementStart_6)
+(whileStatementStart_4)
 push local 1
 push local 0
 gte
-if-goto whileTrueStatement_6
-goto whileEndStatement_6
-(whileTrueStatement_6)
+if-goto whileTrueStatement_4
+goto whileEndStatement_4
+(whileTrueStatement_4)
 push local 1
 push local 0
 sub
@@ -124,40 +134,34 @@ push local 2
 push constant 1
 add
 pop local 2
-goto whileStatementStart_6
-(whileEndStatement_6)
+goto whileStatementStart_4
+(whileEndStatement_4)
 push local 2
 return
 
 
-function Math.div 3 2
+function Math.div 2 2
 push argument 0
 pop local 0
 push constant 0
-pop local 2
-push constant 0
 pop local 1
-(whileStatementStart_7)
+(whileStatementStart_5)
 push local 0
 push argument 1
 gte
-if-goto whileTrueStatement_7
-goto whileEndStatement_7
-(whileTrueStatement_7)
+if-goto whileTrueStatement_5
+goto whileEndStatement_5
+(whileTrueStatement_5)
 push local 0
 push argument 1
 sub
 pop local 0
-push local 2
-push constant 1
-add
-pop local 2
 push local 1
 push constant 1
 add
 pop local 1
-goto whileStatementStart_7
-(whileEndStatement_7)
+goto whileStatementStart_5
+(whileEndStatement_5)
 push local 1
 return
 
