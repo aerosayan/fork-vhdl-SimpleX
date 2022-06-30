@@ -284,6 +284,36 @@ def VMTranslate(assemblyFile):
                     f.write("     Incr R31\n")
                     f.write("     li R1, " + SP + "\n")
                     f.write("     str R31, R1\n")
+
+                elif (components[1] == "temp"):
+                    f.write("//" + line + "\n")
+                    f.write("     li R1, " + SP + "\n")
+                    f.write("     load R31, R1\n")
+                    f.write("     li R1, " + temp + "\n")
+                    f.write("     load R3, R1\n")
+                    f.write("\n")
+                    f.write("     li R2, " + components[2] + "\n")
+                    f.write("     add R4, R3, R2\n")
+                    f.write("     load R30, R4\n")
+                    f.write("     str R30, R31\n")
+                    f.write("     Incr R31\n")
+                    f.write("     li R1, " + SP + "\n")
+                    f.write("     str R31, R1\n")
+
+                elif (components[1] == "that"):
+                    f.write("//" + line + "\n")
+                    f.write("     li R1, " + SP + "\n")
+                    f.write("     load R31, R1\n")
+                    f.write("     li R1, " + that + "\n")# 1 here is the argument pointer which is RAM{5]
+                    f.write("     load R3, R1\n")
+                    f.write("\n")
+                    f.write("     li R2, " + components[2] + "\n")
+                    f.write("     add R4, R3, R2\n")
+                    f.write("     load R30, R4\n")
+                    f.write("     str R30, R31\n")
+                    f.write("     Incr R31\n")
+                    f.write("     li R1, " + SP + "\n")
+                    f.write("     str R31, R1\n")
                 else:
                     print("expexted constant/local/argument/static...etc at line " + str(lineNumber))
                     return
@@ -347,6 +377,20 @@ def VMTranslate(assemblyFile):
                             f.write("     li R5, " + components[2] + "\n")
                             f.write("     add R7, R4, R5\n")
                             f.write("     str R2, R7\n")
+
+                        elif(components[1] == "temp"):
+                            f.write("//" + line + "\n")
+                            f.write("     li R1, " + SP + "\n")
+                            f.write("     load R31, R1\n")
+                            f.write("     Decr R31\n")
+                            f.write("     str R31, R1\n")
+                            f.write("     load R2, R31\n") #R2 contains the popped value
+                            f.write("     li R3, " + temp + "\n") # 5 here is the address of the argument segment
+                            f.write("     load R4, R3\n")
+                            f.write("     li R5, " + components[2] + "\n")
+                            f.write("     add R7, R4, R5\n")
+                            f.write("     str R2, R7\n")
+
                         elif(components[1] == "pointer"):
                             f.write("//" + line + "\n")
                             f.write("     li R1, " + SP + "\n")

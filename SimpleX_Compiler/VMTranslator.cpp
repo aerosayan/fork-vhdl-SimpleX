@@ -217,6 +217,22 @@ void VmTranslator::Interpret (std::vector<std::string> components, std::string l
          asm_ << "     li R1, " <<  SP_ <<  "\n";
          asm_ << "     str R31, R1\n";
       }
+      else if (components[1] == "temp")
+      {
+         asm_ << "//" <<  line <<  "\n";
+         asm_ << "     li R1, " <<  SP_ <<  "\n";
+         asm_ << "     load R31, R1\n";
+         asm_ << "     li R1, " <<  temp_ <<  "\n";
+         asm_ << "     load R3, R1\n";
+         asm_ << "\n";
+         asm_ << "     li R2, " <<  components[2] <<  "\n";
+         asm_ << "     add R4, R3, R2\n";
+         asm_ << "     load R30, R4\n";
+         asm_ << "     str R30, R31\n";
+         asm_ << "     Incr R31\n";
+         asm_ << "     li R1, " <<  SP_ <<  "\n";
+         asm_ << "     str R31, R1\n";
+      }
    }
    else if (components[0] == "pop")
    {
@@ -285,6 +301,20 @@ void VmTranslator::Interpret (std::vector<std::string> components, std::string l
                   asm_ << "     str R31, R1\n";
                   asm_ << "     load R2, R31\n"; // R2 contains the popped value
                   asm_ << "     li R3, " <<  that_ <<  "\n"; //  5 here is the address of the argument segment
+                  asm_ << "     load R4, R3\n";
+                  asm_ << "     li R5, " <<  components[2] <<  "\n";
+                  asm_ << "     add R7, R4, R5\n";
+                  asm_ << "     str R2, R7\n";
+            }
+            else if(components[1] == "temp")
+            {
+                  asm_ << "//" <<  line <<  "\n";
+                  asm_ << "     li R1, " <<  SP_ <<  "\n";
+                  asm_ << "     load R31, R1\n";
+                  asm_ << "     Decr R31\n";
+                  asm_ << "     str R31, R1\n";
+                  asm_ << "     load R2, R31\n"; // R2 contains the popped value
+                  asm_ << "     li R3, " <<  temp_ <<  "\n"; //  5 here is the address of the argument segment
                   asm_ << "     load R4, R3\n";
                   asm_ << "     li R5, " <<  components[2] <<  "\n";
                   asm_ << "     add R7, R4, R5\n";

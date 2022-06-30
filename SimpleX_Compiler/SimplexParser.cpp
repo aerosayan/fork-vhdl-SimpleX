@@ -21,7 +21,8 @@
   whileStatementTrue_(0),
   whileStatementFalse_(0),
 
-  passNumber_(1)
+  passNumber_(1),
+  assignedAddress_(500)
  {}
 
  SimplexParser::~SimplexParser()
@@ -194,7 +195,7 @@
  bool SimplexParser::consumeTypeToken()
  {
     bool result = false;
-    if (tokens_.at(token_index_).token == Tokenizer::int_ || tokens_.at(token_index_).token == Tokenizer::boolean_ || tokens_.at(token_index_).token == Tokenizer::char_ || tokens_.at(token_index_).token == Tokenizer::identifier_)
+    if (tokens_.at(token_index_).token == Tokenizer::int_ || tokens_.at(token_index_).token == Tokenizer::boolean_ || tokens_.at(token_index_).token == Tokenizer::char_ || tokens_.at(token_index_).token == Tokenizer::array_ || tokens_.at(token_index_).token == Tokenizer::identifier_)
     {
        lastVarType_ = tokens_.at(token_index_).tokenString;
        PrintXml("keyword", tokens_.at(token_index_).tokenString);
@@ -259,7 +260,7 @@
          consumeIdentifierToken();
 
          localArgumentNumbers args = {.numOfLocals = 0, .numOfArguments = 0};
-         AddToLocalSymbolTable(lastVarName_, lastVarType_, "argument", argumentIndex++);
+         AddToLocalSymbolTable(lastVarName_, lastVarType_, "argument", argumentIndex++, 0);
          currentMethodNumArguments_++;
          if (tokens_.at(token_index_).token == Tokenizer::comma_)
          {
@@ -269,7 +270,7 @@
                consumeCommaToken();
                consumeTypeToken();
                consumeIdentifierToken();
-               AddToLocalSymbolTable(lastVarName_, lastVarType_, "argument", argumentIndex++);
+               AddToLocalSymbolTable(lastVarName_, lastVarType_, "argument", argumentIndex++, 0);
                currentMethodNumArguments_++;
            } while (tokens_.at(token_index_).token == Tokenizer::comma_);
         }
@@ -392,9 +393,16 @@
      {
          PrintXml("identifier", tokens_.at(token_index_).tokenString);
          consumeIdentifierToken();
+         std::string arrayName = lastVarName_;
          CheckVariableExists(lastVarName_);
          consumeOpenSquareBracketsToken();
+         bool exists;
+         Symbol sym = GetSymbol(arrayName, exists);
+         EmitCode("push constant " + std::to_string(sym.address));
          consumeExpression();
+         EmitCode("add");
+         EmitCode("pop pointer 1");
+         EmitCode("push that 0");
          consumeCloseSquareBracketsToken();
          result = true;
      }
@@ -488,15 +496,42 @@
  {
      bool parseErr = true;
      parseErr = parseErr && consumeLetToken();
-     parseErr = parseErr && consumeIdentifierToken();
-     CheckVariableExists(lastVarName_);
-     bool exists;
-     Symbol sym = GetSymbol(lastVarName_, exists);
-     
-     parseErr = parseErr && consumeEqualToken();
-     parseErr = parseErr && consumeExpression();
-     parseErr = parseErr && consumeSemicolonToken();
-     EmitCode("pop " + sym.kind + " " + std::to_string(sym.index));
+     if (tokens_.at(token_index_).token == Tokenizer::identifier_ && tokens_.at(token_index_ + 1).token == Tokenizer::openSquareBracket_)
+     {
+         // its like an arr[index]
+         parseErr = parseErr && consumeIdentifierToken();
+         std::string arrayName = lastVarName_;
+         bool exists;
+         Symbol destSym = GetSymbol(lastVarName_, exists);
+         printf("====Here====%s, address = %d \n", lastVarName_.c_str(), destSym.address);
+         
+         consumeOpenSquareBrackets();
+         EmitCode("push constant " + std::to_string(destSym.address));
+         consumeExpression();
+         EmitCode("add");
+        
+         parseErr = parseErr && consumeCloseSquareBrackets();
+         parseErr = parseErr && consumeEqualToken();
+         parseErr = parseErr && consumeExpression();
+      
+         EmitCode("pop temp 0");
+         EmitCode("pop pointer 1");
+         EmitCode("push temp 0");
+         EmitCode("pop that 0");
+         parseErr = parseErr && consumeSemicolonToken();
+     }
+     else
+     {
+         parseErr = parseErr && consumeIdentifierToken();
+         CheckVariableExists(lastVarName_);
+         bool exists;
+         Symbol sym = GetSymbol(lastVarName_, exists);
+         parseErr = parseErr && consumeEqualToken();
+         parseErr = parseErr && consumeExpression();
+         parseErr = parseErr && consumeSemicolonToken();
+        
+         EmitCode("pop " + sym.kind + " " + std::to_string(sym.index));
+     }
      
      return parseErr;
  }
@@ -735,22 +770,21 @@
  {
     bool parseErr = true;
     uint32_t localIndex = 0;
-
     
     PrintOpenTag("subroutineBody");
     ident_++;
     parseErr = parseErr && consumeOpenBracesToken();
-    while((tokens_.at(token_index_).token == Tokenizer::int_ || tokens_.at(token_index_).token == Tokenizer::boolean_ || tokens_.at(token_index_).token == Tokenizer::char_ || tokens_.at(token_index_).token == Tokenizer::identifier_)  && (parseErr == true))
+    while((tokens_.at(token_index_).token == Tokenizer::int_ || tokens_.at(token_index_).token == Tokenizer::boolean_ || tokens_.at(token_index_).token == Tokenizer::char_ || tokens_.at(token_index_).token == Tokenizer::array_ || tokens_.at(token_index_).token == Tokenizer::identifier_)  && (parseErr == true))
     {
        parseErr = parseErr && consumeTypeToken();
        parseErr = parseErr && consumeIdentifierToken();
-       AddToLocalSymbolTable(lastVarName_, lastVarType_, "local", localIndex++);
+       AddToLocalSymbolTable(lastVarName_, lastVarType_, "local", localIndex++, 0);
        currentMethodNumLocals_++;
        while ((tokens_.at(token_index_).token == Tokenizer::comma_) && (parseErr == true))
        {
            parseErr = parseErr && consumeCommaToken();
            parseErr = parseErr && consumeIdentifierToken();
-           AddToLocalSymbolTable(lastVarName_, lastVarType_, "local", localIndex++);
+           AddToLocalSymbolTable(lastVarName_, lastVarType_, "local", localIndex++, 0);
            currentMethodNumLocals_++;
        }
        consumeSemicolonToken();
@@ -763,6 +797,77 @@
 
     return parseErr;
  }
+
+ bool SimplexParser::consumeArrayToken()
+ {
+     bool result = false;
+     if (tokens_.at(token_index_).token == Tokenizer::array_)
+     {
+        PrintXml("<keyword>", tokens_.at(token_index_).tokenString.c_str());
+        token_index_++;
+        result = true;
+    }
+    else
+    {
+       ErrorMsg("Expected a 'Array' definition token at Line : " + std::to_string(tokens_.at(token_index_).lineNumber));
+    }
+
+    return result;
+ }
+ 
+ bool SimplexParser::consumeOpenSquareBrackets()
+ {
+     bool result = false;
+     if (tokens_.at(token_index_).token == Tokenizer::openSquareBracket_)
+     {
+        PrintXml("<keyword>", tokens_.at(token_index_).tokenString.c_str());
+        token_index_++;
+        result = true;
+    }
+    else
+    {
+       ErrorMsg("Expected a '[' definition token at Line : " + std::to_string(tokens_.at(token_index_).lineNumber));
+    }
+
+    return result;
+ }
+ 
+ bool SimplexParser::consumeNumber()
+ {
+     bool result = false;
+     if (tokens_.at(token_index_).token == Tokenizer::number_)
+     {
+        PrintXml("<keyword>", tokens_.at(token_index_).tokenString.c_str());
+        lastVarValue_ = tokens_.at(token_index_).value;
+        token_index_++;
+         
+        result = true;
+    }
+    else
+    {
+       ErrorMsg("Expected a '.' definition token at Line : " + std::to_string(tokens_.at(token_index_).lineNumber));
+    }
+
+    return result;
+ }
+ 
+ bool SimplexParser::consumeCloseSquareBrackets()
+ {
+    bool result = false;
+     if (tokens_.at(token_index_).token == Tokenizer::closeSquareBracket_)
+     {
+        PrintXml("<keyword>", tokens_.at(token_index_).tokenString.c_str());
+        token_index_++;
+        result = true;
+    }
+    else
+    {
+       ErrorMsg("Expected a ']' definition token at Line : " + std::to_string(tokens_.at(token_index_).lineNumber));
+    }
+
+    return result;
+ }
+ 
 
  bool SimplexParser::Parse(std::string programName, uint32_t passNum)
  {
@@ -779,35 +884,45 @@
     parseErr = parseErr && consumeIdentifierToken();
     currentClass_ = lastVarName_;
     localVarTable.clear();
-    AddToClassSymbolTable("this", currentClass_, "argument", 0);
+    AddToClassSymbolTable("this", currentClass_, "argument", 0, 0);
     
     parseErr = parseErr && consumeOpenBracesToken();
    
     if (tokens_.at(token_index_).token == Tokenizer::static_ || tokens_.at(token_index_).token == Tokenizer::field_)
     {
-       int localCount = 0;
        do
        {
         std::string kind = (tokens_.at(token_index_).token == Tokenizer::static_) ? "static": "field";
        
         parseErr = parseErr && consumeFieldOrStatic();
-        parseErr = parseErr && consumeTypeToken();
-        parseErr = parseErr && consumeIdentifierToken();
-
-        AddStaticFieldVariables(kind);
-      
-        localCount++;
-        if (tokens_.at(token_index_).token == Tokenizer::comma_)
+        if (tokens_.at(token_index_).token == Tokenizer::array_)
         {
-           do
-           {
-               parseErr = parseErr && consumeCommaToken();
-               parseErr = parseErr && consumeIdentifierToken();
-               
-               AddStaticFieldVariables(kind);
-               
-               localCount++;
-           } while (tokens_.at(token_index_).token == Tokenizer::comma_);
+            consumeArrayToken();
+            consumeIdentifierToken();
+            std::string arrayName = lastVarName_;
+            consumeOpenSquareBrackets();
+            consumeNumber();
+            consumeCloseSquareBrackets();
+            AddStaticFieldVariables(kind, AllocateAddress());
+        }
+        else 
+        {
+            parseErr = parseErr && consumeTypeToken();
+            parseErr = parseErr && consumeIdentifierToken();
+
+            AddStaticFieldVariables(kind, 0);
+            
+            if (tokens_.at(token_index_).token == Tokenizer::comma_)
+            {
+               do
+               {
+                     parseErr = parseErr && consumeCommaToken();
+                     parseErr = parseErr && consumeIdentifierToken();
+                     
+                     AddStaticFieldVariables(kind, 0);
+                     
+               } while (tokens_.at(token_index_).token == Tokenizer::comma_);
+            }
         }
         parseErr = parseErr && consumeSemicolonToken();
        } while ((tokens_.at(token_index_).token == Tokenizer::static_ || tokens_.at(token_index_).token == Tokenizer::field_) && (parseErr == true));
@@ -842,26 +957,40 @@
    return parseError_;
  }
 
-void SimplexParser::AddStaticFieldVariables(std::string kind)
-{
-   if (kind == "static")
-   {
-      AddToClassSymbolTable(lastVarName_, lastVarType_, kind, staticVarIndex_++);
-     
-   }
-   else if(kind == "field")
-   {
-      AddToClassSymbolTable(lastVarName_, lastVarType_, kind, fieldVarIndex_++);
+ uint32_t SimplexParser::AllocateAddress()
+ {
+    uint32_t address;
+    if (passNumber_ == 2)
+    {
+        address = assignedAddress_ ;
+        assignedAddress_ += lastVarValue_;
+    }
 
+    return address;
+ }
+
+void SimplexParser::AddStaticFieldVariables(std::string kind, uint32_t address)
+{
+   if (passNumber_ == 2)
+   {
+      if (kind == "static")
+      {
+         AddToClassSymbolTable(lastVarName_, lastVarType_, kind, staticVarIndex_++, address);  
+      }
+      else if(kind == "field")
+      {
+         AddToClassSymbolTable(lastVarName_, lastVarType_, kind, fieldVarIndex_++, address);
+      }
    }
 }
 
- bool SimplexParser::AddToClassSymbolTable(std::string symbolName, std::string type, std::string kind, uint32_t index)
+ bool SimplexParser::AddToClassSymbolTable(std::string symbolName, std::string type, std::string kind, uint32_t index, uint32_t address)
  {
     bool result = false;
+    
     if (classMemberVarTable.count(symbolName) == 0)
     {
-       Symbol symbol = {.type= type, .kind = kind, .index = index};
+       Symbol symbol = {.type= type, .kind = kind, .index = index, .address = address};
        classMemberVarTable[symbolName] = symbol;
        result = true;
     }
@@ -874,12 +1003,12 @@ void SimplexParser::AddStaticFieldVariables(std::string kind)
     return result;
  }
 
- bool SimplexParser::AddToLocalSymbolTable(std::string symbolName, std::string type, std::string kind, uint32_t index)
+ bool SimplexParser::AddToLocalSymbolTable(std::string symbolName, std::string type, std::string kind, uint32_t index,  uint32_t address)
  {
     bool result = false;
     if (localVarTable.count(symbolName) == 0)
     {
-       Symbol symbol = {.type= type, .kind = kind, .index = index};
+       Symbol symbol = {.type= type, .kind = kind, .index = index, .address = address};
        localVarTable[symbolName] = symbol;
        result = true;
     }
@@ -893,17 +1022,20 @@ void SimplexParser::AddStaticFieldVariables(std::string kind)
 
   bool SimplexParser::CheckVariableExists(std::string var)
   {
-      bool exists = false;
-      exists = (localVarTable.count(var) == 1) ? true : false;
-      if (!exists)
+      bool exists = true;
+      if (passNumber_ == 2)
       {
-         exists = (classMemberVarTable.count(var) == 1) ? true : false;
-      }
+         exists = (localVarTable.count(var) == 1) ? true : false;
+         if (!exists)
+         {
+            exists = (classMemberVarTable.count(var) == 1) ? true : false;
+         }
 
-      if (!exists)
-      {
-         ErrorMsg("variable '" + var + "' is not defined at line : " + std::to_string(tokens_.at(token_index_).lineNumber));
-         exit(0);
+         if (!exists)
+         {
+            ErrorMsg("variable '" + var + "' is not defined at line : " + std::to_string(tokens_.at(token_index_).lineNumber));
+            exit(0);
+         }
       }
       
       return exists;
@@ -1011,7 +1143,7 @@ void SimplexParser::AddStaticFieldVariables(std::string kind)
 
       for (it = classMemberVarTable.begin(); it != classMemberVarTable.end(); it++)
       {
-          std::cout << it->first << "\t\t|" << it->second.type << "\t\t|" << it->second.kind << "\t\t|" << it->second.index << std::endl;       
+          std::cout << it->first << "\t\t|" << it->second.type << "\t\t|" << it->second.kind << "\t\t|" << it->second.index << "\t\t|" << it->second.address << std::endl;       
       }
   }
 

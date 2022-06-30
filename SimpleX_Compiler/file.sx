@@ -2,116 +2,28 @@
 
 class Math { 
     field int x, y;
-    static int pointCount;
+    field Array arr1[100];
+    field Array arr2[100];
+    field int z;
 
     method void main()
     {
-        int px1, px2, py1, py2;
-        int dist;
-        let px1 = 0;
-        let py1 = 0;
-        let px2 = 3;
-        let py2 = 4;
-
-        let dist = distance(px1, py1, px2, py2);
-        
-        return dist;
-    }
-
-    method int distance(int x1, int y1, int x2, int y2) 
-    {
-        int distX, distY;
-    
-        let distX = x2 - x1;
-        let distY = y2 - y1;
-       
-        return (Math.sqrt(Math.mul(distX, distX) + Math.mul(distY, distY)));
-    }
-
-    method int add1(int x)
-    {
-        int res;
-
-        let res = res + 1;
-
-        return res;
-    }
-      
-    method int mul(int x, int y) 
-    {
-        int result;
-        int counter;
-
-        let result = 0;
-        let counter = y;
-        while (counter != 0)
+        int x, y, z;
+        let y = 0;
+        let x = 1;
+        while (y < 10)
         {
-            let result = result + x;
-            let counter = counter - 1;
+           let arr1[y] = x;
+           let x = x + 1;
+           let y = y + 1;
         }
-              
-        return result;
-    }
-
-    method int max(int x, int y) 
-    {
-        int result;
-       
-        let result = x;
-        if (y > x)
+        let y = 0;
+        while (y < 10)
         {
-            let result = y;
+           let arr2[y] = arr1[y] + arr1[y + 1];
+           let y = y + 1;
         }
-              
-        return result;
-    }
-
-    method int min(int x, int y) 
-    {
-        int result;
-       
-        let result = x;
-        if (y < x)
-        {
-            let result = y;
-        }
-              
-        return result;
-    }
-
-
-    method int sqrt(int x) 
-    {
-        int N;
-        int remainder;
-        int result;
-       
-        let remainder = x;
-        let N = 1;
-        let result = 0;
-        while (remainder >= N)
-        {
-            let remainder = remainder - N;
-            let N = N + 2;
-            let result = result + 1; 
-        }
-              
-        return result;
-    }
-
-    method int div(int x, int y) 
-    {
-        int remainder;
-        int result;
-
-        let remainder = x;
-        let result = 0;
-        while (remainder >= y)
-        {
-            let remainder = remainder - y;
-            let result = result + 1;
-        }
-              
-        return result;
+        while(1)
+        {}
     }
 }

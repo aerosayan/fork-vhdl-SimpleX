@@ -52,6 +52,7 @@ public :
       integer_,/*51*/
       string_,/*52*/
       boolean_,/*53*/
+      array_,
       true_,/*54*/
       false_,/*55*/
       stringLit_,/*56*/
@@ -122,6 +123,7 @@ public :
       "integer", /*51*/
       "string", /*52*/
       "boolean", /*53*/
+      "array",
       "true", /*54*/
       "false", /*55*/
       "stringLit", /*56*/

@@ -68,6 +68,11 @@ private:
   bool cosumeSubroutineCall();
   bool consumeExpressionList();
   bool consumeDotToken();
+
+  bool consumeArrayToken();
+  bool consumeOpenSquareBrackets();
+  bool consumeNumber();
+  bool consumeCloseSquareBrackets();
   
   void PrintXml(std::string item, std::string value);
   void PrintOpenTag(std::string item);
@@ -92,6 +97,7 @@ private:
      std::string type;
      std::string kind;
      uint32_t    index;
+     uint32_t    address;
    }Symbol;
 
    typedef struct 
@@ -115,6 +121,7 @@ private:
 
     std::string lastVarName_;
     std::string lastVarType_;
+    uint32_t lastVarValue_;
     Tokenizer::Token lastOperation_;
 
     uint32_t staticVarIndex_;
@@ -128,10 +135,11 @@ private:
     uint32_t whileStatementStart_;
     uint32_t whileStatementTrue_;
     uint32_t whileStatementFalse_;
-
-    void AddStaticFieldVariables(std::string kind);
-    bool AddToClassSymbolTable(std::string symbolName, std::string type, std::string kind, uint32_t index);
-    bool AddToLocalSymbolTable(std::string symbolName, std::string type, std::string kind, uint32_t index);
+   
+    uint32_t  AllocateAddress();
+    void AddStaticFieldVariables(std::string kind, uint32_t address);
+    bool AddToClassSymbolTable(std::string symbolName, std::string type, std::string kind, uint32_t index, uint32_t address);
+    bool AddToLocalSymbolTable(std::string symbolName, std::string type, std::string kind, uint32_t index, uint32_t address);
     bool CheckVariableExists(std::string var);
     SimplexParser::Symbol GetSymbol(std::string name, bool& exists);
     void ErrorMsg(std::string err);
@@ -142,6 +150,7 @@ private:
     std::string currentClass_;
 
     uint32_t passNumber_;
+    uint32_t assignedAddress_;
     
 };
 

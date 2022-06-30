@@ -4,6 +4,7 @@
 #include "SimplexParser.hpp"
 #include "VMTranslator.hpp"
 #include <filesystem>
+#include "assembler.hpp"
 
 void UNIT_TEST_INPUTFILE()
 {
@@ -73,10 +74,17 @@ int main(int argc, char* argv[])
             {
                 std::string outFile = fileBaseName(fileToCompile.at(i)) + ".vm";
                 simplxParser.GenerateVMCode(outFile);
+                simplxParser.PrintClassSymbolTable();
+                //simplxParser.PrintLocalSymbolTable();
                 vt.Translate(outFile);
             }
         }
     }
+
+    // Assembler assemble;
+    // assemble.pass1("assembly.asm");
+
+    // assemble.assemble("assembly.asm");
    
    return 0;
 }
