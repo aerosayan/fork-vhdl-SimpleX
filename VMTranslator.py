@@ -608,13 +608,6 @@ def VMTranslate(assemblyFile):
                 f.write("     str R15, R31\n")
                 f.write("     Incr R31\n")
                 f.write("     str R31, R1\n")
-                #label += 2
-                #push the result
-                #f.write("     li R1, " + SP + "\n")
-                #f.write("     load R31, R1\n")
-                #f.write("     str R15, R31\n")
-                #f.write("     Incr R31\n")
-                #f.write("     str R31, R1\n")
 
             elif (components[0] == "gte"):
                 #pop second item
@@ -646,13 +639,6 @@ def VMTranslate(assemblyFile):
                 f.write("     str R15, R31\n")
                 f.write("     Incr R31\n")
                 f.write("     str R31, R1\n")
-                #label += 2
-                #push the result
-                #f.write("     li R1, " + SP + "\n")
-                #f.write("     load R31, R1\n")
-                #f.write("     str R15, R31\n")
-                #f.write("     Incr R31\n")
-                #f.write("     str R31, R1\n")
 
             elif (components[0] == "lt"):
                 #pop second item
@@ -682,13 +668,6 @@ def VMTranslate(assemblyFile):
                 f.write("     str R15, R31\n")
                 f.write("     Incr R31\n")
                 f.write("     str R31, R1\n")
-                #label += 2
-                #push the result
-                #f.write("     li R1, " + SP + "\n")
-                #f.write("     load R31, R1\n")
-                #f.write("     str R15, R31\n")
-                #f.write("     Incr R31\n")
-                #f.write("     str R31, R1\n")
 
             elif (components[0] == "lte"):
                 #pop second item
@@ -718,13 +697,6 @@ def VMTranslate(assemblyFile):
                 f.write("     str R15, R31\n")
                 f.write("     Incr R31\n")
                 f.write("     str R31, R1\n")
-                #label += 2
-                #push the result
-                #f.write("     li R1, " + SP + "\n")
-                #f.write("     load R31, R1\n")
-                #f.write("     str R15, R31\n")
-                #f.write("     Incr R31\n")
-                #f.write("     str R31, R1\n")
 
             elif (components[0] == "not"):
                 #pop second item

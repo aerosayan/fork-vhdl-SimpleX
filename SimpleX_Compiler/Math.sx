@@ -8,14 +8,15 @@
        int res1, res2, res3, res4;
 
        let x = 2;
-       let y = 3;
+       let y = 64;
        let z = 4;
        let l = 5;
 
        let res1 = mul(x, y);
        let res2 = max(x, l);
-       let res3 = min (x, l);
+       let res3 = sqrt (y);
        let res4 = Math.mul((x + y) , ( z + l));
+
 
        while(1)
        {}

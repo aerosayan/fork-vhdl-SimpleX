@@ -5,7 +5,7 @@ push constant 0
 pop local 1
 (whileStatementStart_1)
 push local 1
-push constant 35
+push constant 99
 lt
 if-goto whileTrueStatement_1
 goto whileEndStatement_1

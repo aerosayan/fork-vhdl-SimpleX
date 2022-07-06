@@ -1,7 +1,7 @@
 function Math.main 8 0
 push constant 2
 pop local 0
-push constant 3
+push constant 64
 pop local 1
 push constant 4
 pop local 2
@@ -15,9 +15,8 @@ push local 0
 push local 3
 call Math.max 1 2
 pop local 5
-push local 0
-push local 3
-call Math.min 1 2
+push local 1
+call Math.sqrt 3 1
 pop local 6
 push local 0
 push local 1

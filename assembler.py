@@ -239,15 +239,14 @@ def assemble(assemblyFile):
             elif (components[0] == "li"):
                 if (components[2].startswith("_") == False):
                     literalVal = components[2].replace('0x','')
-                    #if (literalVal.isnumeric()):
-                    literalVal = literalVal.zfill(8)
-                    upperHex = literalVal[0:4]
-                    lowerHex = literalVal[4:9] 
-                    upperHexBinary = bin(int(upperHex, 16))[2:].zfill(21)
-                    lowerHexBinary = bin(int(lowerHex, 16))[2:].zfill(21)
+                 
+                    literalVal = bin(int(literalVal))
+                    literalVal = literalVal.replace('b','')
+                    upperHex = literalVal[16:31].zfill(21)
+                    lowerHex = literalVal[0:15].zfill(21)
                     program.append("--" + line + "\n")
-                    program.append(opcode["lui"] + registers[components[1]] + upperHexBinary)
-                    program.append(opcode["li"] + registers[components[1]] + lowerHexBinary)
+                    program.append(opcode["lui"] + registers[components[1]] + str(upperHex))
+                    program.append(opcode["li"] + registers[components[1]] + str(lowerHex))
                 else:
                     literalVal = str(symbol_table[components[2]])
                     #if (literalVal.isnumeric()):

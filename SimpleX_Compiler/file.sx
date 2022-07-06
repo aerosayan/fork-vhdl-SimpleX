@@ -8,7 +8,7 @@ class Math {
         int x, y;
         let x = 1;
         let y = 0;
-        while(y < 35)
+        while(y < 99)
         {
            let arr1[y]     = x; 
            let x = x + 1;
