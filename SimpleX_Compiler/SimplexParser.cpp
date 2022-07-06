@@ -502,9 +502,8 @@
          parseErr = parseErr && consumeIdentifierToken();
          std::string arrayName = lastVarName_;
          bool exists;
-         Symbol destSym = GetSymbol(lastVarName_, exists);
-         printf("====Here====%s, address = %d \n", lastVarName_.c_str(), destSym.address);
-         
+         Symbol destSym = GetSymbol(arrayName, exists);
+                 
          consumeOpenSquareBrackets();
          EmitCode("push constant " + std::to_string(destSym.address));
          consumeExpression();

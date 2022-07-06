@@ -1,29 +1,18 @@
 //This is a demobstration of my Tokenizer functionality
 
 class Math { 
-    field int x, y;
     field Array arr1[100];
     field Array arr2[100];
-    field int z;
-
     method void main()
     {
-        int x, y, z;
-        let y = 0;
+        int x, y;
         let x = 1;
-        while (y < 10)
+        let y = 0;
+        while(y < 35)
         {
-           let arr1[y] = x;
+           let arr1[y]     = x; 
            let x = x + 1;
            let y = y + 1;
-        }
-        let y = 0;
-        while (y < 10)
-        {
-           let arr2[y] = arr1[y] + arr1[y + 1];
-           let y = y + 1;
-        }
-        while(1)
-        {}
+        }      
     }
 }

@@ -548,13 +548,6 @@ void VmTranslator::Interpret (std::vector<std::string> components, std::string l
       asm_ << "     str R15, R31\n";
       asm_ << "     Incr R31\n";
       asm_ << "     str R31, R1\n";
-      label_ += 2;
-      // push the result
-      asm_ << "     li R1, " << SP_ << "\n";
-      asm_ << "     load R31, R1\n";
-      asm_ << "     str R15, R31\n";
-      asm_ << "     Incr R31\n";
-      asm_ << "     str R31, R1\n";
     }
     else if  (components[0] == "gte") 
     { 
@@ -587,13 +580,6 @@ void VmTranslator::Interpret (std::vector<std::string> components, std::string l
       asm_ << "     str R15, R31\n";
       asm_ << "     Incr R31\n";
       asm_ << "     str R31, R1\n";
-      label_ += 2;
-      // push the result
-      asm_ << "     li R1, " << SP_ << "\n";
-      asm_ << "     load R31, R1\n";
-      asm_ << "     str R15, R31\n";
-      asm_ << "     Incr R31\n";
-      asm_ << "     str R31, R1\n";
     }
     else if  (components[0] == "lt") 
     { 
@@ -620,13 +606,6 @@ void VmTranslator::Interpret (std::vector<std::string> components, std::string l
       asm_ << "  (label" << (label_ + 1)<<")\n";
       label_ += 2;
       // push the result
-      asm_ << "     load R31, R1\n";
-      asm_ << "     str R15, R31\n";
-      asm_ << "     Incr R31\n";
-      asm_ << "     str R31, R1\n";
-      label_ += 2;
-      // push the result
-      asm_ << "     li R1, " << SP_ << "\n";
       asm_ << "     load R31, R1\n";
       asm_ << "     str R15, R31\n";
       asm_ << "     Incr R31\n";
@@ -662,12 +641,6 @@ void VmTranslator::Interpret (std::vector<std::string> components, std::string l
       asm_ << "     Incr R31\n";
       asm_ << "     str R31, R1\n";
       label_ += 2;
-      // push the result
-      asm_ << "     li R1, " << SP_ << "\n";
-      asm_ << "     load R31, R1\n";
-      asm_ << "     str R15, R31\n";
-      asm_ << "     Incr R31\n";
-      asm_ << "     str R31, R1\n";
     }
     else if  (components[0] == "not") 
     { 

@@ -1,15 +1,15 @@
-function Math.main 3 0
-push constant 0
-pop local 1
+function Math.main 2 0
 push constant 1
 pop local 0
-(whileStatementStart_3)
+push constant 0
+pop local 1
+(whileStatementStart_1)
 push local 1
-push constant 10
+push constant 35
 lt
-if-goto whileTrueStatement_3
-goto whileEndStatement_3
-(whileTrueStatement_3)
+if-goto whileTrueStatement_1
+goto whileEndStatement_1
+(whileTrueStatement_1)
 push constant 500
 push local 1
 add
@@ -26,49 +26,7 @@ push local 1
 push constant 1
 add
 pop local 1
-goto whileStatementStart_3
-(whileEndStatement_3)
-push constant 0
-pop local 1
-(whileStatementStart_4)
-push local 1
-push constant 10
-lt
-if-goto whileTrueStatement_4
-goto whileEndStatement_4
-(whileTrueStatement_4)
-push constant 600
-push local 1
-add
-push constant 500
-push local 1
-add
-pop pointer 1
-push that 0
-push constant 500
-push local 1
-push constant 1
-add
-add
-pop pointer 1
-push that 0
-add
-pop temp 0
-pop pointer 1
-push temp 0
-pop that 0
-push local 1
-push constant 1
-add
-pop local 1
-goto whileStatementStart_4
-(whileEndStatement_4)
-(whileStatementStart_5)
-push constant 1
-if-goto whileTrueStatement_5
-goto whileEndStatement_5
-(whileTrueStatement_5)
-goto whileStatementStart_5
-(whileEndStatement_5)
+goto whileStatementStart_1
+(whileEndStatement_1)
 
 
