@@ -3,12 +3,12 @@
 //===================
 
 //(Initialise_SP)
-    li R1,  100
+    li R1,  10
     li R2, 0
     str R1, R2
     
 //(Initialise_local)
-    li R3, 200
+    li R3, 40
     li R4, 1
     str R3, R4
 
@@ -28,7 +28,7 @@
     str R9, R10
 
 //(Initialise_argument)
-    li R11, 300
+    li R11, 80
     li R12, 2
     str R11, R12
        
@@ -42,6 +42,70 @@
     li R14, 7
     str R13, R14
 
+//function File.main 2 0
+(File.main)
+//push constant 1
+     li R1, 0
+     load R31, R1
+
+     li R2, 1
+     str R2, R31
+     Incr R31
+     str R31, R1
+//pop local 0
+     li R1, 0
+     load R31, R1
+     Decr R31
+     str R31, R1
+     load R2, R31
+     li R3, 1
+     load R4, R3
+     li R5, 0
+     add R7, R4, R5
+     str R2, R7
+//push constant 17
+     li R1, 0
+     load R31, R1
+
+     li R2, 17
+     str R2, R31
+     Incr R31
+     str R31, R1
+//pop local 1
+     li R1, 0
+     load R31, R1
+     Decr R31
+     str R31, R1
+     load R2, R31
+     li R3, 1
+     load R4, R3
+     li R5, 1
+     add R7, R4, R5
+     str R2, R7
+(whileStatementStart_1)
+//push constant 1
+     li R1, 0
+     load R31, R1
+
+     li R2, 1
+     str R2, R31
+     Incr R31
+     str R31, R1
+//if-goto whileTrueStatement_1
+     li R1, 0
+     load R31, R1
+     Decr R31
+     load R12, R31
+     str R31, R1
+     li R1, 1
+     cmp R12, R1
+     jeq whileTrueStatement_1
+//goto whileEndStatement_1
+     jmp whileEndStatement_1
+(whileTrueStatement_1)
+//goto whileStatementStart_1
+     jmp whileStatementStart_1
+(whileEndStatement_1)
 //function Math.main 8 0
 (Math.main)
 //push constant 2
@@ -631,7 +695,7 @@
      li R5, 7
      add R7, R4, R5
      str R2, R7
-(whileStatementStart_4)
+(whileStatementStart_6)
 //push constant 1
      li R1, 0
      load R31, R1
@@ -640,7 +704,7 @@
      str R2, R31
      Incr R31
      str R31, R1
-//if-goto whileTrueStatement_4
+//if-goto whileTrueStatement_6
      li R1, 0
      load R31, R1
      Decr R31
@@ -648,13 +712,13 @@
      str R31, R1
      li R1, 1
      cmp R12, R1
-     jeq whileTrueStatement_4
-//goto whileEndStatement_4
-     jmp whileEndStatement_4
-(whileTrueStatement_4)
-//goto whileStatementStart_4
-     jmp whileStatementStart_4
-(whileEndStatement_4)
+     jeq whileTrueStatement_6
+//goto whileEndStatement_6
+     jmp whileEndStatement_6
+(whileTrueStatement_6)
+//goto whileStatementStart_6
+     jmp whileStatementStart_6
+(whileEndStatement_6)
 //function Math.mul 2 2
 (Math.mul)
 //push constant 0
@@ -700,7 +764,7 @@
      li R5, 1
      add R7, R4, R5
      str R2, R7
-(whileStatementStart_5)
+(whileStatementStart_7)
 //push local 1
      li R1, 0
      load R31, R1
@@ -746,7 +810,7 @@
      str R15, R31
      Incr R31
      str R31, R1
-//if-goto whileTrueStatement_5
+//if-goto whileTrueStatement_7
      li R1, 0
      load R31, R1
      Decr R31
@@ -754,10 +818,10 @@
      str R31, R1
      li R1, 1
      cmp R12, R1
-     jeq whileTrueStatement_5
-//goto whileEndStatement_5
-     jmp whileEndStatement_5
-(whileTrueStatement_5)
+     jeq whileTrueStatement_7
+//goto whileEndStatement_7
+     jmp whileEndStatement_7
+(whileTrueStatement_7)
 //push local 0
      li R1, 0
      load R31, R1
@@ -861,9 +925,9 @@
      li R5, 1
      add R7, R4, R5
      str R2, R7
-//goto whileStatementStart_5
-     jmp whileStatementStart_5
-(whileEndStatement_5)
+//goto whileStatementStart_7
+     jmp whileStatementStart_7
+(whileEndStatement_7)
 //push local 0
      li R1, 0
      load R31, R1
@@ -1369,7 +1433,7 @@
      li R5, 2
      add R7, R4, R5
      str R2, R7
-(whileStatementStart_6)
+(whileStatementStart_8)
 //push local 1
      li R1, 0
      load R31, R1
@@ -1418,7 +1482,7 @@
      str R15, R31
      Incr R31
      str R31, R1
-//if-goto whileTrueStatement_6
+//if-goto whileTrueStatement_8
      li R1, 0
      load R31, R1
      Decr R31
@@ -1426,10 +1490,10 @@
      str R31, R1
      li R1, 1
      cmp R12, R1
-     jeq whileTrueStatement_6
-//goto whileEndStatement_6
-     jmp whileEndStatement_6
-(whileTrueStatement_6)
+     jeq whileTrueStatement_8
+//goto whileEndStatement_8
+     jmp whileEndStatement_8
+(whileTrueStatement_8)
 //push local 1
      li R1, 0
      load R31, R1
@@ -1582,9 +1646,9 @@
      li R5, 2
      add R7, R4, R5
      str R2, R7
-//goto whileStatementStart_6
-     jmp whileStatementStart_6
-(whileEndStatement_6)
+//goto whileStatementStart_8
+     jmp whileStatementStart_8
+(whileEndStatement_8)
 //push local 2
      li R1, 0
      load R31, R1
@@ -1720,7 +1784,7 @@
      li R5, 1
      add R7, R4, R5
      str R2, R7
-(whileStatementStart_7)
+(whileStatementStart_9)
 //push local 0
      li R1, 0
      load R31, R1
@@ -1769,7 +1833,7 @@
      str R15, R31
      Incr R31
      str R31, R1
-//if-goto whileTrueStatement_7
+//if-goto whileTrueStatement_9
      li R1, 0
      load R31, R1
      Decr R31
@@ -1777,10 +1841,10 @@
      str R31, R1
      li R1, 1
      cmp R12, R1
-     jeq whileTrueStatement_7
-//goto whileEndStatement_7
-     jmp whileEndStatement_7
-(whileTrueStatement_7)
+     jeq whileTrueStatement_9
+//goto whileEndStatement_9
+     jmp whileEndStatement_9
+(whileTrueStatement_9)
 //push local 0
      li R1, 0
      load R31, R1
@@ -1933,9 +1997,9 @@
      li R5, 1
      add R7, R4, R5
      str R2, R7
-//goto whileStatementStart_7
-     jmp whileStatementStart_7
-(whileEndStatement_7)
+//goto whileStatementStart_9
+     jmp whileStatementStart_9
+(whileEndStatement_9)
 //push local 1
      li R1, 0
      load R31, R1

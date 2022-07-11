@@ -1,0 +1,10 @@
+
+class File2 
+{ 
+    method void main()
+    {
+        int x, y;
+        let x = 1;
+        let y = 0;
+    }
+}

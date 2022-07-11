@@ -19,13 +19,23 @@ void UNIT_TEST_INPUTFILE()
 void UNIT_TEST_TOKENIZER()
 {
    Tokenizer *tokenizer = new Tokenizer();
-   tokenizer->OpenFile("file.txt"); 
+   tokenizer->OpenFile("file.sx"); 
    std::vector<Tokenizer::TokenVal> tokens = tokenizer->ReadAllTokens();
    for (int i = 0; i < tokens.size(); i++)
    {
        int tokenInt = (int)tokens.at(i).token;
        std::cout << tokenizer->tokenAsString[tokenInt] << "(" << tokens.at(i).lineNumber << ", " << tokens.at(i).value << ", " << tokens.at(i).tokenString <<  ")" << std::endl;
    }
+   printf("\n\n");
+   tokenizer->CloseFile("file.sx");
+   tokenizer->OpenFile("file2.sx"); 
+   tokens = tokenizer->ReadAllTokens();
+   for (int i = 0; i < tokens.size(); i++)
+   {
+       int tokenInt = (int)tokens.at(i).token;
+       std::cout << tokenizer->tokenAsString[tokenInt] << "(" << tokens.at(i).lineNumber << ", " << tokens.at(i).value << ", " << tokens.at(i).tokenString <<  ")" << std::endl;
+   }
+   tokenizer->CloseFile("file2.sx");
 }
 
 std::string fileBaseName(std::string path)
@@ -53,38 +63,37 @@ std::string fileBaseName(std::string path)
 
 int main(int argc, char* argv[])
 {
+    //UNIT_TEST_TOKENIZER();
     SimplexParser simplxParser;
+    VmTranslator vt;
+    Assembler assemble;
 
     std::vector<std::string> fileToCompile;
     for (int i = 1; i < argc; i++)
     {
         fileToCompile.push_back(argv[i]);
     }
-
-    VmTranslator vt;
+    std::string outFile = "Output.vm";
+    remove(outFile.c_str());
     
     for (int i = 0; i < fileToCompile.size(); i++)
     {
-        bool err = simplxParser.Parse(fileToCompile.at(i), 1);
+        std::string currentFileToCompile = fileToCompile.at(i);
+        bool err = simplxParser.Parse(currentFileToCompile, 1);
         
         if (err == false)
         {
-            err = simplxParser.Parse(fileToCompile.at(i), 2);
+            err = simplxParser.Parse(currentFileToCompile, 2);
             if (err == false)
             {
-                std::string outFile = fileBaseName(fileToCompile.at(i)) + ".vm";
                 simplxParser.GenerateVMCode(outFile);
-                simplxParser.PrintClassSymbolTable();
-                //simplxParser.PrintLocalSymbolTable();
-                vt.Translate(outFile);
             }
         }
     }
-
-    // Assembler assemble;
-    // assemble.pass1("assembly.asm");
-
-    // assemble.assemble("assembly.asm");
+    
+    vt.Translate(outFile);
+    assemble.pass1("assembly.asm");
+    assemble.assemble("assembly.asm");    
    
    return 0;
 }

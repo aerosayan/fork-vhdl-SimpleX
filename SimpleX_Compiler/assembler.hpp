@@ -14,6 +14,7 @@ public:
    std::vector<std::string> splitString(std::string text);
    void pass1(std::string assemblyFile);
    void assemble(std::string assemblyFile);
+   void CreateHexFile();
 
    private:
    std::map<std::string, std::string> opcode_;
@@ -24,6 +25,8 @@ public:
    std::ofstream asm_;
    
    std::vector<std::string> program_;
+
+   std::vector<std::string> hexProgram_;
 
 };
 

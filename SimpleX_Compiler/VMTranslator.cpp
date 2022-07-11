@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 
+
 VmTranslator::VmTranslator()
 : SP_(0),
   local_(1),
@@ -11,9 +12,9 @@ VmTranslator::VmTranslator()
   that_(4),
   temp_(5),
   static_(6),
-  SP_pointer_(100),
-  local_pointer_(200),
-  argument_pointer_(300),
+  SP_pointer_(10),
+  local_pointer_(40),
+  argument_pointer_(80),
   this_pointer_(400),
   that_pointer_(500),
   temp_pointer_(600),

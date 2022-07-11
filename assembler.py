@@ -144,7 +144,7 @@ def pass1(assemblyFile) :
             else:
                 pc = pc + 1
     print(symbol_table)
-    print("number of instructions = " + str(pc))
+    #print("number of instructions = " + str(pc))
 
 def generate_memory_list():
     f = open("memory.list", "w")

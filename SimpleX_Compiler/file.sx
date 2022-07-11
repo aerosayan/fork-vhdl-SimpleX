@@ -1,18 +1,15 @@
 //This is a demobstration of my Tokenizer functionality
 
-class Math { 
+class File 
+{ 
     field Array arr1[100];
-    field Array arr2[100];
     method void main()
     {
         int x, y;
         let x = 1;
-        let y = 0;
-        while(y < 99)
-        {
-           let arr1[y]     = x; 
-           let x = x + 1;
-           let y = y + 1;
-        }      
+        let y = 17;
+
+        while(1)
+        {}
     }
 }

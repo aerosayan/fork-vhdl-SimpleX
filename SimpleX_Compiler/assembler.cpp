@@ -146,150 +146,236 @@ void Assembler::pass1(std::string assemblyFile)
          {
              pc = pc + 2;
          }
+         else if (components[0] == "li" && (is_number(components[2]) == false))
+         {
+             pc = pc + 2;
+         }
          else
          {
              pc = pc + 1;
          }
       }
    }
-}
+   
+    std::map<std::string, uint32_t>::iterator it;
 
-std::string stringToBinary(std::string words) 
-{
-    std::string binaryString = "";
-    for (char& _char : words) 
+    for (it = labelTable_.begin(); it != labelTable_.end(); it++)
     {
-        _char = _char - 48;
-        binaryString += std::bitset<32>(_char).to_string();
+        std::cout << it->first << "\t\t|" << it->second << std::endl;       
     }
 
+}
+
+std::string stringToBinary(std::string decimal, uint8_t numOfbits) 
+{
+    std::string binaryString;
+    uint32_t decimalInt = atoi(decimal.c_str());
+    for (int i = 0; i < numOfbits; i++)
+    {
+         if ((decimalInt % 2) == 0)
+         {
+            binaryString.push_back('0');
+         }
+         else
+         {
+            binaryString.push_back('1');
+         }
+         decimalInt = decimalInt / 2;
+    }
+
+    std::reverse(binaryString.begin(), binaryString.end()); 
+
     return binaryString;
+}
+
+void Assembler::CreateHexFile()
+{
+    hexProgram_.clear();
+    for(size_t i = 0; i < program_.size() ; i++)
+    {
+        std::string binToHex, tmp = "0000";
+        for (size_t j = 0; j < program_.at(i).size(); j += 4)
+        {
+            if (program_.at(i).rfind("-", 0) != 0)
+            {
+                tmp = program_.at(i).substr(j, 4);
+                if  (!tmp.compare("0000")) 
+                    binToHex += "0";
+                else if (!tmp.compare("0001"))
+                    binToHex += "1";
+                else if (!tmp.compare("0010")) 
+                    binToHex += "2";
+                else if (!tmp.compare("0011")) 
+                    binToHex += "3";
+                else if (!tmp.compare("0100"))
+                     binToHex += "4";
+                else if (!tmp.compare("0101")) 
+                    binToHex += "5";
+                else if (!tmp.compare("0110")) 
+                    binToHex += "6";
+                else if (!tmp.compare("0111")) 
+                    binToHex += "7";
+                else if (!tmp.compare("1000")) 
+                    binToHex += "8";
+                else if (!tmp.compare("1001")) 
+                    binToHex += "9";
+                else if (!tmp.compare("1010")) 
+                    binToHex += "a";
+                else if (!tmp.compare("1011")) 
+                    binToHex += "b";
+                else if (!tmp.compare("1100")) 
+                    binToHex += "c";
+                else if (!tmp.compare("1101")) 
+                    binToHex += "d";
+                else if (!tmp.compare("1110")) 
+                    binToHex += "e";
+                else if (!tmp.compare("1111")) 
+                    binToHex += "f";
+                else continue;
+            }
+        }
+        if (binToHex != "")
+        {
+            hexProgram_.push_back(binToHex);
+        }
+    }
+
+    std::ofstream fileOut;
+    remove("memory.list");
+    fileOut.open("memory.list");
+    for (int i = 0; i < hexProgram_.size(); i++)
+    {
+       fileOut << hexProgram_.at(i) << std::endl;
+    }
+    for (int i = 0; i < hexProgram_.size(); i++)
+    {
+        printf("%s\n", hexProgram_.at(i).c_str());
+    }
 }
 
 
 void Assembler::assemble(std::string assemblyFile)
 {
-   std::string valueInBinary = stringToBinary("9");
-   std::cout << valueInBinary << std::endl;
-//    std::ifstream infile(assemblyFile);
-//    std::string line;
+   std::ifstream infile(assemblyFile);
+   std::string line;
    
-//    while(std::getline(infile, line))
-//    {
-//       line = trim(line);
-//       if (line.rfind("#", 0) != 0 && line != "" && line.rfind("/", 0) != 0 && line.rfind("(", 0) != 0 )
-//       {
-//            std::vector<std::string> components = splitString(line);
+   while(std::getline(infile, line))
+   {
+      line = trim(line);
+      if (line.rfind("#", 0) != 0 && line != "" && line.rfind("/", 0) != 0 && line.rfind("(", 0) != 0 )
+      {
+           std::vector<std::string> components = splitString(line);
         
-//             //no operation
-//             if (components[0] == "nop")
-//             {
-//                 program_.push_back("--" + line + "\n");
-//                 program_.push_back(opcode_["nop"] + "00000000000000000000000000")
-//             }
-//             if (components[0] == "call")
-//             {
-//                 if (is_number(components[1]))
-//                 {
-//                     hexBinary = bin(int(components[1], 10))[2:].zfill(26)
-//                     program_.push_back("--" + line + "\n")
-//                     program_.push_back(opcode["call"] + hexBinary)
-//                 }
-//                 else
-//                 {
-//                     address = str(symbol_table[components[1]])
-//                     hexBinary = bin(int(address, 10))[2:].zfill(26)
-//                     program_.push_back("--" + line + "\n")
-//                     program_.push_back(opcode["call"] + hexBinary)
-//                 }
-//             }
-//             if (components[0] == "return")
-//             {
-//                 program_.push_back("--" + line + "\n");
-//                 program_.push_back(opcode_["return"] + "00000000000000000000000000")
-//             }
-//             //lui or li operation
-//             else if (components[0] == "li")
-//             {
-//                 if (components[2].rfind("_", 0) != 0)
-//                 //if (components[2].startswith("_") == False)
-//                 {
-//                     literalVal = components[2].replace('0x','')
-//                     //if (literalVal.isnumeric()):
-//                     literalVal = literalVal.zfill(8)
-//                     upperHex = literalVal[0:4]
-//                     lowerHex = literalVal[4:9] 
-//                     upperHexBinary = bin(int(upperHex, 16))[2:].zfill(21)
-//                     lowerHexBinary = bin(int(lowerHex, 16))[2:].zfill(21)
-//                     program_.push_back("--" + line + "\n")
-//                     program_.push_back(opcode["lui"] + registers[components[1]] + upperHexBinary)
-//                     program_.push_back(opcode["li"] + registers[components[1]] + lowerHexBinary)
-//                 }
-//                 else
-//                 {
-//                     literalVal = str(symbol_table[components[2]])
-//                     //if (literalVal.isnumeric()):
-//                     literalVal = literalVal.zfill(8)
-//                     upperHex = literalVal[0:4]
-//                     lowerHex = literalVal[4:9] 
-//                     upperHexBinary = bin(int(upperHex, 10))[2:].zfill(21)
-//                     lowerHexBinary = bin(int(lowerHex, 10))[2:].zfill(21)
-//                     program_.push_back("--" + line + "\n")
-//                     program_.push_back(opcode["lui"] + registers[components[1]] + upperHexBinary)
-//                     program_.push_back(opcode["li"] + registers[components[1]] + lowerHexBinary)
-//                 }
-//             }
-//             if(components[0] == "jmp" or components[0] == "jeq" or components[0] == "jneq" or components[0] == "jg" or components[0] == "jge" or components[0] == "jl" or components[0] == "jle")
-//             {
-//                 if (components[1].isnumeric())
-//                 {
-//                     hexBinary = bin(int(components[1], 10))[2:].zfill(26)
-//                     program_.push_back("--" + line + "\n")
-//                     program_.push_back(opcode[components[0]] + hexBinary)
-//                 }
-//                 else
-//                 {
-//                     address = str(symbol_table[components[1]])
-//                     hexBinary = bin(int(address, 10))[2:].zfill(26)
-//                     program_.push_back("--" + line + "\n")
-//                     program_.push_back(opcode[components[0]] + hexBinary)
-//                 }
-//             }
-//             if(components[0] == "add" or components[0] == "sub" or components[0] == "and" or components[0] == "or" or components[0] == "xor" or components[0] == "xnor" or components[0] == "nand" or components[0] == "nor")
-//             {
-//                 program_.push_back("--" + line + "\n");
-//                 program_.push_back(opcode[components[0]] + registers[components[1]] + registers[components[2]] +  registers[components[3]] +'00000000000');
-//             }
-//             if(components[0] == "shiftl" or components[0] == "shiftr")
-//             {
-//                 program_.push_back("--" + line + "\n");
-//                 program_.push_back(opcode[components[0]] + registers[components[1]] + registers[components[2]] + "0000000000000000");
-//             }
-//             if(components[0] == "Incr" or components[0] == "Decr")
-//             {
-//                 program_.push_back("--" + line + "\n");
-//                 program_.push_back(opcode[components[0]] + registers[components[1]] + "000000000000000000000");
-//             }
-//             if(components[0] == "not")
-//             {
-//                  program_.push_back("--" + line + "\n");
-//                  program_.push_back(opcode[components[0]] + registers[components[1]] + registers[components[2]] + "0000000000000000");
-//             }
-//             if(components[0] == "load" or components[0] == "str" or components[0] == "cmp")
-//             {
-//                 program_.push_back("--" + line + "\n");
-//                 program_.push_back(opcode[components[0]] + registers[components[1]] + registers[components[2]] + "0000000000000000");
-//             }
-//             if(components[0] == "mov")
-//             {
-//                 program_.push_back("--" + line + "\n");
-//                 program_.push_back(opcode[components[0]] + registers[components[1]] + registers[components[2]] + "0000000000000000");
-//             }
-//             if(components[0] == "jmpa")
-//             {
-//                  program_.push_back("--" + line + "\n");
-//                  program_.push_back(opcode[components[0]] + registers[components[1]] + "000000000000000000000");
-//             }
-//       }
-//   }
+            //no operation
+            if (components[0] == "nop")
+            {
+                program_.push_back("--" + line);
+                program_.push_back(opcode_["nop"] + "00000000000000000000000000");
+            }
+            if (components[0] == "call")
+            {
+                if (is_number(components[1]))
+                {
+                    std::string hexBinary = stringToBinary(components[1], 26);
+                    program_.push_back("--" + line);
+                    program_.push_back(opcode_["call"] + hexBinary);
+                }
+                else
+                {
+                    uint32_t addressInt = (labelTable_[components[1]]);
+                    std::string address = std::to_string(addressInt);
+                    std::string hexBinary = stringToBinary(address, 26);//bin(int(address, 10))[2:].zfill(26)
+                    printf("==%s\n", hexBinary.c_str());
+                    program_.push_back("--" + line);
+                    program_.push_back(opcode_["call"] + hexBinary);
+                }
+            }
+            if (components[0] == "return")
+            {
+                program_.push_back("--" + line );
+                program_.push_back(opcode_["return"] + "00000000000000000000000000");
+            }
+            //lui or li operation
+            else if (components[0] == "li")
+            {
+                if (components[2].rfind("_", 0) != 0)
+                {
+                    std::string literalVal = components[2];
+                    literalVal = stringToBinary(literalVal, 32);
+                    std::string upperHex = "00000" + literalVal.substr(0, 16);
+                    std::string lowerHex = "00000" + literalVal.substr(16, 16);
+                    program_.push_back("--" + line);
+                    program_.push_back(opcode_["lui"] + registers_[components[1]] + upperHex);
+                    program_.push_back(opcode_["li"] + registers_[components[1]] + lowerHex);
+                }
+                else
+                {
+                    uint32_t literalValInt = labelTable_[components[2]];
+                    std::string literalVal = std::to_string(literalValInt);
+                    literalVal = stringToBinary(literalVal, 32);
+                    std::string upperHex = "00000" + literalVal.substr(0, 16);//[0:4]
+                    std::string lowerHex = "00000" + literalVal.substr(16, 16);//[4:9] 
+    
+                    program_.push_back("--" + line);
+                    program_.push_back(opcode_["lui"] + registers_[components[1]] + upperHex);
+                    program_.push_back(opcode_["li"] + registers_[components[1]] + lowerHex);
+                }
+            }
+            if(components[0] == "jmp" or components[0] == "jeq" or components[0] == "jneq" or components[0] == "jg" or components[0] == "jge" or components[0] == "jl" or components[0] == "jle")
+            {
+                if (is_number(components[1]))
+                {
+                    std::string hexBinary = stringToBinary(components[1], 26);//bin(int(components[1], 10))[2:].zfill(26)
+                    program_.push_back("--" + line);
+                    program_.push_back(opcode_[components[0]] + hexBinary);
+                }
+                else
+                {
+                    uint32_t literalValInt = labelTable_[components[1]];
+                    std::string address = std::to_string(literalValInt);
+                    std::string hexBinary = stringToBinary(address, 26);//[2:].zfill(26)
+                    program_.push_back("--" + line);
+                    program_.push_back(opcode_[components[0]] + hexBinary);
+                }
+            }
+            if(components[0] == "add" or components[0] == "sub" or components[0] == "and" or components[0] == "or" or components[0] == "xor" or components[0] == "xnor" or components[0] == "nand" or components[0] == "nor")
+            {
+                program_.push_back("--" + line);
+                program_.push_back(opcode_[components[0]] + registers_[components[1]] + registers_[components[2]] +  registers_[components[3]] + "00000000000");
+            }
+            if(components[0] == "shiftl" or components[0] == "shiftr")
+            {
+                program_.push_back("--" + line);
+                program_.push_back(opcode_[components[0]] + registers_[components[1]] + registers_[components[2]] + "0000000000000000");
+            }
+            if(components[0] == "Incr" or components[0] == "Decr")
+            {
+                program_.push_back("--" + line);
+                program_.push_back(opcode_[components[0]] + registers_[components[1]] + "000000000000000000000");
+            }
+            if(components[0] == "not")
+            {
+                 program_.push_back("--" + line);
+                 program_.push_back(opcode_[components[0]] + registers_[components[1]] + registers_[components[2]] + "0000000000000000");
+            }
+            if(components[0] == "load" or components[0] == "str" or components[0] == "cmp")
+            {
+                program_.push_back("--" + line);
+                program_.push_back(opcode_[components[0]] + registers_[components[1]] + registers_[components[2]] + "0000000000000000");
+            }
+            if(components[0] == "mov")
+            {
+                program_.push_back("--" + line);
+                program_.push_back(opcode_[components[0]] + registers_[components[1]] + registers_[components[2]] + "0000000000000000");
+            }
+            if(components[0] == "jmpa")
+            {
+                 program_.push_back("--" + line);
+                 program_.push_back(opcode_[components[0]] + registers_[components[1]] + "000000000000000000000");
+            }
+      }
+   }
+   infile.close();
+
+   CreateHexFile();
 }

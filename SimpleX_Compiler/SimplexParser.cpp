@@ -875,9 +875,8 @@
     classMemberVarTable.clear();
     localVarTable.clear();
     tokenizer_.OpenFile(programName);
-
     tokens_ = tokenizer_.ReadAllTokens();
-
+    
     bool parseErr = true;
     parseErr = parseErr && consumeClassToken();
     parseErr = parseErr && consumeIdentifierToken();
@@ -952,6 +951,7 @@
     }
 
     parseErr = parseErr && consumeCloseBracesToken();
+    tokenizer_.CloseFile(programName);
    
    return parseError_;
  }
@@ -1089,12 +1089,13 @@ void SimplexParser::AddStaticFieldVariables(std::string kind, uint32_t address)
   void SimplexParser::GenerateVMCode(std::string outputFile)
   {
     std::ofstream fileOut;
-    remove(outputFile.c_str());
     fileOut.open(outputFile.c_str(), std::ios_base::app);
     for (int i = 0; i < vmCode_.size(); i++)
     {
        fileOut << vmCode_.at(i);
     }
+    vmCode_.clear();
+    fileOut.close();
   }
 
   void SimplexParser::PrintXml(std::string item, std::string value)

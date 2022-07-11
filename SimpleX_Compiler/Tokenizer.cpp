@@ -19,6 +19,8 @@ Tokenizer::~Tokenizer()
 
 bool Tokenizer::OpenFile(std::string fileName)
 {
+   lineNumber_ = 1;
+
    return inputFile_.OpenFile(fileName);
 }
 
@@ -46,12 +48,13 @@ double Tokenizer::GetValue()
 
 Tokenizer::Token Tokenizer::GetNextToken()
 {
+  
    currentToken_ = Tokenizer::endOfFile_;
   
    char c;
-start:
+start:   
    SkipWhiteSpace();
-  
+
    c = inputFile_.GetCurrentCharacter();
 
    tokenVal_.token       = unknownToken_;
@@ -649,7 +652,9 @@ bool Tokenizer::isOr(char c)
 void  Tokenizer::SkipWhiteSpace()
 {
    char c;
+  
    c = inputFile_.GetCurrentCharacter();
+   
    while ((c == ' ') || /*(c == 10) || (c == '\n') ||*/ (c =='\t') /*|| (c == 13)||(c == -51)*/)
    {
        c = inputFile_.GetNextCharacter();
@@ -675,14 +680,17 @@ void Tokenizer::SetLineNumber(unsigned int lineNumber)
 std::vector<Tokenizer::TokenVal> Tokenizer::ReadAllTokens()
 {
    currentToken_ = unknownToken_;
+   tokens_.clear();
    while(currentToken_ != endOfFile_)
    {
       GetNextToken();
       if (currentToken_ != endOfLine_ && currentToken_ != comment_  && currentToken_ != endOfFile_)
       {
+          
          tokens_.push_back(tokenVal_);
       }
    }
+  
 
    return tokens_;
 }

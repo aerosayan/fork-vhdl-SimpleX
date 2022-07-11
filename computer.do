@@ -49,4 +49,4 @@ configure wave -rowmargin 4
 configure wave -childrowmargin 2    
 run 1004100  
  
-wave zoom full 
+wave zoom full

@@ -5,16 +5,16 @@
 InputFile::InputFile()
    : currentPosition_(0)
 {
-   //inputBuffer_ = new unsigned char [0x1000000];
 }
 
 InputFile::~InputFile()
 {
-   //delete [] inputBuffer_;
 }
 
 bool InputFile::OpenFile(std::string fileName)
 {
+   inputBuffer_.clear();
+   currentPosition_ = 0;
    FILE* fp = fopen(fileName.c_str(), "rb");
    if (!fp)
    {
@@ -34,14 +34,17 @@ bool InputFile::OpenFile(std::string fileName)
       inputBuffer_.push_back(buffer[i]);
    }
    inputBuffer_.push_back(0xEF); // push an end of file at the end
-   fclose(fp);
    
+   fclose(fp);
+   delete [] buffer;
    return true;
 }
 
 
 void InputFile::CloseFile(std::string fileName)
 {
+   inputBuffer_.clear();
+   currentPosition_ = 0;
 }
 
 unsigned char InputFile::GetCurrentCharacter()
