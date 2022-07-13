@@ -76,18 +76,19 @@ int main(int argc, char* argv[])
     }
     std::string outFile = "Output.vm";
     remove(outFile.c_str());
-
+ 
+    // First pass (syntax analysis)
     for (int i = 0; i < fileToCompile.size() && (err == false); i++)
     {
         std::string currentFileToCompile = fileToCompile.at(i);
         err = simplxParser.Parse(currentFileToCompile, 1);
     }
     
-    for (int i = 0; i < fileToCompile.size(); i++)
+    // Second pass (compilation)
+    for (int i = 0; i < fileToCompile.size() && (err == false); i++)
     {
         std::string currentFileToCompile = fileToCompile.at(i);
-        //err = simplxParser.Parse(currentFileToCompile, 1);
-        
+      
         if (err == false)
         {
             err = simplxParser.Parse(currentFileToCompile, 2);

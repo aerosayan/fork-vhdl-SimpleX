@@ -15,11 +15,11 @@ VmTranslator::VmTranslator()
   SP_pointer_(10),
   local_pointer_(40),
   argument_pointer_(80),
-  this_pointer_(400),
-  that_pointer_(500),
-  temp_pointer_(600),
-  static_pointer_(700),
-  pointer_pointer_(800),
+  this_pointer_(1000),
+  that_pointer_(2000),
+  temp_pointer_(3000),
+  static_pointer_(3500),
+  pointer_pointer_(4000),
   label_(0),
   retAddress_(0),
   repeat_(0)
@@ -224,6 +224,22 @@ void VmTranslator::Interpret (std::vector<std::string> components, std::string l
          asm_ << "     li R1, " <<  SP_ <<  "\n";
          asm_ << "     load R31, R1\n";
          asm_ << "     li R1, " <<  temp_ <<  "\n";
+         asm_ << "     load R3, R1\n";
+         asm_ << "\n";
+         asm_ << "     li R2, " <<  components[2] <<  "\n";
+         asm_ << "     add R4, R3, R2\n";
+         asm_ << "     load R30, R4\n";
+         asm_ << "     str R30, R31\n";
+         asm_ << "     Incr R31\n";
+         asm_ << "     li R1, " <<  SP_ <<  "\n";
+         asm_ << "     str R31, R1\n";
+      }
+      else if (components[1] == "that")
+      {
+         asm_ << "//" <<  line <<  "\n";
+         asm_ << "     li R1, " <<  SP_ <<  "\n";
+         asm_ << "     load R31, R1\n";
+         asm_ << "     li R1, " <<  that_ <<  "\n";// 1 here is the argument pointer which is RAM{5]
          asm_ << "     load R3, R1\n";
          asm_ << "\n";
          asm_ << "     li R2, " <<  components[2] <<  "\n";

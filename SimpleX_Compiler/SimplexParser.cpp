@@ -1198,9 +1198,10 @@ void SimplexParser::PrintGeneratedCode()
 void SimplexParser::ErrorMsg(std::string err)
 {
    printf("\033[0;31m");
-   printf("%s\n", err.c_str()); 
+  
    uint32_t lineNum = tokens_.at(token_index_).lineNumber;
-   printf("%d)%s\n", lineNum, sourceCode_.at(lineNum).c_str());
+   printf("Error in file : %s at line %d  '%s'\n", currentClass_.c_str(), lineNum, sourceCode_.at(lineNum-1).c_str());
+   printf("%s\n", err.c_str()); 
    printf("\033[0m");
    parseError_ = true;
 }

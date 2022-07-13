@@ -125,11 +125,11 @@ static = "6"
 SP_pointer = "10"
 local_pointer = "40"
 argument_pointer = "80"
-this_pointer = "400"
-that_pointer = "500"
-temp_pointer = "600"
-static_pointer = "700"
-pointer_pointer = "800"
+this_pointer = "1000"
+that_pointer = "2000"
+temp_pointer = "3000"
+static_pointer = "3500"
+pointer_pointer = "4000"
 
 label = 0
 retAddress = 0
