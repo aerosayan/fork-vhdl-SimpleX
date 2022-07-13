@@ -1,3 +1,7 @@
 
+files := $(wildcard *.cpp *.hpp)
+CFLAGS = -g
 all:
-	g++ *.cpp -o SimpleX -g
+	@echo "Compiling SimplX Compiler" $(files)
+	$(CXX) *.cpp -o SimpleX -g
+

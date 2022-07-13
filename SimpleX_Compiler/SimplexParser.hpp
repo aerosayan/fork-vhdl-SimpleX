@@ -151,6 +151,8 @@ private:
 
     uint32_t passNumber_;
     uint32_t assignedAddress_;
+
+    std::vector<std::string> sourceCode_;
     
 };
 

@@ -5,9 +5,12 @@ class File
     field Array arr1[100];
     method void main()
     {
-        int x, y;
-        let x = 1;
-        let y = 17;
+        int x, y, z;
+        let x = 3;
+        let y = 25;
+
+        //let z = (x * y);
+        let z = Math.sqrt(49);
 
         while(1)
         {}

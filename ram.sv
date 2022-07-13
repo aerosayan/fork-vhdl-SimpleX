@@ -8,7 +8,7 @@ module ram
     output reg [31:0] ram_out
 );
 
-reg [31:0] myramm[4096]; 
+reg [31:0] myramm[16384]; 
 
 always @(*) begin
    if (memrd) begin

@@ -388,6 +388,30 @@ void VmTranslator::Interpret (std::vector<std::string> components, std::string l
       asm_ << "     Incr R31\n";
       asm_ << "     str R31, R1\n";
    }
+   else if  (components[0] == "mul") 
+   { 
+      // pop second item
+      asm_ << "//" << line << "\n";
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     Decr R31\n";
+      asm_ << "     load R12, R31\n";
+      asm_ << "     str R31, R1\n";
+      // pop first item
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     Decr R31\n";
+      asm_ << "     load R13, R31\n";
+      asm_ << "     str R31, R1\n";
+      // perform operation
+      asm_ << "     mul R14, R13, R12\n";
+      // push the result
+      asm_ << "     li R1, " << SP_ << "\n";
+      asm_ << "     load R31, R1\n";
+      asm_ << "     str R14, R31\n";
+      asm_ << "     Incr R31\n";
+      asm_ << "     str R31, R1\n";
+   }
    else if  (components[0] == "and") 
    { 
       // pop second item

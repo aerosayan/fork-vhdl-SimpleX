@@ -67,6 +67,7 @@ int main(int argc, char* argv[])
     SimplexParser simplxParser;
     VmTranslator vt;
     Assembler assemble;
+    bool err = false;
 
     std::vector<std::string> fileToCompile;
     for (int i = 1; i < argc; i++)
@@ -75,11 +76,17 @@ int main(int argc, char* argv[])
     }
     std::string outFile = "Output.vm";
     remove(outFile.c_str());
+
+    for (int i = 0; i < fileToCompile.size() && (err == false); i++)
+    {
+        std::string currentFileToCompile = fileToCompile.at(i);
+        err = simplxParser.Parse(currentFileToCompile, 1);
+    }
     
     for (int i = 0; i < fileToCompile.size(); i++)
     {
         std::string currentFileToCompile = fileToCompile.at(i);
-        bool err = simplxParser.Parse(currentFileToCompile, 1);
+        //err = simplxParser.Parse(currentFileToCompile, 1);
         
         if (err == false)
         {
@@ -91,9 +98,12 @@ int main(int argc, char* argv[])
         }
     }
     
-    vt.Translate(outFile);
-    assemble.pass1("assembly.asm");
-    assemble.assemble("assembly.asm");    
+    if (err == false)
+    {
+        vt.Translate(outFile);
+        assemble.pass1("assembly.asm");
+        assemble.assemble("assembly.asm");    
+    }
    
    return 0;
 }

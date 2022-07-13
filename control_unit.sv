@@ -707,6 +707,22 @@ always @(*) begin
                  memwr <= 1'b0;
                  memrd <= 1'b10;
             end
+            6'b100100: begin //mul  dest, src1, src2
+                 alu_in <= 1'b1;
+                 dataMem_in <= 1'b0;
+                 pc_in <= 1'b0;    
+                 src1 <= instruction[20:16];
+                 src2 <= instruction[15:11];
+                 dest <= instruction[25:21];    
+                 func <= 15;
+                 alu_immediate_in <= 0;
+                 alu_imm <= 1'b0; 
+                 pc_loaded_immediate <= 1'b0;
+                 pc_alu_immediate <= 1'b0;
+                 pc_loaded_address <= 0;
+                 memwr <= 1'b0;
+                 memrd <= 1'b0;
+                 end
     endcase
 end
 

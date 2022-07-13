@@ -417,6 +417,7 @@
      {
          PrintXml("identifier", tokens_.at(token_index_).tokenString);
          consumeIdentifierToken();
+         currentClass_ = lastVarName_;
          consumeDotToken();
          cosumeSubroutineCall();
          result = true;
@@ -866,6 +867,19 @@
 
     return result;
  }
+
+ std::vector<std::string> ReadSourceFile(std::string programName)
+ {
+   std::vector<std::string> prog;
+   std::ifstream infile(programName.c_str());
+   std::string line;
+   while(std::getline(infile, line))
+   {
+      prog.push_back(line);
+   }
+   
+   return prog;
+ }
  
 
  bool SimplexParser::Parse(std::string programName, uint32_t passNum)
@@ -874,6 +888,9 @@
     passNumber_ = passNum;
     classMemberVarTable.clear();
     localVarTable.clear();
+    sourceCode_.clear();
+    sourceCode_ = ReadSourceFile(programName);
+
     tokenizer_.OpenFile(programName);
     tokens_ = tokenizer_.ReadAllTokens();
     
@@ -1182,6 +1199,8 @@ void SimplexParser::ErrorMsg(std::string err)
 {
    printf("\033[0;31m");
    printf("%s\n", err.c_str()); 
+   uint32_t lineNum = tokens_.at(token_index_).lineNumber;
+   printf("%d)%s\n", lineNum, sourceCode_.at(lineNum).c_str());
    printf("\033[0m");
    parseError_ = true;
 }

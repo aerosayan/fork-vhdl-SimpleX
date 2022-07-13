@@ -84,6 +84,10 @@ always @(*) begin
                 begin
                 outp_temp <= alu_mux_out - 1;
                 end
+        5'b01111:
+                begin
+                outp_temp <= alu_mux_out * in2;
+                end
    endcase;
 end
 

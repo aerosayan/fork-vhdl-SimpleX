@@ -36,6 +36,7 @@ Assembler::Assembler()
     opcode_["return"] = "100001";  
     opcode_["mov"]    = "100010";
     opcode_["jmpa"]   = "010100";
+    opcode_["mul"]    = "100100";
            
     registers_["R0"] = "00000"; 
     registers_["R1"] = "00001";
@@ -338,7 +339,7 @@ void Assembler::assemble(std::string assemblyFile)
                     program_.push_back(opcode_[components[0]] + hexBinary);
                 }
             }
-            if(components[0] == "add" or components[0] == "sub" or components[0] == "and" or components[0] == "or" or components[0] == "xor" or components[0] == "xnor" or components[0] == "nand" or components[0] == "nor")
+            if(components[0] == "add" or components[0] == "sub" or components[0] == "and" or components[0] == "or" or components[0] == "xor" or components[0] == "xnor" or components[0] == "nand" or components[0] == "nor" or components[0] == "mul")
             {
                 program_.push_back("--" + line);
                 program_.push_back(opcode_[components[0]] + registers_[components[1]] + registers_[components[2]] +  registers_[components[3]] + "00000000000");

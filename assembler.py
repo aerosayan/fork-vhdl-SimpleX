@@ -76,7 +76,8 @@ opcode = {'nop'    :'000000',
           'call'   :'100000',
           'return' :'100001',  
           'mov'    :'100010',
-          'jmpa'   :'010100'
+          'jmpa'   :'010100',
+          'mul'    :'100100'
           }
            
 registers = {'R0':"00000", 
@@ -271,7 +272,7 @@ def assemble(assemblyFile):
                     program.append("--" + line + "\n")
                     program.append(opcode[components[0]] + hexBinary)
 
-            if(components[0] == "add" or components[0] == "sub" or components[0] == "and" or components[0] == "or" or components[0] == "xor" or components[0] == "xnor" or components[0] == "nand" or components[0] == "nor"):
+            if(components[0] == "add" or components[0] == "sub" or components[0] == "and" or components[0] == "or" or components[0] == "xor" or components[0] == "xnor" or components[0] == "nand" or components[0] == "nor" or components[0] == "mul"):
                 program.append("--" + line + "\n")
                 program.append(opcode[components[0]] + registers[components[1]] + registers[components[2]] +  registers[components[3]] +'00000000000')
 

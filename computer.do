@@ -1,4 +1,4 @@
-exec python3 assembler.py &
+#exec python3 assembler.py &
 project compileall 
 noview wave 
 vsim -gui work.computer
@@ -47,6 +47,6 @@ configure wave -snapdistance 10
 configure wave -datasetprefix 0 
 configure wave -rowmargin 4 
 configure wave -childrowmargin 2    
-run 1004100  
+run 2004100  
  
 wave zoom full
