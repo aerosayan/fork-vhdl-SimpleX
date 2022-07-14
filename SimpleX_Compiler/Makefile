@@ -7,5 +7,5 @@ all:
 
 simplex:
 	@echo "SimpleX Compiling..."
-	./SimpleX file.sx
+	./SimpleX $(FILES)
 	cp memory.list ../memory.list

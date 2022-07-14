@@ -122,7 +122,7 @@ that = "4"
 temp = "5"
 static = "6"
 
-SP_pointer = "10"
+SP_pointer = "5000"
 local_pointer = "40"
 argument_pointer = "80"
 this_pointer = "1000"

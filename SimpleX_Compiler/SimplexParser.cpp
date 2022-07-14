@@ -1156,33 +1156,38 @@ void SimplexParser::AddStaticFieldVariables(std::string kind, uint32_t address)
 
   void SimplexParser::PrintClassSymbolTable()
   {
+     #ifdef XML_DEBUG
      std::map<std::string, Symbol>::iterator it;
 
       for (it = classMemberVarTable.begin(); it != classMemberVarTable.end(); it++)
       {
           std::cout << it->first << "\t\t|" << it->second.type << "\t\t|" << it->second.kind << "\t\t|" << it->second.index << "\t\t|" << it->second.address << std::endl;       
       }
+      #endif
   }
 
   void SimplexParser::PrintLocalSymbolTable()
   {
+     #ifdef XML_DEBUG
      std::map<std::string, Symbol>::iterator it;
 
      for (it = localVarTable.begin(); it != localVarTable.end(); it++)
      {
          std::cout << it->first << "\t\t|" << it->second.type << "\t\t|" << it->second.kind << "\t\t|" << it->second.index << std::endl;       
      }
+     #endif
   }
 
   void SimplexParser::PrintLocalArgumentNumbers()
   {
+      #ifdef XML_DEBUG
      std::map<std::string, localArgumentNumbers>::iterator it;
 
      for (it = localArgumenNumbers_.begin(); it != localArgumenNumbers_.end(); it++)
      {
          std::cout << it->first << "\t\t|" << it->second.numOfLocals << "\t\t|" << it->second.numOfArguments << std::endl;       
      }
-     
+     #endif
   }
 
 

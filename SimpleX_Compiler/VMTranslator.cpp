@@ -12,7 +12,7 @@ VmTranslator::VmTranslator()
   that_(4),
   temp_(5),
   static_(6),
-  SP_pointer_(10),
+  SP_pointer_(5000),
   local_pointer_(40),
   argument_pointer_(80),
   this_pointer_(1000),

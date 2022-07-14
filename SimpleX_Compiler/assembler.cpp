@@ -157,14 +157,6 @@ void Assembler::pass1(std::string assemblyFile)
          }
       }
    }
-   
-    std::map<std::string, uint32_t>::iterator it;
-
-    for (it = labelTable_.begin(); it != labelTable_.end(); it++)
-    {
-        std::cout << it->first << "\t\t|" << it->second << std::endl;       
-    }
-
 }
 
 std::string stringToBinary(std::string decimal, uint8_t numOfbits) 
@@ -248,10 +240,6 @@ void Assembler::CreateHexFile()
     {
        fileOut << hexProgram_.at(i) << std::endl;
     }
-    for (int i = 0; i < hexProgram_.size(); i++)
-    {
-        printf("%s\n", hexProgram_.at(i).c_str());
-    }
 }
 
 
@@ -286,7 +274,6 @@ void Assembler::assemble(std::string assemblyFile)
                     uint32_t addressInt = (labelTable_[components[1]]);
                     std::string address = std::to_string(addressInt);
                     std::string hexBinary = stringToBinary(address, 26);//bin(int(address, 10))[2:].zfill(26)
-                    printf("==%s\n", hexBinary.c_str());
                     program_.push_back("--" + line);
                     program_.push_back(opcode_["call"] + hexBinary);
                 }

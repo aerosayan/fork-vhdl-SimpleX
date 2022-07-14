@@ -7,14 +7,38 @@ class File
 
     method void main()
     {
-        int x, y, z, r;
-        let x = 1;
-        let y = 0;
-        let r = createSeries(0, 10, 10);
+        int sum, r;
+        int ser_size, step, start;
+        
+        let start = 1;
+        let step = 3;
+        let ser_size = 11;
+        let r = createSeries(start, step, ser_size);
                     
-        let z =  sumSeries(10);
+        let sum =  sumSeries(ser_size);
+        let r = average(ser_size);
+       
         while(1)
         {}
+    }
+
+
+     method int average(int size)
+    {
+       int y, sum, avr;
+       let avr = 0;
+       let sum = 0;
+
+       let y = 0;
+       while(y < size)
+       {
+          let sum = sum + arr1[y];
+          let y = y + 1;
+       }
+
+       let avr = div(sum, size);
+
+       return avr;
     }
 
     
@@ -46,5 +70,24 @@ class File
         return 0;
     }
 
+   
+    method int div(int x, int y) 
+    {
+        int remainder;
+        int result;
+        int N;
+
+        let remainder = x;
+        let N = 0;
+        let result = 0;
+        while (remainder >= y)
+        {
+            let remainder = remainder - y;
+            let N = N + 1;
+            let result = result + 1;
+        }
+              
+        return result;
+    }
     
 }
