@@ -9,3 +9,7 @@ work/_lib1_*
 work/_lib1*
 SimpleX.mpf
 SimpleX.cr.mti
+SimpleX_Compiler/memory.list
+assembly.asm
+memory.list
+test.vm
