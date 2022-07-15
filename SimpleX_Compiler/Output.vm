@@ -1,157 +1,37 @@
-function File.main 5 0
-push constant 1
-pop local 4
-push constant 3
-pop local 3
-push constant 11
-pop local 2
-push local 4
-push local 3
-push local 2
-call File.createSeries 1 3
-pop local 1
-push local 2
-call File.sumSeries 2 1
+function Memory.mainTest 3 1
+push argument 0
+call Memory.init 1 1
+pop static 0
+push constant 100
+call Memory.allocate 1 1
 pop local 0
-push local 2
-call File.average 3 1
+push constant 20
+call Memory.allocate 1 1
 pop local 1
-(whileStatementStart_5)
+(whileStatementStart_1)
 push constant 1
-if-goto whileTrueStatement_5
-goto whileEndStatement_5
-(whileTrueStatement_5)
-goto whileStatementStart_5
-(whileEndStatement_5)
+if-goto whileTrueStatement_1
+goto whileEndStatement_1
+(whileTrueStatement_1)
+goto whileStatementStart_1
+(whileEndStatement_1)
 
 
-function File.average 3 1
-push constant 0
-pop local 2
-push constant 0
-pop local 1
-push constant 0
+function Memory.allocate 1 1
+push static 0
 pop local 0
-(whileStatementStart_6)
-push local 0
+push static 0
 push argument 0
-lt
-if-goto whileTrueStatement_6
-goto whileEndStatement_6
-(whileTrueStatement_6)
-push local 1
-push constant 500
+add
+pop static 0
 push local 0
-add
-pop pointer 1
-push that 0
-add
-pop local 1
-push local 0
-push constant 1
-add
-pop local 0
-goto whileStatementStart_6
-(whileEndStatement_6)
-push local 1
-push argument 0
-call File.div 3 2
-pop local 2
-push local 2
 return
 
 
-function File.sumSeries 2 1
-push constant 0
-pop local 0
-push constant 0
-pop local 1
-(whileStatementStart_7)
-push local 0
-push argument 0
-lt
-if-goto whileTrueStatement_7
-goto whileEndStatement_7
-(whileTrueStatement_7)
-push local 1
-push constant 500
-push local 0
-add
-pop pointer 1
-push that 0
-add
-pop local 1
-push local 0
-push constant 1
-add
-pop local 0
-goto whileStatementStart_7
-(whileEndStatement_7)
-push local 1
-return
-
-
-function File.createSeries 1 3
-push constant 0
-pop local 0
-(whileStatementStart_8)
-push local 0
-push argument 2
-lt
-if-goto whileTrueStatement_8
-goto whileEndStatement_8
-(whileTrueStatement_8)
-push constant 500
-push local 0
-add
-push argument 0
-pop temp 0
-pop pointer 1
-push temp 0
-pop that 0
-push local 0
-push constant 1
-add
-pop local 0
-push argument 0
-push argument 1
-add
-pop argument 0
-goto whileStatementStart_8
-(whileEndStatement_8)
-push constant 0
-return
-
-
-function File.div 3 2
-push argument 0
-pop local 0
-push constant 0
-pop local 2
-push constant 0
-pop local 1
-(whileStatementStart_9)
-push local 0
-push argument 1
-gte
-if-goto whileTrueStatement_9
-goto whileEndStatement_9
-(whileTrueStatement_9)
-push local 0
-push argument 1
-sub
-pop local 0
-push local 2
-push constant 1
-add
-pop local 2
-push local 1
-push constant 1
-add
-pop local 1
-goto whileStatementStart_9
-(whileEndStatement_9)
-push local 1
+function Memory.init 1 1
+push constant 7000
+pop static 0
+push static 0
 return
 
 
