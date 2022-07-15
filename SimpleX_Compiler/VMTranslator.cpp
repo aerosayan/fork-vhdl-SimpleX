@@ -14,11 +14,11 @@ VmTranslator::VmTranslator()
   static_(6),
   SP_pointer_(5000),
   local_pointer_(40),
-  argument_pointer_(80),
+  argument_pointer_(200),
   this_pointer_(1000),
   that_pointer_(2000),
   temp_pointer_(3000),
-  static_pointer_(3500),
+  static_pointer_(4000),
   pointer_pointer_(4000),
   label_(0),
   retAddress_(0),
@@ -250,6 +250,22 @@ void VmTranslator::Interpret (std::vector<std::string> components, std::string l
          asm_ << "     li R1, " <<  SP_ <<  "\n";
          asm_ << "     str R31, R1\n";
       }
+      else if (components[1] == "static")
+      {
+         asm_ << "//" <<  line <<  "\n";
+         asm_ << "     li R1, " <<  SP_ <<  "\n";
+         asm_ << "     load R31, R1\n";
+         asm_ << "     li R1, " <<  static_ <<  "\n";
+         asm_ << "     load R3, R1\n";
+         asm_ << "\n";
+         asm_ << "     li R2, " <<  components[2] <<  "\n";
+         asm_ << "     add R4, R3, R2\n";
+         asm_ << "     load R30, R4\n";
+         asm_ << "     str R30, R31\n";
+         asm_ << "     Incr R31\n";
+         asm_ << "     li R1, " <<  SP_ <<  "\n";
+         asm_ << "     str R31, R1\n";
+      }
    }
    else if (components[0] == "pop")
    {
@@ -332,6 +348,20 @@ void VmTranslator::Interpret (std::vector<std::string> components, std::string l
                   asm_ << "     str R31, R1\n";
                   asm_ << "     load R2, R31\n"; // R2 contains the popped value
                   asm_ << "     li R3, " <<  temp_ <<  "\n"; //  5 here is the address of the argument segment
+                  asm_ << "     load R4, R3\n";
+                  asm_ << "     li R5, " <<  components[2] <<  "\n";
+                  asm_ << "     add R7, R4, R5\n";
+                  asm_ << "     str R2, R7\n";
+            }
+            else if(components[1] == "static")
+            {
+                  asm_ << "//" <<  line <<  "\n";
+                  asm_ << "     li R1, " <<  SP_ <<  "\n";
+                  asm_ << "     load R31, R1\n";
+                  asm_ << "     Decr R31\n";
+                  asm_ << "     str R31, R1\n";
+                  asm_ << "     load R2, R31\n"; // R2 contains the popped value
+                  asm_ << "     li R3, " <<  static_ <<  "\n"; //  5 here is the address of the argument segment
                   asm_ << "     load R4, R3\n";
                   asm_ << "     li R5, " <<  components[2] <<  "\n";
                   asm_ << "     add R7, R4, R5\n";

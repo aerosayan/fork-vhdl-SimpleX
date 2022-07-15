@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 //#define XML_DEBUG
+#define HEAP_START 6000
 
  SimplexParser::SimplexParser()
  :token_index_(0),
@@ -22,7 +23,7 @@
   whileStatementFalse_(0),
 
   passNumber_(1),
-  assignedAddress_(500)
+  assignedAddress_(HEAP_START)
  {}
 
  SimplexParser::~SimplexParser()
@@ -280,6 +281,11 @@
     {
        result = true;
     }
+   
+    if (currentMethodNumArguments_ == 0)
+    {
+       currentMethodNumArguments_++;
+    }
     PrintCloseTag("parameterList");  
 
     return result;
@@ -364,6 +370,11 @@
             consumeCommaToken();
             consumeExpression();
          }
+      }
+      else
+      {
+          // no arguments
+          EmitCode("push argument 0"); // We need at least one argument in the stack frame
       }
 
       return result;
@@ -789,6 +800,10 @@
        }
        consumeSemicolonToken();
     }
+    if (currentMethodNumLocals_ == 0)
+    {
+      currentMethodNumLocals_++; //at least reserve 1 local variables in empty local variable functions to adjust for function stack frame
+    }
     parseErr = parseErr && consumeStatements();
     parseErr = parseErr && consumeCloseBracesToken();
     ident_--;
@@ -899,7 +914,7 @@
     parseErr = parseErr && consumeIdentifierToken();
     currentClass_ = lastVarName_;
     localVarTable.clear();
-    AddToClassSymbolTable("this", currentClass_, "argument", 0, 0);
+    //AddToClassSymbolTable("this", currentClass_, "argument", 0, 0);
     
     parseErr = parseErr && consumeOpenBracesToken();
    
@@ -1156,14 +1171,14 @@ void SimplexParser::AddStaticFieldVariables(std::string kind, uint32_t address)
 
   void SimplexParser::PrintClassSymbolTable()
   {
-     #ifdef XML_DEBUG
+     //#ifdef XML_DEBUG
      std::map<std::string, Symbol>::iterator it;
 
       for (it = classMemberVarTable.begin(); it != classMemberVarTable.end(); it++)
       {
           std::cout << it->first << "\t\t|" << it->second.type << "\t\t|" << it->second.kind << "\t\t|" << it->second.index << "\t\t|" << it->second.address << std::endl;       
       }
-      #endif
+      //#endif
   }
 
   void SimplexParser::PrintLocalSymbolTable()

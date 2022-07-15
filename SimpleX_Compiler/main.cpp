@@ -83,6 +83,8 @@ int main(int argc, char* argv[])
         std::string currentFileToCompile = fileToCompile.at(i);
         err = simplxParser.Parse(currentFileToCompile, 1);
     }
+
+    simplxParser.PrintClassSymbolTable();
     
     // Second pass (compilation)
     for (int i = 0; i < fileToCompile.size() && (err == false); i++)

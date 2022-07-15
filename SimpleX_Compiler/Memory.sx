@@ -1,0 +1,34 @@
+
+class Memory
+{
+    static int heapAddress;
+
+    method void mainTest()
+    {
+       int heap1, heap2;
+       int newAddress;
+       
+       let heapAddress =  init();
+
+       let heap1 = allocate(100);
+       let heap2 = allocate(20);
+       while(1)
+       {}
+    }
+
+
+    method int allocate(int size)
+    {
+        int currAddress;
+        let currAddress = heapAddress;
+        let heapAddress = heapAddress + size;
+       
+        return currAddress;
+    }
+
+    method int init()
+    {
+        let heapAddress = 7000;
+        return heapAddress;
+    }
+}
