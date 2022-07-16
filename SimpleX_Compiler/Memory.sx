@@ -2,33 +2,38 @@
 class Memory
 {
     static int heapAddress;
+    static int globalSize;
+    field int x;
 
-    method void mainTest()
-    {
-       int heap1, heap2;
-       int newAddress;
+    // method void mainTest()
+    // {
+    //    int heap1, heap2;
+    //    int newAddress;
        
-       let heapAddress =  init();
+    //    let heapAddress =  init();
 
-       let heap1 = allocate(100);
-       let heap2 = allocate(20);
-       while(1)
-       {}
+    //    let heap1 = allocate(100);
+    //    let heap2 = allocate(20);
+    //    let x = x+ 1;
+    //    while(1)
+    //    {}
+    // }
+
+    method int init()
+    {
+        let heapAddress = 7000;
+        let globalSize = 0;
+        return heapAddress;
     }
-
 
     method int allocate(int size)
     {
         int currAddress;
         let currAddress = heapAddress;
         let heapAddress = heapAddress + size;
+        let globalSize = globalSize + size;
        
         return currAddress;
     }
 
-    method int init()
-    {
-        let heapAddress = 7000;
-        return heapAddress;
-    }
 }
