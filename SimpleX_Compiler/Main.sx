@@ -9,7 +9,7 @@ class Main
         int value, y; 
         let arr1 = Array.new(40);
         let value = Memory.poke(2000, 6);
-        let value = Main.createSeries(0, 10, 20);
+        let value = createSeries(0, 10, 20);
        
         let value = Memory.poke(2001, 7);
         //let value = Memory.peek(4098);

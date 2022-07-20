@@ -676,7 +676,7 @@
      li R5, 0
      add R7, R4, R5
      str R2, R7
-(whileStatementStart_5)
+(whileStatementStart_8)
 //push constant 1
      li R1, 0
      load R31, R1
@@ -685,7 +685,7 @@
      str R2, R31
      Incr R31
      str R31, R1
-//if-goto whileTrueStatement_5
+//if-goto whileTrueStatement_8
      li R1, 0
      load R31, R1
      Decr R31
@@ -693,13 +693,13 @@
      str R31, R1
      li R1, 1
      cmp R12, R1
-     jeq whileTrueStatement_5
-//goto whileEndStatement_5
-     jmp whileEndStatement_5
-(whileTrueStatement_5)
-//goto whileStatementStart_5
-     jmp whileStatementStart_5
-(whileEndStatement_5)
+     jeq whileTrueStatement_8
+//goto whileEndStatement_8
+     jmp whileEndStatement_8
+(whileTrueStatement_8)
+//goto whileStatementStart_8
+     jmp whileStatementStart_8
+(whileEndStatement_8)
 //push constant 0
      li R1, 0
      load R31, R1
@@ -825,7 +825,7 @@
      li R5, 0
      add R7, R4, R5
      str R2, R7
-(whileStatementStart_6)
+(whileStatementStart_9)
 //push local 0
      li R1, 0
      load R31, R1
@@ -874,7 +874,7 @@
      str R15, R31
      Incr R31
      str R31, R1
-//if-goto whileTrueStatement_6
+//if-goto whileTrueStatement_9
      li R1, 0
      load R31, R1
      Decr R31
@@ -882,10 +882,10 @@
      str R31, R1
      li R1, 1
      cmp R12, R1
-     jeq whileTrueStatement_6
-//goto whileEndStatement_6
-     jmp whileEndStatement_6
-(whileTrueStatement_6)
+     jeq whileTrueStatement_9
+//goto whileEndStatement_9
+     jmp whileEndStatement_9
+(whileTrueStatement_9)
 //push local 1
      li R1, 0
      load R31, R1
@@ -1040,9 +1040,9 @@
      li R5, 0
      add R7, R4, R5
      str R2, R7
-//goto whileStatementStart_6
-     jmp whileStatementStart_6
-(whileEndStatement_6)
+//goto whileStatementStart_9
+     jmp whileStatementStart_9
+(whileEndStatement_9)
 //push local 1
      li R1, 0
      load R31, R1
@@ -1270,7 +1270,7 @@
      li R5, 1
      add R7, R4, R5
      str R2, R7
-(whileStatementStart_7)
+(whileStatementStart_10)
 //push local 0
      li R1, 0
      load R31, R1
@@ -1319,7 +1319,7 @@
      str R15, R31
      Incr R31
      str R31, R1
-//if-goto whileTrueStatement_7
+//if-goto whileTrueStatement_10
      li R1, 0
      load R31, R1
      Decr R31
@@ -1327,10 +1327,10 @@
      str R31, R1
      li R1, 1
      cmp R12, R1
-     jeq whileTrueStatement_7
-//goto whileEndStatement_7
-     jmp whileEndStatement_7
-(whileTrueStatement_7)
+     jeq whileTrueStatement_10
+//goto whileEndStatement_10
+     jmp whileEndStatement_10
+(whileTrueStatement_10)
 //push local 1
      li R1, 0
      load R31, R1
@@ -1485,9 +1485,9 @@
      li R5, 0
      add R7, R4, R5
      str R2, R7
-//goto whileStatementStart_7
-     jmp whileStatementStart_7
-(whileEndStatement_7)
+//goto whileStatementStart_10
+     jmp whileStatementStart_10
+(whileEndStatement_10)
 //push local 1
      li R1, 0
      load R31, R1
@@ -1580,7 +1580,7 @@
      li R5, 0
      add R7, R4, R5
      str R2, R7
-(whileStatementStart_8)
+(whileStatementStart_11)
 //push local 0
      li R1, 0
      load R31, R1
@@ -1629,7 +1629,7 @@
      str R15, R31
      Incr R31
      str R31, R1
-//if-goto whileTrueStatement_8
+//if-goto whileTrueStatement_11
      li R1, 0
      load R31, R1
      Decr R31
@@ -1637,10 +1637,10 @@
      str R31, R1
      li R1, 1
      cmp R12, R1
-     jeq whileTrueStatement_8
-//goto whileEndStatement_8
-     jmp whileEndStatement_8
-(whileTrueStatement_8)
+     jeq whileTrueStatement_11
+//goto whileEndStatement_11
+     jmp whileEndStatement_11
+(whileTrueStatement_11)
 //push static 0
      li R1, 0
      load R31, R1
@@ -1843,9 +1843,9 @@
      li R5, 0
      add R7, R4, R5
      str R2, R7
-//goto whileStatementStart_8
-     jmp whileStatementStart_8
-(whileEndStatement_8)
+//goto whileStatementStart_11
+     jmp whileStatementStart_11
+(whileEndStatement_11)
 //push constant 0
      li R1, 0
      load R31, R1
@@ -1976,7 +1976,7 @@
      li R5, 1
      add R7, R4, R5
      str R2, R7
-(whileStatementStart_9)
+(whileStatementStart_12)
 //push local 0
      li R1, 0
      load R31, R1
@@ -2025,7 +2025,7 @@
      str R15, R31
      Incr R31
      str R31, R1
-//if-goto whileTrueStatement_9
+//if-goto whileTrueStatement_12
      li R1, 0
      load R31, R1
      Decr R31
@@ -2033,10 +2033,10 @@
      str R31, R1
      li R1, 1
      cmp R12, R1
-     jeq whileTrueStatement_9
-//goto whileEndStatement_9
-     jmp whileEndStatement_9
-(whileTrueStatement_9)
+     jeq whileTrueStatement_12
+//goto whileEndStatement_12
+     jmp whileEndStatement_12
+(whileTrueStatement_12)
 //push local 0
      li R1, 0
      load R31, R1
@@ -2189,9 +2189,9 @@
      li R5, 1
      add R7, R4, R5
      str R2, R7
-//goto whileStatementStart_9
-     jmp whileStatementStart_9
-(whileEndStatement_9)
+//goto whileStatementStart_12
+     jmp whileStatementStart_12
+(whileEndStatement_12)
 //push local 1
      li R1, 0
      load R31, R1
@@ -2861,6 +2861,1358 @@
      li R5, 1
      add R7, R4, R5
      str R2, R7
+//push local 1
+     li R1, 0
+     load R31, R1
+     li R1, 1
+     load R3, R1
+
+     li R2, 1
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//return
+    li R2, 2
+    load R30, R2
+    load R29, R2
+    Incr R29
+    li R1, 0
+    load R31, R1
+    Decr R31
+    str R31, R1
+    load R20, R31
+    str R20, R30
+    //SP = local0
+    li R1, 0
+    load R31, R1
+    li R2, 1
+    load R31, R2
+    str R31, R1
+    //pop that(SP -1) 'that' pointer
+    li R1, 0
+    load R31, R1
+    li R2, 1
+    sub R3, R31, R2
+    load R4, R3
+    li R5, 4
+    str R4, R5
+    //pop that(SP -2) 'this' pointer
+    li R1, 0
+    load R31, R1
+    li R2, 2
+    sub R3, R31, R2
+    load R4, R3
+    li R5, 3
+    str R4, R5
+    //pop that(SP -3) 'argument' pointer
+    li R1, 0
+    load R31, R1
+    li R2, 3
+    sub R3, R31, R2
+    load R4, R3
+    li R5, 2
+    str R4, R5
+    //pop that(SP -4) 'local' pointer
+    li R1, 0
+    load R31, R1
+    li R2, 4
+    sub R3, R31, R2
+    load R4, R3
+    li R5, 1
+    str R4, R5
+    //pop that(SP -5) 'return address'
+    li R1, 0
+    load R31, R1
+    li R2, 5
+    sub R3, R31, R2
+    load R26, R3
+    mov R31, R29
+    str R31, R1
+    return
+//function Math.mul 2 2
+(Math.mul)
+//push constant 0
+     li R1, 0
+     load R31, R1
+
+     li R2, 0
+     str R2, R31
+     Incr R31
+     str R31, R1
+//pop local 0
+     li R1, 0
+     load R31, R1
+     Decr R31
+     str R31, R1
+     load R2, R31
+     li R3, 1
+     load R4, R3
+     li R5, 0
+     add R7, R4, R5
+     str R2, R7
+//push argument 1
+     li R1, 0
+     load R31, R1
+     li R1, 2
+     load R3, R1
+
+     li R2, 1
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//pop local 1
+     li R1, 0
+     load R31, R1
+     Decr R31
+     str R31, R1
+     load R2, R31
+     li R3, 1
+     load R4, R3
+     li R5, 1
+     add R7, R4, R5
+     str R2, R7
+(whileStatementStart_13)
+//push local 1
+     li R1, 0
+     load R31, R1
+     li R1, 1
+     load R3, R1
+
+     li R2, 1
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//push constant 0
+     li R1, 0
+     load R31, R1
+
+     li R2, 0
+     str R2, R31
+     Incr R31
+     str R31, R1
+//nequ
+     li R1, 0
+     load R31, R1
+     Decr R31
+     load R12, R31
+     str R31, R1
+     li R1, 0
+     load R31, R1
+     Decr R31
+     load R13, R31
+     str R31, R1
+     li R15, 0
+     cmp R12, R13
+     jneq label8
+     cmp R12, R13
+     jeq label9
+  (label8)
+     li R15, 1
+  (label9)
+     li R1, 0
+     load R31, R1
+     str R15, R31
+     Incr R31
+     str R31, R1
+//if-goto whileTrueStatement_13
+     li R1, 0
+     load R31, R1
+     Decr R31
+     load R12, R31
+     str R31, R1
+     li R1, 1
+     cmp R12, R1
+     jeq whileTrueStatement_13
+//goto whileEndStatement_13
+     jmp whileEndStatement_13
+(whileTrueStatement_13)
+//push local 0
+     li R1, 0
+     load R31, R1
+     li R1, 1
+     load R3, R1
+
+     li R2, 0
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//push argument 0
+     li R1, 0
+     load R31, R1
+     li R1, 2
+     load R3, R1
+
+     li R2, 0
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//add
+     li R1, 0
+     load R31, R1
+     Decr R31
+     load R12, R31
+     str R31, R1
+     li R1, 0
+     load R31, R1
+     Decr R31
+     load R13, R31
+     str R31, R1
+     add R14, R12, R13
+     li R1, 0
+     load R31, R1
+     str R14, R31
+     Incr R31
+     str R31, R1
+//pop local 0
+     li R1, 0
+     load R31, R1
+     Decr R31
+     str R31, R1
+     load R2, R31
+     li R3, 1
+     load R4, R3
+     li R5, 0
+     add R7, R4, R5
+     str R2, R7
+//push local 1
+     li R1, 0
+     load R31, R1
+     li R1, 1
+     load R3, R1
+
+     li R2, 1
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//push constant 1
+     li R1, 0
+     load R31, R1
+
+     li R2, 1
+     str R2, R31
+     Incr R31
+     str R31, R1
+//sub
+     li R1, 0
+     load R31, R1
+     Decr R31
+     load R12, R31
+     str R31, R1
+     li R1, 0
+     load R31, R1
+     Decr R31
+     load R13, R31
+     str R31, R1
+     sub R14, R13, R12
+     li R1, 0
+     load R31, R1
+     str R14, R31
+     Incr R31
+     str R31, R1
+//pop local 1
+     li R1, 0
+     load R31, R1
+     Decr R31
+     str R31, R1
+     load R2, R31
+     li R3, 1
+     load R4, R3
+     li R5, 1
+     add R7, R4, R5
+     str R2, R7
+//goto whileStatementStart_13
+     jmp whileStatementStart_13
+(whileEndStatement_13)
+//push local 0
+     li R1, 0
+     load R31, R1
+     li R1, 1
+     load R3, R1
+
+     li R2, 0
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//return
+    li R2, 2
+    load R30, R2
+    load R29, R2
+    Incr R29
+    li R1, 0
+    load R31, R1
+    Decr R31
+    str R31, R1
+    load R20, R31
+    str R20, R30
+    //SP = local0
+    li R1, 0
+    load R31, R1
+    li R2, 1
+    load R31, R2
+    str R31, R1
+    //pop that(SP -1) 'that' pointer
+    li R1, 0
+    load R31, R1
+    li R2, 1
+    sub R3, R31, R2
+    load R4, R3
+    li R5, 4
+    str R4, R5
+    //pop that(SP -2) 'this' pointer
+    li R1, 0
+    load R31, R1
+    li R2, 2
+    sub R3, R31, R2
+    load R4, R3
+    li R5, 3
+    str R4, R5
+    //pop that(SP -3) 'argument' pointer
+    li R1, 0
+    load R31, R1
+    li R2, 3
+    sub R3, R31, R2
+    load R4, R3
+    li R5, 2
+    str R4, R5
+    //pop that(SP -4) 'local' pointer
+    li R1, 0
+    load R31, R1
+    li R2, 4
+    sub R3, R31, R2
+    load R4, R3
+    li R5, 1
+    str R4, R5
+    //pop that(SP -5) 'return address'
+    li R1, 0
+    load R31, R1
+    li R2, 5
+    sub R3, R31, R2
+    load R26, R3
+    mov R31, R29
+    str R31, R1
+    return
+//function Math.max 1 2
+(Math.max)
+//push argument 0
+     li R1, 0
+     load R31, R1
+     li R1, 2
+     load R3, R1
+
+     li R2, 0
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//pop local 0
+     li R1, 0
+     load R31, R1
+     Decr R31
+     str R31, R1
+     load R2, R31
+     li R3, 1
+     load R4, R3
+     li R5, 0
+     add R7, R4, R5
+     str R2, R7
+//push argument 1
+     li R1, 0
+     load R31, R1
+     li R1, 2
+     load R3, R1
+
+     li R2, 1
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//push argument 0
+     li R1, 0
+     load R31, R1
+     li R1, 2
+     load R3, R1
+
+     li R2, 0
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//gt
+     li R1, 0
+     load R31, R1
+     Decr R31
+     load R12, R31
+     str R31, R1
+     load R31, R1
+     Decr R31
+     load R13, R31
+     str R31, R1
+     li R15, 0
+     cmp R13, R12
+     jg label10
+     cmp R13, R12
+     jle label11
+  (label10)
+     li R15, 1
+  (label11)
+     load R31, R1
+     str R15, R31
+     Incr R31
+     str R31, R1
+//if-goto ifTrueStatement_2
+     li R1, 0
+     load R31, R1
+     Decr R31
+     load R12, R31
+     str R31, R1
+     li R1, 1
+     cmp R12, R1
+     jeq ifTrueStatement_2
+//goto ifFalseStatement_2
+     jmp ifFalseStatement_2
+(ifTrueStatement_2)
+//push argument 1
+     li R1, 0
+     load R31, R1
+     li R1, 2
+     load R3, R1
+
+     li R2, 1
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//pop local 0
+     li R1, 0
+     load R31, R1
+     Decr R31
+     str R31, R1
+     load R2, R31
+     li R3, 1
+     load R4, R3
+     li R5, 0
+     add R7, R4, R5
+     str R2, R7
+//goto ifEndStatement_2
+     jmp ifEndStatement_2
+(ifFalseStatement_2)
+(ifEndStatement_2)
+//push local 0
+     li R1, 0
+     load R31, R1
+     li R1, 1
+     load R3, R1
+
+     li R2, 0
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//return
+    li R2, 2
+    load R30, R2
+    load R29, R2
+    Incr R29
+    li R1, 0
+    load R31, R1
+    Decr R31
+    str R31, R1
+    load R20, R31
+    str R20, R30
+    //SP = local0
+    li R1, 0
+    load R31, R1
+    li R2, 1
+    load R31, R2
+    str R31, R1
+    //pop that(SP -1) 'that' pointer
+    li R1, 0
+    load R31, R1
+    li R2, 1
+    sub R3, R31, R2
+    load R4, R3
+    li R5, 4
+    str R4, R5
+    //pop that(SP -2) 'this' pointer
+    li R1, 0
+    load R31, R1
+    li R2, 2
+    sub R3, R31, R2
+    load R4, R3
+    li R5, 3
+    str R4, R5
+    //pop that(SP -3) 'argument' pointer
+    li R1, 0
+    load R31, R1
+    li R2, 3
+    sub R3, R31, R2
+    load R4, R3
+    li R5, 2
+    str R4, R5
+    //pop that(SP -4) 'local' pointer
+    li R1, 0
+    load R31, R1
+    li R2, 4
+    sub R3, R31, R2
+    load R4, R3
+    li R5, 1
+    str R4, R5
+    //pop that(SP -5) 'return address'
+    li R1, 0
+    load R31, R1
+    li R2, 5
+    sub R3, R31, R2
+    load R26, R3
+    mov R31, R29
+    str R31, R1
+    return
+//function Math.min 1 2
+(Math.min)
+//push argument 0
+     li R1, 0
+     load R31, R1
+     li R1, 2
+     load R3, R1
+
+     li R2, 0
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//pop local 0
+     li R1, 0
+     load R31, R1
+     Decr R31
+     str R31, R1
+     load R2, R31
+     li R3, 1
+     load R4, R3
+     li R5, 0
+     add R7, R4, R5
+     str R2, R7
+//push argument 1
+     li R1, 0
+     load R31, R1
+     li R1, 2
+     load R3, R1
+
+     li R2, 1
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//push argument 0
+     li R1, 0
+     load R31, R1
+     li R1, 2
+     load R3, R1
+
+     li R2, 0
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//lt
+     li R1, 0
+     load R31, R1
+     Decr R31
+     load R12, R31
+     str R31, R1
+     load R31, R1
+     Decr R31
+     load R13, R31
+     str R31, R1
+     li R15, 0
+     cmp R13, R12
+     jl label12
+     cmp R13, R12
+     jge label13
+  (label12)
+     li R15, 1
+  (label13)
+     load R31, R1
+     str R15, R31
+     Incr R31
+     str R31, R1
+//if-goto ifTrueStatement_3
+     li R1, 0
+     load R31, R1
+     Decr R31
+     load R12, R31
+     str R31, R1
+     li R1, 1
+     cmp R12, R1
+     jeq ifTrueStatement_3
+//goto ifFalseStatement_3
+     jmp ifFalseStatement_3
+(ifTrueStatement_3)
+//push argument 1
+     li R1, 0
+     load R31, R1
+     li R1, 2
+     load R3, R1
+
+     li R2, 1
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//pop local 0
+     li R1, 0
+     load R31, R1
+     Decr R31
+     str R31, R1
+     load R2, R31
+     li R3, 1
+     load R4, R3
+     li R5, 0
+     add R7, R4, R5
+     str R2, R7
+//goto ifEndStatement_3
+     jmp ifEndStatement_3
+(ifFalseStatement_3)
+(ifEndStatement_3)
+//push local 0
+     li R1, 0
+     load R31, R1
+     li R1, 1
+     load R3, R1
+
+     li R2, 0
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//return
+    li R2, 2
+    load R30, R2
+    load R29, R2
+    Incr R29
+    li R1, 0
+    load R31, R1
+    Decr R31
+    str R31, R1
+    load R20, R31
+    str R20, R30
+    //SP = local0
+    li R1, 0
+    load R31, R1
+    li R2, 1
+    load R31, R2
+    str R31, R1
+    //pop that(SP -1) 'that' pointer
+    li R1, 0
+    load R31, R1
+    li R2, 1
+    sub R3, R31, R2
+    load R4, R3
+    li R5, 4
+    str R4, R5
+    //pop that(SP -2) 'this' pointer
+    li R1, 0
+    load R31, R1
+    li R2, 2
+    sub R3, R31, R2
+    load R4, R3
+    li R5, 3
+    str R4, R5
+    //pop that(SP -3) 'argument' pointer
+    li R1, 0
+    load R31, R1
+    li R2, 3
+    sub R3, R31, R2
+    load R4, R3
+    li R5, 2
+    str R4, R5
+    //pop that(SP -4) 'local' pointer
+    li R1, 0
+    load R31, R1
+    li R2, 4
+    sub R3, R31, R2
+    load R4, R3
+    li R5, 1
+    str R4, R5
+    //pop that(SP -5) 'return address'
+    li R1, 0
+    load R31, R1
+    li R2, 5
+    sub R3, R31, R2
+    load R26, R3
+    mov R31, R29
+    str R31, R1
+    return
+//function Math.sqrt 3 1
+(Math.sqrt)
+//push argument 0
+     li R1, 0
+     load R31, R1
+     li R1, 2
+     load R3, R1
+
+     li R2, 0
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//pop local 1
+     li R1, 0
+     load R31, R1
+     Decr R31
+     str R31, R1
+     load R2, R31
+     li R3, 1
+     load R4, R3
+     li R5, 1
+     add R7, R4, R5
+     str R2, R7
+//push constant 1
+     li R1, 0
+     load R31, R1
+
+     li R2, 1
+     str R2, R31
+     Incr R31
+     str R31, R1
+//pop local 0
+     li R1, 0
+     load R31, R1
+     Decr R31
+     str R31, R1
+     load R2, R31
+     li R3, 1
+     load R4, R3
+     li R5, 0
+     add R7, R4, R5
+     str R2, R7
+//push constant 0
+     li R1, 0
+     load R31, R1
+
+     li R2, 0
+     str R2, R31
+     Incr R31
+     str R31, R1
+//pop local 2
+     li R1, 0
+     load R31, R1
+     Decr R31
+     str R31, R1
+     load R2, R31
+     li R3, 1
+     load R4, R3
+     li R5, 2
+     add R7, R4, R5
+     str R2, R7
+(whileStatementStart_14)
+//push local 1
+     li R1, 0
+     load R31, R1
+     li R1, 1
+     load R3, R1
+
+     li R2, 1
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//push local 0
+     li R1, 0
+     load R31, R1
+     li R1, 1
+     load R3, R1
+
+     li R2, 0
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//gte
+     li R1, 0
+     load R31, R1
+     Decr R31
+     load R12, R31
+     str R31, R1
+     load R31, R1
+     Decr R31
+     load R13, R31
+     str R31, R1
+     li R15, 0
+     cmp R13, R12
+     jge label14
+     cmp R13, R12
+     jl label15
+  (label14)
+     li R15, 1
+  (label15)
+     load R31, R1
+     str R15, R31
+     Incr R31
+     str R31, R1
+//if-goto whileTrueStatement_14
+     li R1, 0
+     load R31, R1
+     Decr R31
+     load R12, R31
+     str R31, R1
+     li R1, 1
+     cmp R12, R1
+     jeq whileTrueStatement_14
+//goto whileEndStatement_14
+     jmp whileEndStatement_14
+(whileTrueStatement_14)
+//push local 1
+     li R1, 0
+     load R31, R1
+     li R1, 1
+     load R3, R1
+
+     li R2, 1
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//push local 0
+     li R1, 0
+     load R31, R1
+     li R1, 1
+     load R3, R1
+
+     li R2, 0
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//sub
+     li R1, 0
+     load R31, R1
+     Decr R31
+     load R12, R31
+     str R31, R1
+     li R1, 0
+     load R31, R1
+     Decr R31
+     load R13, R31
+     str R31, R1
+     sub R14, R13, R12
+     li R1, 0
+     load R31, R1
+     str R14, R31
+     Incr R31
+     str R31, R1
+//pop local 1
+     li R1, 0
+     load R31, R1
+     Decr R31
+     str R31, R1
+     load R2, R31
+     li R3, 1
+     load R4, R3
+     li R5, 1
+     add R7, R4, R5
+     str R2, R7
+//push local 0
+     li R1, 0
+     load R31, R1
+     li R1, 1
+     load R3, R1
+
+     li R2, 0
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//push constant 2
+     li R1, 0
+     load R31, R1
+
+     li R2, 2
+     str R2, R31
+     Incr R31
+     str R31, R1
+//add
+     li R1, 0
+     load R31, R1
+     Decr R31
+     load R12, R31
+     str R31, R1
+     li R1, 0
+     load R31, R1
+     Decr R31
+     load R13, R31
+     str R31, R1
+     add R14, R12, R13
+     li R1, 0
+     load R31, R1
+     str R14, R31
+     Incr R31
+     str R31, R1
+//pop local 0
+     li R1, 0
+     load R31, R1
+     Decr R31
+     str R31, R1
+     load R2, R31
+     li R3, 1
+     load R4, R3
+     li R5, 0
+     add R7, R4, R5
+     str R2, R7
+//push local 2
+     li R1, 0
+     load R31, R1
+     li R1, 1
+     load R3, R1
+
+     li R2, 2
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//push constant 1
+     li R1, 0
+     load R31, R1
+
+     li R2, 1
+     str R2, R31
+     Incr R31
+     str R31, R1
+//add
+     li R1, 0
+     load R31, R1
+     Decr R31
+     load R12, R31
+     str R31, R1
+     li R1, 0
+     load R31, R1
+     Decr R31
+     load R13, R31
+     str R31, R1
+     add R14, R12, R13
+     li R1, 0
+     load R31, R1
+     str R14, R31
+     Incr R31
+     str R31, R1
+//pop local 2
+     li R1, 0
+     load R31, R1
+     Decr R31
+     str R31, R1
+     load R2, R31
+     li R3, 1
+     load R4, R3
+     li R5, 2
+     add R7, R4, R5
+     str R2, R7
+//goto whileStatementStart_14
+     jmp whileStatementStart_14
+(whileEndStatement_14)
+//push local 2
+     li R1, 0
+     load R31, R1
+     li R1, 1
+     load R3, R1
+
+     li R2, 2
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//return
+    li R2, 2
+    load R30, R2
+    load R29, R2
+    Incr R29
+    li R1, 0
+    load R31, R1
+    Decr R31
+    str R31, R1
+    load R20, R31
+    str R20, R30
+    //SP = local0
+    li R1, 0
+    load R31, R1
+    li R2, 1
+    load R31, R2
+    str R31, R1
+    //pop that(SP -1) 'that' pointer
+    li R1, 0
+    load R31, R1
+    li R2, 1
+    sub R3, R31, R2
+    load R4, R3
+    li R5, 4
+    str R4, R5
+    //pop that(SP -2) 'this' pointer
+    li R1, 0
+    load R31, R1
+    li R2, 2
+    sub R3, R31, R2
+    load R4, R3
+    li R5, 3
+    str R4, R5
+    //pop that(SP -3) 'argument' pointer
+    li R1, 0
+    load R31, R1
+    li R2, 3
+    sub R3, R31, R2
+    load R4, R3
+    li R5, 2
+    str R4, R5
+    //pop that(SP -4) 'local' pointer
+    li R1, 0
+    load R31, R1
+    li R2, 4
+    sub R3, R31, R2
+    load R4, R3
+    li R5, 1
+    str R4, R5
+    //pop that(SP -5) 'return address'
+    li R1, 0
+    load R31, R1
+    li R2, 5
+    sub R3, R31, R2
+    load R26, R3
+    mov R31, R29
+    str R31, R1
+    return
+//function Math.div 3 2
+(Math.div)
+//push argument 0
+     li R1, 0
+     load R31, R1
+     li R1, 2
+     load R3, R1
+
+     li R2, 0
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//pop local 0
+     li R1, 0
+     load R31, R1
+     Decr R31
+     str R31, R1
+     load R2, R31
+     li R3, 1
+     load R4, R3
+     li R5, 0
+     add R7, R4, R5
+     str R2, R7
+//push constant 0
+     li R1, 0
+     load R31, R1
+
+     li R2, 0
+     str R2, R31
+     Incr R31
+     str R31, R1
+//pop local 2
+     li R1, 0
+     load R31, R1
+     Decr R31
+     str R31, R1
+     load R2, R31
+     li R3, 1
+     load R4, R3
+     li R5, 2
+     add R7, R4, R5
+     str R2, R7
+//push constant 0
+     li R1, 0
+     load R31, R1
+
+     li R2, 0
+     str R2, R31
+     Incr R31
+     str R31, R1
+//pop local 1
+     li R1, 0
+     load R31, R1
+     Decr R31
+     str R31, R1
+     load R2, R31
+     li R3, 1
+     load R4, R3
+     li R5, 1
+     add R7, R4, R5
+     str R2, R7
+(whileStatementStart_15)
+//push local 0
+     li R1, 0
+     load R31, R1
+     li R1, 1
+     load R3, R1
+
+     li R2, 0
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//push argument 1
+     li R1, 0
+     load R31, R1
+     li R1, 2
+     load R3, R1
+
+     li R2, 1
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//gte
+     li R1, 0
+     load R31, R1
+     Decr R31
+     load R12, R31
+     str R31, R1
+     load R31, R1
+     Decr R31
+     load R13, R31
+     str R31, R1
+     li R15, 0
+     cmp R13, R12
+     jge label16
+     cmp R13, R12
+     jl label17
+  (label16)
+     li R15, 1
+  (label17)
+     load R31, R1
+     str R15, R31
+     Incr R31
+     str R31, R1
+//if-goto whileTrueStatement_15
+     li R1, 0
+     load R31, R1
+     Decr R31
+     load R12, R31
+     str R31, R1
+     li R1, 1
+     cmp R12, R1
+     jeq whileTrueStatement_15
+//goto whileEndStatement_15
+     jmp whileEndStatement_15
+(whileTrueStatement_15)
+//push local 0
+     li R1, 0
+     load R31, R1
+     li R1, 1
+     load R3, R1
+
+     li R2, 0
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//push argument 1
+     li R1, 0
+     load R31, R1
+     li R1, 2
+     load R3, R1
+
+     li R2, 1
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//sub
+     li R1, 0
+     load R31, R1
+     Decr R31
+     load R12, R31
+     str R31, R1
+     li R1, 0
+     load R31, R1
+     Decr R31
+     load R13, R31
+     str R31, R1
+     sub R14, R13, R12
+     li R1, 0
+     load R31, R1
+     str R14, R31
+     Incr R31
+     str R31, R1
+//pop local 0
+     li R1, 0
+     load R31, R1
+     Decr R31
+     str R31, R1
+     load R2, R31
+     li R3, 1
+     load R4, R3
+     li R5, 0
+     add R7, R4, R5
+     str R2, R7
+//push local 2
+     li R1, 0
+     load R31, R1
+     li R1, 1
+     load R3, R1
+
+     li R2, 2
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//push constant 1
+     li R1, 0
+     load R31, R1
+
+     li R2, 1
+     str R2, R31
+     Incr R31
+     str R31, R1
+//add
+     li R1, 0
+     load R31, R1
+     Decr R31
+     load R12, R31
+     str R31, R1
+     li R1, 0
+     load R31, R1
+     Decr R31
+     load R13, R31
+     str R31, R1
+     add R14, R12, R13
+     li R1, 0
+     load R31, R1
+     str R14, R31
+     Incr R31
+     str R31, R1
+//pop local 2
+     li R1, 0
+     load R31, R1
+     Decr R31
+     str R31, R1
+     load R2, R31
+     li R3, 1
+     load R4, R3
+     li R5, 2
+     add R7, R4, R5
+     str R2, R7
+//push local 1
+     li R1, 0
+     load R31, R1
+     li R1, 1
+     load R3, R1
+
+     li R2, 1
+     add R4, R3, R2
+     load R30, R4
+     str R30, R31
+     Incr R31
+     li R1, 0
+     str R31, R1
+//push constant 1
+     li R1, 0
+     load R31, R1
+
+     li R2, 1
+     str R2, R31
+     Incr R31
+     str R31, R1
+//add
+     li R1, 0
+     load R31, R1
+     Decr R31
+     load R12, R31
+     str R31, R1
+     li R1, 0
+     load R31, R1
+     Decr R31
+     load R13, R31
+     str R31, R1
+     add R14, R12, R13
+     li R1, 0
+     load R31, R1
+     str R14, R31
+     Incr R31
+     str R31, R1
+//pop local 1
+     li R1, 0
+     load R31, R1
+     Decr R31
+     str R31, R1
+     load R2, R31
+     li R3, 1
+     load R4, R3
+     li R5, 1
+     add R7, R4, R5
+     str R2, R7
+//goto whileStatementStart_15
+     jmp whileStatementStart_15
+(whileEndStatement_15)
 //push local 1
      li R1, 0
      load R31, R1
