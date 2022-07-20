@@ -458,10 +458,10 @@ Tokenizer::Token Tokenizer::CheckToken()
       thisToken = Tokenizer::char_;
    }
 
-   else if (token == "ARRAY"|| token == "array"  || token == "Array")
-   {
-      thisToken = Tokenizer::array_;
-   }
+   // else if (token == "ARRAY"|| token == "array"  || token == "Array")
+   // {
+   //    thisToken = Tokenizer::array_;
+   // }
 
    else if (token == "CLASS"|| token == "class"  || token == "Class")
    {

@@ -3,266 +3,115 @@ push argument 0
 call Memory.init 1 1
 pop local 0
 push argument 0
-call File.main 5 1
+call Main.main 2 1
 pop local 0
 
 
-function Memory.init 1 1
-push constant 7000
+function Main.main 2 1
+push constant 40
+call Array.new 1 1
 pop static 0
+push constant 2000
+push constant 6
+call Memory.poke 1 2
+pop local 0
 push constant 0
-pop static 1
-push static 0
+push constant 10
+push constant 20
+call Main.createSeries 1 3
+pop local 0
+push constant 2001
+push constant 7
+call Memory.poke 1 2
+pop local 0
+(whileStatementStart_5)
+push constant 1
+if-goto whileTrueStatement_5
+goto whileEndStatement_5
+(whileTrueStatement_5)
+goto whileStatementStart_5
+(whileEndStatement_5)
+push constant 0
 return
 
 
-function Memory.allocate 1 1
-push static 0
-pop local 0
-push static 0
-push argument 0
-add
-pop static 0
-push static 1
-push argument 0
-add
-pop static 1
-push local 0
-return
-
-
-function Math.mul 2 2
+function Main.average 3 1
 push constant 0
-pop local 0
-push argument 1
+pop local 2
+push constant 0
 pop local 1
+push constant 0
+pop local 0
+(whileStatementStart_6)
+push local 0
+push argument 0
+lt
+if-goto whileTrueStatement_6
+goto whileEndStatement_6
+(whileTrueStatement_6)
+push local 1
+push static 0
+push local 0
+add
+pop pointer 1
+push that 0
+add
+pop local 1
+push local 0
+push constant 1
+add
+pop local 0
+goto whileStatementStart_6
+(whileEndStatement_6)
+push local 1
+push argument 0
+call Main.div 3 2
+pop local 2
+push local 2
+return
+
+
+function Main.sumSeries 2 1
+push constant 0
+pop local 0
+push constant 0
+pop local 1
+(whileStatementStart_7)
+push local 0
+push argument 0
+lt
+if-goto whileTrueStatement_7
+goto whileEndStatement_7
+(whileTrueStatement_7)
+push local 1
+push static 0
+push local 0
+add
+pop pointer 1
+push that 0
+add
+pop local 1
+push local 0
+push constant 1
+add
+pop local 0
+goto whileStatementStart_7
+(whileEndStatement_7)
+push local 1
+return
+
+
+function Main.createSeries 1 3
+push constant 0
+pop local 0
 (whileStatementStart_8)
-push local 1
-push constant 0
-nequ
-if-goto whileTrueStatement_8
-goto whileEndStatement_8
-(whileTrueStatement_8)
-push local 0
-push argument 0
-add
-pop local 0
-push local 1
-push constant 1
-sub
-pop local 1
-goto whileStatementStart_8
-(whileEndStatement_8)
-push local 0
-return
-
-
-function Math.max 1 2
-push argument 0
-pop local 0
-push argument 1
-push argument 0
-gt
-if-goto ifTrueStatement_2
-goto ifFalseStatement_2
-(ifTrueStatement_2)
-push argument 1
-pop local 0
-goto ifEndStatement_2
-(ifFalseStatement_2)
-(ifEndStatement_2)
-push local 0
-return
-
-
-function Math.min 1 2
-push argument 0
-pop local 0
-push argument 1
-push argument 0
-lt
-if-goto ifTrueStatement_3
-goto ifFalseStatement_3
-(ifTrueStatement_3)
-push argument 1
-pop local 0
-goto ifEndStatement_3
-(ifFalseStatement_3)
-(ifEndStatement_3)
-push local 0
-return
-
-
-function Math.sqrt 3 1
-push argument 0
-pop local 1
-push constant 1
-pop local 0
-push constant 0
-pop local 2
-(whileStatementStart_9)
-push local 1
-push local 0
-gte
-if-goto whileTrueStatement_9
-goto whileEndStatement_9
-(whileTrueStatement_9)
-push local 1
-push local 0
-sub
-pop local 1
-push local 0
-push constant 2
-add
-pop local 0
-push local 2
-push constant 1
-add
-pop local 2
-goto whileStatementStart_9
-(whileEndStatement_9)
-push local 2
-return
-
-
-function Math.div 3 2
-push argument 0
-pop local 0
-push constant 0
-pop local 2
-push constant 0
-pop local 1
-(whileStatementStart_10)
-push local 0
-push argument 1
-gte
-if-goto whileTrueStatement_10
-goto whileEndStatement_10
-(whileTrueStatement_10)
-push local 0
-push argument 1
-sub
-pop local 0
-push local 2
-push constant 1
-add
-pop local 2
-push local 1
-push constant 1
-add
-pop local 1
-goto whileStatementStart_10
-(whileEndStatement_10)
-push local 1
-return
-
-
-function File.main 5 1
-push constant 1
-pop local 4
-push constant 3
-pop local 3
-push constant 11
-pop local 2
-push local 4
-push local 3
-push local 2
-call File.createSeries 1 3
-pop local 1
-push local 2
-call File.sumSeries 2 1
-pop local 0
-push local 2
-call File.average 3 1
-pop local 1
-(whileStatementStart_11)
-push constant 1
-if-goto whileTrueStatement_11
-goto whileEndStatement_11
-(whileTrueStatement_11)
-goto whileStatementStart_11
-(whileEndStatement_11)
-push constant 0
-return
-
-
-function File.average 3 1
-push constant 0
-pop local 2
-push constant 0
-pop local 1
-push constant 0
-pop local 0
-(whileStatementStart_12)
-push local 0
-push argument 0
-lt
-if-goto whileTrueStatement_12
-goto whileEndStatement_12
-(whileTrueStatement_12)
-push local 1
-push constant 6000
-push local 0
-add
-pop pointer 1
-push that 0
-add
-pop local 1
-push local 0
-push constant 1
-add
-pop local 0
-goto whileStatementStart_12
-(whileEndStatement_12)
-push local 1
-push argument 0
-call File.div 3 2
-pop local 2
-push local 2
-return
-
-
-function File.sumSeries 2 1
-push constant 0
-pop local 0
-push constant 0
-pop local 1
-(whileStatementStart_13)
-push local 0
-push argument 0
-lt
-if-goto whileTrueStatement_13
-goto whileEndStatement_13
-(whileTrueStatement_13)
-push local 1
-push constant 6000
-push local 0
-add
-pop pointer 1
-push that 0
-add
-pop local 1
-push local 0
-push constant 1
-add
-pop local 0
-goto whileStatementStart_13
-(whileEndStatement_13)
-push local 1
-return
-
-
-function File.createSeries 1 3
-push constant 0
-pop local 0
-(whileStatementStart_14)
 push local 0
 push argument 2
 lt
-if-goto whileTrueStatement_14
-goto whileEndStatement_14
-(whileTrueStatement_14)
-push constant 6000
+if-goto whileTrueStatement_8
+goto whileEndStatement_8
+(whileTrueStatement_8)
+push static 0
 push local 0
 add
 push argument 0
@@ -278,26 +127,26 @@ push argument 0
 push argument 1
 add
 pop argument 0
-goto whileStatementStart_14
-(whileEndStatement_14)
+goto whileStatementStart_8
+(whileEndStatement_8)
 push constant 0
 return
 
 
-function File.div 3 2
+function Main.div 3 2
 push argument 0
 pop local 0
 push constant 0
 pop local 2
 push constant 0
 pop local 1
-(whileStatementStart_15)
+(whileStatementStart_9)
 push local 0
 push argument 1
 gte
-if-goto whileTrueStatement_15
-goto whileEndStatement_15
-(whileTrueStatement_15)
+if-goto whileTrueStatement_9
+goto whileEndStatement_9
+(whileTrueStatement_9)
 push local 0
 push argument 1
 sub
@@ -310,9 +159,69 @@ push local 1
 push constant 1
 add
 pop local 1
-goto whileStatementStart_15
-(whileEndStatement_15)
+goto whileStatementStart_9
+(whileEndStatement_9)
 push local 1
+return
+
+
+function Memory.init 1 1
+push constant 4096
+pop static 1
+push constant 0
+pop static 2
+push static 1
+return
+
+
+function Memory.allocate 1 1
+push static 1
+pop local 0
+push static 1
+push argument 0
+add
+pop static 1
+push static 2
+push argument 0
+add
+pop static 2
+push local 0
+return
+
+
+function Memory.poke 1 2
+push constant 0
+pop local 0
+push local 0
+push argument 0
+add
+push argument 1
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 1
+return
+
+
+function Memory.peek 2 1
+push constant 0
+pop local 0
+push local 0
+push argument 0
+add
+pop pointer 1
+push that 0
+pop local 1
+push local 1
+return
+
+
+function Array.new 1 1
+push argument 0
+call Memory.allocate 1 1
+pop local 0
+push local 0
 return
 
 

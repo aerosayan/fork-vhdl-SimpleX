@@ -1,15 +1,13 @@
 class BootLoader
 {
     // The very start of our system. Initialise all our system
-    // This must be the netry point. And also must start by initialising the system.
-    // Then finally call the main application (here it's File.main)
+    // This must be the entry point. And also must start by initialising the system.
+    // Then finally call the main application (here it's Main.main)
     method void Init()
     {
         int local;
-
+        
         let local = Memory.init();
-
-        let local = File.main(); // always we should call the main application here after initialising everything
-
+        let local = Main.main(); // always we should call the main application here after initialising everything 
     }
 }

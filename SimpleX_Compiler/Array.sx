@@ -1,0 +1,9 @@
+class Array
+{
+    method int new(int size)
+    {
+        int pointer;
+        let pointer = Memory.allocate(size);
+        return pointer;
+    }
+}

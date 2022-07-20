@@ -5,23 +5,9 @@ class Memory
     static int globalSize;
     field int x;
 
-    // method void mainTest()
-    // {
-    //    int heap1, heap2;
-    //    int newAddress;
-       
-    //    let heapAddress =  init();
-
-    //    let heap1 = allocate(100);
-    //    let heap2 = allocate(20);
-    //    let x = x+ 1;
-    //    while(1)
-    //    {}
-    // }
-
     method int init()
     {
-        let heapAddress = 7000;
+        let heapAddress = 4096;
         let globalSize = 0;
         return heapAddress;
     }
@@ -34,6 +20,22 @@ class Memory
         let globalSize = globalSize + size;
        
         return currAddress;
+    }
+
+    method int poke(int address, in value)
+    {
+        int RAM;
+        let RAM = 0; // poke the entire RAM space
+        let RAM[address] = value;
+        return 1;
+    }
+
+    method int peek(int address)
+    {
+        int RAM, value;
+        let RAM = 0;// peek the entire RAM space
+        let value = RAM[address];
+        return value;
     }
 
 }

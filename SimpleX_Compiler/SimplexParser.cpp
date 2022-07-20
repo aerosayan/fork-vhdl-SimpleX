@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 //#define XML_DEBUG
-#define HEAP_START 6000
+#define HEAP_START 4096
 
  SimplexParser::SimplexParser()
  :token_index_(0),
@@ -234,7 +234,6 @@
     if (tokens_.at(token_index_).token == Tokenizer::constructor_ || tokens_.at(token_index_).token == Tokenizer::function_ || tokens_.at(token_index_).token == Tokenizer::method_)
     {
        PrintXml("keyword", tokens_.at(token_index_).tokenString);
-       
        ident_++;
        token_index_++;
        result = true;
@@ -380,13 +379,14 @@
       return result;
    }
 
-  bool SimplexParser::cosumeSubroutineCall()
+  bool SimplexParser::cosumeSubroutineCall(std::string className)
   {
      bool result = false;
      if (tokens_.at(token_index_).token == Tokenizer::identifier_ && (tokens_.at(token_index_ + 1).token == Tokenizer::openBrackets_))
      {
          consumeIdentifierToken();
-         std::string callFunction = currentClass_ + "." + lastVarName_;
+         std::string callFunction = className + "." + lastVarName_;
+         printf("===%s===\n",  callFunction.c_str());
          consumeOpenBracketsToken();
          consumeExpressionList();
          EmitCode("call " + callFunction + " " + std::to_string(localArgumenNumbers_[callFunction].numOfLocals) + " " + std::to_string(localArgumenNumbers_[callFunction].numOfArguments));
@@ -409,7 +409,9 @@
          consumeOpenSquareBracketsToken();
          bool exists;
          Symbol sym = GetSymbol(arrayName, exists);
-         EmitCode("push constant " + std::to_string(sym.address));
+         
+         //EmitCode("push constant " + std::to_string(sym.address));
+         EmitCode("push " + sym.kind + " " + std::to_string(sym.index));
          consumeExpression();
          EmitCode("add");
          EmitCode("pop pointer 1");
@@ -420,17 +422,17 @@
      else if (tokens_.at(token_index_).token == Tokenizer::identifier_ && (tokens_.at(token_index_ + 1).token == Tokenizer::openBrackets_) )
      {
          PrintXml("identifier", tokens_.at(token_index_).tokenString);
-         
-         cosumeSubroutineCall();
+         std::string className = currentClass_;
+         cosumeSubroutineCall(className);
          result = true;
      }
      else if (tokens_.at(token_index_).token == Tokenizer::identifier_ && (tokens_.at(token_index_ + 1).token == Tokenizer::dot_) )
      {
          PrintXml("identifier", tokens_.at(token_index_).tokenString);
          consumeIdentifierToken();
-         currentClass_ = lastVarName_;
+         std::string className = lastVarName_;
          consumeDotToken();
-         cosumeSubroutineCall();
+         cosumeSubroutineCall(className);
          result = true;
      }
      else if (tokens_.at(token_index_).token == Tokenizer::identifier_) 
@@ -510,14 +512,14 @@
      parseErr = parseErr && consumeLetToken();
      if (tokens_.at(token_index_).token == Tokenizer::identifier_ && tokens_.at(token_index_ + 1).token == Tokenizer::openSquareBracket_)
      {
-         // its like an arr[index]
          parseErr = parseErr && consumeIdentifierToken();
          std::string arrayName = lastVarName_;
          bool exists;
          Symbol destSym = GetSymbol(arrayName, exists);
                  
          consumeOpenSquareBrackets();
-         EmitCode("push constant " + std::to_string(destSym.address));
+         //EmitCode("push constant " + std::to_string(destSym.address));
+         EmitCode("push " + destSym.kind + " " + std::to_string(destSym.index));
          consumeExpression();
          EmitCode("add");
         
@@ -703,8 +705,8 @@
       if (tokens_.at(token_index_).token == Tokenizer::identifier_ && (tokens_.at(token_index_ + 1).token == Tokenizer::openBrackets_) )
       {
          PrintXml("identifier", tokens_.at(token_index_).tokenString);
-         
-         cosumeSubroutineCall();
+         std::string className = tokens_.at(token_index_).tokenString;
+         cosumeSubroutineCall(className);
          consumeSemicolonToken();
          parseErr = true;
       }
@@ -712,8 +714,9 @@
       {
          PrintXml("identifier", tokens_.at(token_index_).tokenString);
          consumeIdentifierToken();
+         std::string className = tokens_.at(token_index_).tokenString;
          consumeDotToken();
-         cosumeSubroutineCall();
+         cosumeSubroutineCall(className);
          consumeSemicolonToken();
          parseErr = true;
       }
@@ -904,6 +907,7 @@
     classMemberVarTable.clear();
     localVarTable.clear();
     sourceCode_.clear();
+    currentFile_ = programName;
     sourceCode_ = ReadSourceFile(programName);
 
     tokenizer_.OpenFile(programName);
@@ -922,7 +926,7 @@
     {
        do
        {
-        std::string kind = (tokens_.at(token_index_).token == Tokenizer::static_) ? "static": "field";
+        std::string kind = (tokens_.at(token_index_).token == Tokenizer::static_) ? "static": "this";
        
         parseErr = parseErr && consumeFieldOrStatic();
         if (tokens_.at(token_index_).token == Tokenizer::array_)
@@ -969,7 +973,8 @@
          parseErr = parseErr && consumeVoidOrType();
          
          parseErr = parseErr && consumeIdentifierToken();
-         std::string methodName = currentClass_ + "." +  lastVarName_; 
+         std::string  methodName =  currentClass_ + "." + lastVarName_;
+         //printf("===%s===\n", methodName.c_str());
          EmitFunctionLocalAndArgumentNum(methodName);
          parseErr = parseErr && consumeOpenBracketsToken();
    
@@ -1008,7 +1013,7 @@ void SimplexParser::AddStaticFieldVariables(std::string kind, uint32_t address)
       {
          AddToClassSymbolTable(lastVarName_, lastVarType_, kind, staticVarIndex_++, address);  
       }
-      else if(kind == "field")
+      else if(kind == "this")
       {
          AddToClassSymbolTable(lastVarName_, lastVarType_, kind, fieldVarIndex_++, address);
       }
@@ -1220,7 +1225,7 @@ void SimplexParser::ErrorMsg(std::string err)
    printf("\033[0;31m");
   
    uint32_t lineNum = tokens_.at(token_index_).lineNumber;
-   printf("Error in file : %s at line %d  '%s'\n", currentClass_.c_str(), lineNum, sourceCode_.at(lineNum-1).c_str());
+   printf("Error in file : %s at line %d  '%s'\n", currentFile_.c_str(), lineNum, sourceCode_.at(lineNum-1).c_str());
    printf("%s\n", err.c_str()); 
    printf("\033[0m");
    parseError_ = true;

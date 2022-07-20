@@ -65,7 +65,7 @@ private:
   bool consumeDoStatement();
   bool consumeDoToken();
 
-  bool cosumeSubroutineCall();
+  bool cosumeSubroutineCall(std::string className);
   bool consumeExpressionList();
   bool consumeDotToken();
 
@@ -148,6 +148,7 @@ private:
 
     bool parseError_;
     std::string currentClass_;
+    std::string currentFile_;
 
     uint32_t passNumber_;
     uint32_t assignedAddress_;
